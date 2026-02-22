@@ -4,7 +4,7 @@ use function Livewire\Volt\{layout, title, state, mount};
 use App\Models\Kamar;
 
 layout('components.layouts.landing');
-title('Watugangga Riverside Guest House');
+title('Gita Car Rental');
 
 state([
   'kamars' => []
@@ -56,7 +56,7 @@ mount(function () {
     class="relative min-h-[calc(80svh-var(--nav-h))] md:min-h-[calc(80dvh-var(--nav-h))] pt-[calc(var(--nav-h)+4rem)] pb-8 md:pb-12 overflow-hidden">
 
     <!-- BG Cover Image (LCP) -->
-    <img src="{{ asset('img/homesection.jpg') }}" alt="Watugangga Riverside Guest House" fetchpriority="high"
+    <img src="{{ asset('img/homesection.jpg') }}" alt="Gita Car Rental" fetchpriority="high"
       class="absolute inset-0 w-full h-full object-cover object-center">
 
     <!-- Overlay gelap -->
@@ -79,7 +79,7 @@ mount(function () {
         <!-- Description -->
         <p class="mb-10 md:mb-12 text-lg md:text-xl lg:text-2xl text-white/95 leading-relaxed max-w-2xl"
           data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
-          Escape to Watugangga Riverside Guest House a peaceful riverside retreat in Pererenan, Bali, where comfort
+          Escape to Gita Car Rental a peaceful riverside retreat in Pererenan, Bali, where comfort
           meets serenity.
         </p>
 
@@ -87,16 +87,14 @@ mount(function () {
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4" data-aos="fade-up"
           data-aos-duration="800" data-aos-delay="500">
 
-          <a href="{{ route('landingpage.reservasi') }}"
-            class="inline-flex items-center justify-center gap-1 rounded-xl bg-[#ede6d2] hover:bg-[#e0d7c0]
+          <a href="{{ route('landingpage.reservasi') }}" class="inline-flex items-center justify-center gap-1 rounded-xl bg-[#ede6d2] hover:bg-[#e0d7c0]
             px-6 py-3 text-slate-800 font-semibold text-base shadow-lg
             transition-all duration-300 transform hover:scale-105
             focus:outline-none focus:ring-4 focus:ring-[#ede6d2]/50">
             <span>Book Your Stay</span>
           </a>
 
-          <a href="{{ route('landingpage.contact') }}"
-            class="inline-flex items-center justify-center gap-2 rounded-xl bg-white/20 hover:bg-white/30
+          <a href="{{ route('landingpage.contact') }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-white/20 hover:bg-white/30
             backdrop-blur-sm px-6 py-3 text-white font-semibold text-base
             border border-white/30 shadow-md
             transition-all duration-300 transform hover:scale-105
@@ -126,7 +124,7 @@ mount(function () {
         </h2>
         <h3 class="text-1xl md:text-2xl lg:text-3xl font-serif font-semibold text-slate-900 mb-6" data-aos="fade-up"
           data-aos-duration="800" data-aos-delay="100">
-          Watugangga Riverside Guest House
+          Gita Car Rental
         </h3>
         <p class="text-sm md:text-base text-slate-600 max-w-3xl mx-auto leading-relaxed" data-aos="fade-up"
           data-aos-duration="800" data-aos-delay="200">
@@ -200,8 +198,8 @@ mount(function () {
         <!-- Left Column: Image -->
         <div class="order-1 lg:order-1" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="300">
           @php
-          $firstKamar = $kamars->first();
-          $mainImage = asset('img/galeri_landing/IMG-20250925-WA0028.jpg');
+            $firstKamar = $kamars->first();
+            $mainImage = asset('img/galeri_landing/IMG-20250925-WA0028.jpg');
           @endphp
           <img src="{{ $mainImage }}"
             class="w-full rounded-2xl shadow-xl object-cover h-[300px] md:h-[320px] lg:h-[340px]">
@@ -211,14 +209,17 @@ mount(function () {
         <!-- Right Column: Text Content -->
         <div class="order-2 lg:order-2" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="400">
           <h3 class="text-1xl md:text-2xl font-bold text-slate-900 mb-6">
-            Watugangga Riverside Guest House
+            Gita Car Rental
           </h3>
           <p class="text-sm md:text-base text-slate-700 leading-relaxed mb-4">
-            Live the riverside escape you’ve been longing for at Watugangga Riverside Guest House
+            Live the riverside escape you’ve been longing for at Gita Car Rental
             a serene hideaway surrounded by lush greenery and the gentle sound of flowing water.
-            Designed with a modern minimalist touch, it’s the perfect retreat to unwind and reconnect with nature in Bali’s tranquil side.
-            Beyond its comfortable bedding and contemporary layout, the studio is thoughtfully curated for those with a busy itinerary in Bali.
-            It is more than just a place to sleep; it is a refined home base that provides everything you need for a productive and rejuvenating stay.
+            Designed with a modern minimalist touch, it’s the perfect retreat to unwind and reconnect with nature in
+            Bali’s tranquil side.
+            Beyond its comfortable bedding and contemporary layout, the studio is thoughtfully curated for those with a
+            busy itinerary in Bali.
+            It is more than just a place to sleep; it is a refined home base that provides everything you need for a
+            productive and rejuvenating stay.
           </p>
 
           <a href="{{ route('landingpage.kamar-fasilitas') }}"
@@ -231,37 +232,37 @@ mount(function () {
 
       <!-- Gallery Thumbnails Section -->
       @php
-      $roomThumbnails = [
-      [
-      'title' => 'Watugangga Riverside Guest House',
-      'image' => asset('img/galeri_landing/IMG-20250925-WA0023.jpg'),
-      ],
-      [
-      'title' => 'Watugangga Riverside Guest House',
-      'image' => asset('img/galeri_landing/IMG-20250925-WA0024.jpg'),
-      ],
-      [
-      'title' => 'Watugangga Riverside Guest House',
-      'image' => asset('img/galeri_landing/IMG-20250925-WA0025.jpg'),
-      ],
-      [
-      'title' => 'Watugangga Riverside Guest House',
-      'image' => asset('img/galeri_landing/IMG-20250925-WA0026.jpg'),
-      ],
-      ];
+        $roomThumbnails = [
+          [
+            'title' => 'Gita Car Rental',
+            'image' => asset('img/galeri_landing/IMG-20250925-WA0023.jpg'),
+          ],
+          [
+            'title' => 'Gita Car Rental',
+            'image' => asset('img/galeri_landing/IMG-20250925-WA0024.jpg'),
+          ],
+          [
+            'title' => 'Gita Car Rental',
+            'image' => asset('img/galeri_landing/IMG-20250925-WA0025.jpg'),
+          ],
+          [
+            'title' => 'Gita Car Rental',
+            'image' => asset('img/galeri_landing/IMG-20250925-WA0026.jpg'),
+          ],
+        ];
       @endphp
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         @foreach($roomThumbnails as $index => $room)
-        <div class="relative group overflow-hidden rounded-lg" data-aos="fade-up" data-aos-duration="800"
-          data-aos-delay="{{ 500 + ($index * 100) }}">
-          <img src="{{ $room['image'] }}" alt="{{ $room['title'] }}"
-            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-          <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
-            <h4 class="font-bold text-md mb-1">{{ $room['title'] }}</h4>
-            <p class="text-sm text-white/90">Pererenan, Bali</p>
+          <div class="relative group overflow-hidden rounded-lg" data-aos="fade-up" data-aos-duration="800"
+            data-aos-delay="{{ 500 + ($index * 100) }}">
+            <img src="{{ $room['image'] }}" alt="{{ $room['title'] }}"
+              class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h4 class="font-bold text-md mb-1">{{ $room['title'] }}</h4>
+              <p class="text-sm text-white/90">Pererenan, Bali</p>
+            </div>
           </div>
-        </div>
         @endforeach
       </div>
     </div>
@@ -278,7 +279,7 @@ mount(function () {
             Frequently Asked Questions
           </h2>
           <p class="text-sm md:text-base text-slate-600 max-w-2xl mx-auto">
-            Everything you need to know about your stay at Watugangga Riverside Guest House.
+            Everything you need to know about your stay at Gita Car Rental.
           </p>
         </div>
 
@@ -287,63 +288,80 @@ mount(function () {
           <div class="space-y-4">
             <!-- FAQ 1 -->
             <div class="faq-item">
-              <button class="faq-button w-full flex items-center justify-between py-5 text-left transition-colors duration-200 border-b border-slate-200"
+              <button
+                class="faq-button w-full flex items-center justify-between py-5 text-left transition-colors duration-200 border-b border-slate-200"
                 data-faq="1">
-                <span class="font-semibold text-slate-900 pr-4">Are Experience and Dine at Watugangga Riverside Guest House separate charges?</span>
-                <div class="faq-icon-wrapper flex-shrink-0 w-7 h-7 rounded-full bg-[#1D2D20] flex items-center justify-center transition-transform duration-200">
-                  <svg class="faq-icon w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-icon-type="minus">
+                <span class="font-semibold text-slate-900 pr-4">Are Experience and Dine at Gita Car Rental separate
+                  charges?</span>
+                <div
+                  class="faq-icon-wrapper flex-shrink-0 w-7 h-7 rounded-full bg-[#1D2D20] flex items-center justify-center transition-transform duration-200">
+                  <svg class="faq-icon w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    data-icon-type="minus">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                   </svg>
-                  <svg class="faq-icon-plus w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-icon-type="plus">
+                  <svg class="faq-icon-plus w-4 h-4 text-white hidden" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24" data-icon-type="plus">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
               </button>
               <div class="faq-content pb-5 pt-2" data-content="1">
                 <p class="text-slate-600 leading-relaxed">
-                  Yes, Experience and Dine services at Watugangga Riverside Guest House are separate charges. These additional services, such as yoga sessions, spa treatments, and dining experiences, are not included in the room rate and will be charged separately based on your selection.
+                  Yes, Experience and Dine services at Gita Car Rental are separate charges. These additional services,
+                  such as yoga sessions, spa treatments, and dining experiences, are not included in the room rate and
+                  will be charged separately based on your selection.
                 </p>
               </div>
             </div>
 
             <!-- FAQ 2 -->
             <div class="faq-item">
-              <button class="faq-button w-full flex items-center justify-between py-5 text-left transition-colors duration-200 border-b border-slate-200"
+              <button
+                class="faq-button w-full flex items-center justify-between py-5 text-left transition-colors duration-200 border-b border-slate-200"
                 data-faq="2">
                 <span class="font-semibold text-slate-900 pr-4">What are the check-in and check-out times?</span>
-                <div class="faq-icon-wrapper flex-shrink-0 w-7 h-7 rounded-full bg-[#1D2D20] flex items-center justify-center transition-transform duration-200">
-                  <svg class="faq-icon w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-icon-type="minus">
+                <div
+                  class="faq-icon-wrapper flex-shrink-0 w-7 h-7 rounded-full bg-[#1D2D20] flex items-center justify-center transition-transform duration-200">
+                  <svg class="faq-icon w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    data-icon-type="minus">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                   </svg>
-                  <svg class="faq-icon-plus w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-icon-type="plus">
+                  <svg class="faq-icon-plus w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    data-icon-type="plus">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
               </button>
               <div class="faq-content hidden pb-5 pt-2" data-content="2">
                 <p class="text-slate-600 leading-relaxed">
-                  Check-in time is at 2:00 PM and check-out time is at 12:00 NN. Early check-in or late check-out may be available upon request, subject to availability and may incur additional charges.
+                  Check-in time is at 2:00 PM and check-out time is at 12:00 NN. Early check-in or late check-out may be
+                  available upon request, subject to availability and may incur additional charges.
                 </p>
               </div>
             </div>
 
             <!-- FAQ 3 -->
             <div class="faq-item">
-              <button class="faq-button w-full flex items-center justify-between py-5 text-left transition-colors duration-200 border-b border-slate-200"
+              <button
+                class="faq-button w-full flex items-center justify-between py-5 text-left transition-colors duration-200 border-b border-slate-200"
                 data-faq="3">
                 <span class="font-semibold text-slate-900 pr-4">Is parking available at the guest house?</span>
-                <div class="faq-icon-wrapper flex-shrink-0 w-7 h-7 rounded-full bg-[#1D2D20] flex items-center justify-center transition-transform duration-200">
-                  <svg class="faq-icon w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-icon-type="minus">
+                <div
+                  class="faq-icon-wrapper flex-shrink-0 w-7 h-7 rounded-full bg-[#1D2D20] flex items-center justify-center transition-transform duration-200">
+                  <svg class="faq-icon w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    data-icon-type="minus">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                   </svg>
-                  <svg class="faq-icon-plus w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-icon-type="plus">
+                  <svg class="faq-icon-plus w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    data-icon-type="plus">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
               </button>
               <div class="faq-content hidden pb-5 pt-2" data-content="3">
                 <p class="text-slate-600 leading-relaxed">
-                  Yes, parking is available at Watugangga Riverside Guest House. We provide complimentary parking for our guests. Please inform us in advance if you will be bringing a vehicle.
+                  Yes, parking is available at Gita Car Rental. We provide complimentary parking for our guests. Please
+                  inform us in advance if you will be bringing a vehicle.
                 </p>
               </div>
             </div>
@@ -364,62 +382,62 @@ mount(function () {
         </h2>
         <p class="text-sm md:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed" data-aos="fade-up"
           data-aos-duration="800" data-aos-delay="100">
-          Hear from our guests about their experiences at Watugangga Riverside Guest House.
+          Hear from our guests about their experiences at Gita Car Rental.
         </p>
       </div>
 
       @php
-      $testimonials = \App\Models\Review::where('tampil_home', true)
-      ->orderByDesc('created_at')
-      ->limit(8)
-      ->get();
+        $testimonials = \App\Models\Review::where('tampil_home', true)
+          ->orderByDesc('created_at')
+          ->limit(8)
+          ->get();
       @endphp
 
       @if ($testimonials->isEmpty())
-      <div class="text-center text-slate-600">
-        No reviews have been posted yet.
-      </div>
-      @else
-      <!-- Testimonial Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        @foreach($testimonials as $index => $testimonial)
-        @php
-        $initials = collect(explode(' ', trim($testimonial->reviewer_name)))
-        ->filter()
-        ->map(fn($part) => strtoupper(substr($part, 0, 1)))
-        ->take(2)
-        ->implode('');
-        @endphp
-        <div class="reveal bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
-          data-aos="fade-up" data-aos-duration="800" data-aos-delay="{{ 200 + ($index * 100) }}">
-          <!-- Profile Section -->
-          <div class="flex items-center gap-3 mb-4">
-            <div
-              class="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center text-sm font-semibold border-2 border-slate-100">
-              {{ $initials ?: 'GU' }}
-            </div>
-            <div>
-              <h4 class="font-bold text-slate-900 text-base">{{ $testimonial->reviewer_name }}</h4>
-              @if($testimonial->reviewer_location)
-              <p class="text-sm text-slate-500">{{ $testimonial->reviewer_location }}</p>
-              @endif
-            </div>
-          </div>
-
-          <!-- Rating Stars -->
-          <div class="mb-4 flex gap-1">
-            @for($i = 0; $i < $testimonial->rating; $i++)
-              <i class="fas fa-star text-black text-sm"></i>
-              @endfor
-          </div>
-
-          <!-- Testimonial Text -->
-          <blockquote class="text-slate-700 text-sm leading-relaxed">
-            "{{ $testimonial->ulasan }}"
-          </blockquote>
+        <div class="text-center text-slate-600">
+          No reviews have been posted yet.
         </div>
-        @endforeach
-      </div>
+      @else
+        <!-- Testimonial Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          @foreach($testimonials as $index => $testimonial)
+            @php
+              $initials = collect(explode(' ', trim($testimonial->reviewer_name)))
+                ->filter()
+                ->map(fn($part) => strtoupper(substr($part, 0, 1)))
+                ->take(2)
+                ->implode('');
+            @endphp
+            <div class="reveal bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+              data-aos="fade-up" data-aos-duration="800" data-aos-delay="{{ 200 + ($index * 100) }}">
+              <!-- Profile Section -->
+              <div class="flex items-center gap-3 mb-4">
+                <div
+                  class="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center text-sm font-semibold border-2 border-slate-100">
+                  {{ $initials ?: 'GU' }}
+                </div>
+                <div>
+                  <h4 class="font-bold text-slate-900 text-base">{{ $testimonial->reviewer_name }}</h4>
+                  @if($testimonial->reviewer_location)
+                    <p class="text-sm text-slate-500">{{ $testimonial->reviewer_location }}</p>
+                  @endif
+                </div>
+              </div>
+
+              <!-- Rating Stars -->
+              <div class="mb-4 flex gap-1">
+                @for($i = 0; $i < $testimonial->rating; $i++)
+                  <i class="fas fa-star text-black text-sm"></i>
+                @endfor
+              </div>
+
+              <!-- Testimonial Text -->
+              <blockquote class="text-slate-700 text-sm leading-relaxed">
+                "{{ $testimonial->ulasan }}"
+              </blockquote>
+            </div>
+          @endforeach
+        </div>
       @endif
     </div>
   </section>
@@ -453,7 +471,7 @@ mount(function () {
             <!-- Title -->
             <h2 class="text-1xl md:text-2xl font-bold text-slate-900 mb-6"
               style="font-family: 'Playfair Display', 'Cormorant Garamond', serif; font-weight: 700;">
-              Watugangga Riverside Guest House Location
+              Gita Car Rental Location
             </h2>
 
             <!-- Address -->
@@ -508,20 +526,19 @@ mount(function () {
   </section>
 
   <!-- Floating WhatsApp Button -->
-  <a href="https://wa.me/6287862173133" 
-     target="_blank" 
-     rel="noopener noreferrer"
-     class="fixed bottom-[50px] right-[75px] z-50 w-14 h-14 bg-[#25D366] hover:bg-[#20BA5A] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 group"
-     aria-label="Contact us on WhatsApp">
+  <a href="https://wa.me/6287862173133" target="_blank" rel="noopener noreferrer"
+    class="fixed bottom-[50px] right-[75px] z-50 w-14 h-14 bg-[#25D366] hover:bg-[#20BA5A] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 group"
+    aria-label="Contact us on WhatsApp">
     <i class="fab fa-whatsapp text-white text-2xl"></i>
-    <span class="absolute -top-12 right-0 bg-gray-900 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+    <span
+      class="absolute -top-12 right-0 bg-gray-900 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
       Chat with us
     </span>
   </a>
 </div>
 
 <script>
-  (function() {
+  (function () {
     const ready = (cb) => (document.readyState === 'loading') ?
       document.addEventListener('DOMContentLoaded', cb) :
       cb();

@@ -1,225 +1,94 @@
-<?php
-
-use App\Models\User;
-use Spatie\Permission\Models\Role;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rules;
-use Livewire\Attributes\Layout;
-use Livewire\Volt\Component;
-use function Livewire\Volt\mount;
-
-new #[Layout('components.layouts.auth')] class extends Component {
-    public string $name = '';
-    public string $email = '';
-    public string $password = '';
-    public string $password_confirmation = '';
-
-    // Data diri pelanggan pada user
-    public string $telepon = '';
-
-    /**
-     * Mount the component and save intended URL if provided.
-     */
-    public function mount(): void
-    {
-        if (request()->has('intended')) {
-            $intendedUrl = request()->get('intended');
-            if ($intendedUrl) {
-                Session::put('url.intended', $intendedUrl);
-            }
-        }
-    }
-
-    /**
-     * Handle an incoming registration request.
-     */
-    public function register(): void
-    {
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'telepon' => ['required', 'string', 'max:15', 'unique:users,telepon'],
-        ], [
-            'name.required' => 'All fields are required',
-            'email.required' => 'All fields are required',
-            'email.email' => 'All fields are required',
-            'email.unique' => 'Email sudah digunakan',
-            'password.required' => 'All fields are required',
-            'password.min' => 'Password must be at least 8 characters',
-            'password.confirmed' => 'password doesn\'t match',
-            'telepon.required' => 'All fields are required',
-            'telepon.unique' => 'Nomor telepon sudah digunakan',
-        ]);
-
-        $userData = [
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'telepon' => $validated['telepon'],
-            'role' => 'Pengunjung',
-            'password' => Hash::make($validated['password']),
-        ];
-
-        // Create user first
-        $user = User::create($userData);
-
-        // Assign role "Pengunjung" to new user
-        try {
-            Role::firstOrCreate(['name' => 'Pengunjung', 'guard_name' => 'web']);
-            $user->assignRole('Pengunjung');
-        } catch (\Throwable $e) {
-            // fallback: role sudah tersimpan di kolom users.role
-        }
-
-        event(new Registered($user));
-
-        // Log the user in immediately
-        Auth::login($user);
-        
-        // Regenerate the session to ensure security
-        Session::regenerate();
-        
-        // Use native redirect to ensure the navigation state is properly updated
-        // The navigate:false parameter ensures a full page load which refreshes all components
-        $this->redirectIntended(route('redirect.role', absolute: false), navigate: false);
-    }
-}; ?>
-
-<div class="space-y-6">
-    <!-- Session Status -->
-    <x-auth-session-status class="text-center" :status="session('status')" />
-
-    <!-- Alert Messages -->
-    <x-alert />
-
-    <form wire:submit.prevent="register" class="space-y-6">
-        <!-- Name field -->
-        <div class="space-y-1">
-            <label for="name" class="block text-sm font-medium text-slate-700">
-                {{ __('Name') }}
-            </label>
-            <input
-                wire:model.live="name"
-                type="text"
-                id="name"
-                name="name"
-                autocomplete="name"
-                required
-                autofocus
-                placeholder="{{ __('Full name') }}"
-                class="mt-1 w-full rounded-lg border @error('name') border-red-500 @else border-slate-200 @enderror bg-white text-slate-800 placeholder-slate-400
-                       focus:outline-none focus:ring-2 focus:ring-[#133E87]/30 focus:border-[#133E87] px-3 py-2.5"
-            />
-            @error('name')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+<x-layouts::auth>
+    <div class="flex flex-col w-full">
+        <!-- Header -->
+        <div class="mb-6 flex flex-col gap-2 relative">
+            <a href="{{ route('login') }}" wire:navigate
+                class="absolute -top-10 -left-2 p-2 hover:bg-gray-100 rounded-full transition-colors text-textDark">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+            </a>
+            <h1 class="text-[32px] font-bold text-textDark mb-0 mt-4">{{ __('Create account') }}</h1>
+            <div class="text-[15px] font-medium text-textGray flex items-center gap-1">
+                <span>{{ __('Already have an account?') }}</span>
+                <flux:link :href="route('login')" wire:navigate
+                    class="text-primary font-semibold hover:text-primaryDark !no-underline">{{ __('sign in') }}
+                </flux:link>
+            </div>
         </div>
 
-        <!-- Email field -->
-        <div class="space-y-1">
-            <label for="email" class="block text-sm font-medium text-slate-700">
-                {{ __('Email address') }}
-            </label>
-            <input
-                wire:model.live="email"
-                type="email"
-                id="email"
-                name="email"
-                autocomplete="email"
-                required
-                placeholder="email@example.com"
-                class="mt-1 w-full rounded-lg border @error('email') border-red-500 @else border-slate-200 @enderror bg-white text-slate-800 placeholder-slate-400
-                       focus:outline-none focus:ring-2 focus:ring-[#133E87]/30 focus:border-[#133E87] px-3 py-2.5"
-            />
-            @error('email')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
+        <!-- Session Status -->
+        <x-auth-session-status class="mb-4" :status="session('status')" />
 
-        <!-- Password field -->
-        <div class="space-y-1">
-            <label for="password" class="block text-sm font-medium text-slate-700">
-                {{ __('Password') }}
-            </label>
-            <input
-                wire:model.live="password"
-                type="password"
-                id="password"
-                name="password"
-                autocomplete="new-password"
-                required
-                placeholder="••••••••"
-                class="mt-1 w-full rounded-lg border @error('password') border-red-500 @else border-slate-200 @enderror bg-white text-slate-800 placeholder-slate-400
-                       focus:outline-none focus:ring-2 focus:ring-[#133E87]/30 focus:border-[#133E87] px-3 py-2.5"
-            />
-            @error('password')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
+        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6 w-full">
+            @csrf
+            <!-- Name -->
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5 text-textGray">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                </div>
+                <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
+                    autocomplete="name" placeholder="Name"
+                    class="w-full rounded-2xl border border-inputBorder bg-white pl-12 pr-5 py-4 text-[15px] font-medium text-textDark placeholder:text-textGray focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm" />
+            </div>
 
-        <!-- Confirm Password field -->
-        <div class="space-y-1">
-            <label for="password_confirmation" class="block text-sm font-medium text-slate-700">
-                {{ __('Confirm password') }}
-            </label>
-            <input
-                wire:model.live="password_confirmation"
-                type="password"
-                id="password_confirmation"
-                name="password_confirmation"
-                autocomplete="new-password"
-                required
-                placeholder="••••••••"
-                class="mt-1 w-full rounded-lg border @error('password_confirmation') border-red-500 @else border-slate-200 @enderror bg-white text-slate-800 placeholder-slate-400
-                       focus:outline-none focus:ring-2 focus:ring-[#133E87]/30 focus:border-[#133E87] px-3 py-2.5"
-            />
-            @error('password_confirmation')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
+            <!-- Email Address/Phone -->
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5 text-textGray">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                    </svg>
+                </div>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email"
+                    placeholder="Email or phone"
+                    class="w-full rounded-2xl border border-inputBorder bg-white pl-12 pr-5 py-4 text-[15px] font-medium text-textDark placeholder:text-textGray focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm" />
+            </div>
 
-        <!-- Phone Number field -->
-        <div class="space-y-1">
-            <label for="telepon" class="block text-sm font-medium text-slate-700">
-                {{ __('Phone Number') }}
-            </label>
-            <input
-                wire:model.live="telepon"
-                type="tel"
-                id="telepon"
-                name="telepon"
-                autocomplete="tel"
-                required
-                placeholder="{{ __('08123456789') }}"
-                class="mt-1 w-full rounded-lg border @error('telepon') border-red-500 @else border-slate-200 @enderror bg-white text-slate-800 placeholder-slate-400
-                       focus:outline-none focus:ring-2 focus:ring-[#133E87]/30 focus:border-[#133E87] px-3 py-2.5"
-            />
-            @error('telepon')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
+            <!-- Password -->
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5 text-textGray">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    </svg>
+                </div>
+                <input id="password" type="password" name="password" required autocomplete="new-password"
+                    placeholder="Password"
+                    class="w-full rounded-2xl border border-inputBorder bg-white pl-12 pr-5 py-4 text-[15px] font-medium text-textDark placeholder:text-textGray focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm" />
+            </div>
 
-        <!-- Register Button -->
-        <button
-            type="submit"
-            class="w-full rounded-lg bg-[#1D2D20] hover:bg-[#17251A] text-[#FBFAF6] font-medium py-2.5
-                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1D2D20]">
-            {{ __('Create account') }}
-        </button>
-    </form>
+            <!-- Confirm Password -->
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5 text-textGray">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    </svg>
+                </div>
+                <input id="password_confirmation" type="password" name="password_confirmation" required
+                    autocomplete="new-password" placeholder="Confirm Password"
+                    class="w-full rounded-2xl border border-inputBorder bg-white pl-12 pr-5 py-4 text-[15px] font-medium text-textDark placeholder:text-textGray focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm" />
+            </div>
 
-    @if (Route::has('login'))
-    <div class="text-center text-sm text-slate-500">
-        <span>{{ __('Already have an account?') }}</span>
-        <a href="{{ route('login') }}"
-           wire:navigate
-           class="text-[#133E87] hover:underline ml-1">
-            {{ __('Log in') }}
-        </a>
+            <div class="flex items-center justify-end mt-4">
+                <button type="submit"
+                    class="bg-primary hover:bg-primaryDark text-white font-semibold rounded-2xl px-6 py-3 flex items-center justify-center gap-2 transition-transform hover:-translate-y-0.5 shadow-md shadow-primary/20">
+                    {{ __('Sign up') }}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </button>
+            </div>
+        </form>
     </div>
-    @endif
-</div>
+</x-layouts::auth>
