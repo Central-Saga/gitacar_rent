@@ -24,4 +24,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Volt::route('/roles', 'pages.admin.roles.index')->name('roles.index');
     Volt::route('/roles/create', 'pages.admin.roles.create')->name('roles.create');
     Volt::route('/roles/{role}/edit', 'pages.admin.roles.edit')->name('roles.edit');
+
+    // Pelanggans Management
+    Volt::route('/pelanggan', 'pages.admin.pelanggan.index')->name('pelanggans.index');
+    Volt::route('/pelanggan/create', 'pages.admin.pelanggan.create')->name('pelanggans.create');
+    Volt::route('/pelanggan/{pelanggan}/edit', 'pages.admin.pelanggan.edit')->name('pelanggans.edit');
 });

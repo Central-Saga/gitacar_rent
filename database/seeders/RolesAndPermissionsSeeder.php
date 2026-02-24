@@ -20,7 +20,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $permissions = [
             'kelola_user',
             'kelola_pelanggan',
-            'kelola_master_data',
+            'kelola_kendaraan',
             'kelola_pemesanan',
             'kelola_diskon',
             'kelola_status_pembayaran',

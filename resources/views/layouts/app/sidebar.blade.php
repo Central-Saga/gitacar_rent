@@ -34,6 +34,12 @@
                     wire:navigate>
                     {{ __('Roles') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="users" :href="route('admin.pelanggans.index')"
+                    :current="request()->routeIs('admin.pelanggans.*')"
+                    class="text-zinc-600 hover:text-primary hover:bg-primary/5 data-[current]:bg-primary data-[current]:text-white transition-colors duration-200 rounded-lg mx-2"
+                    wire:navigate>
+                    {{ __('Pelanggan') }}
+                </flux:sidebar.item>
             </flux:sidebar.group>
         </flux:sidebar.nav>
 
