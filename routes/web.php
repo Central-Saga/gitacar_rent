@@ -29,4 +29,14 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Volt::route('/pelanggan', 'pages.admin.pelanggan.index')->name('pelanggans.index');
     Volt::route('/pelanggan/create', 'pages.admin.pelanggan.create')->name('pelanggans.create');
     Volt::route('/pelanggan/{pelanggan}/edit', 'pages.admin.pelanggan.edit')->name('pelanggans.edit');
+
+    // Kendaraan Management
+    Volt::route('/kendaraan', 'pages.admin.kendaraan.index')->name('kendaraan.index');
+    Volt::route('/kendaraan/create', 'pages.admin.kendaraan.create')->name('kendaraan.create');
+    Volt::route('/kendaraan/{kendaraan}/edit', 'pages.admin.kendaraan.edit')->name('kendaraan.edit');
+
+    // Kendaraan Unit Management
+    Volt::route('/kendaraan-units', 'pages.admin.kendaraan-unit.index')->name('kendaraan-units.index');
+    Volt::route('/kendaraan-units/create', 'pages.admin.kendaraan-unit.create')->name('kendaraan-units.create');
+    Volt::route('/kendaraan-units/{kendaraanUnit}/edit', 'pages.admin.kendaraan-unit.edit')->name('kendaraan-units.edit');
 });

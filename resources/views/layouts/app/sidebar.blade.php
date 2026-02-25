@@ -41,6 +41,21 @@
                     {{ __('Pelanggan') }}
                 </flux:sidebar.item>
             </flux:sidebar.group>
+
+            <flux:sidebar.group :heading="__('Manajemen Armada')" class="grid mt-4">
+                <flux:sidebar.item icon="truck" :href="route('admin.kendaraan.index')"
+                    :current="request()->routeIs('admin.kendaraan.*')"
+                    class="text-zinc-600 hover:text-primary hover:bg-primary/5 data-[current]:bg-primary data-[current]:text-white transition-colors duration-200 rounded-lg mx-2"
+                    wire:navigate>
+                    {{ __('Kendaraan') }}
+                </flux:sidebar.item>
+                <flux:sidebar.item icon="key" :href="route('admin.kendaraan-units.index')"
+                    :current="request()->routeIs('admin.kendaraan-units.*')"
+                    class="text-zinc-600 hover:text-primary hover:bg-primary/5 data-[current]:bg-primary data-[current]:text-white transition-colors duration-200 rounded-lg mx-2"
+                    wire:navigate>
+                    {{ __('Unit Kendaraan') }}
+                </flux:sidebar.item>
+            </flux:sidebar.group>
         </flux:sidebar.nav>
 
         <flux:spacer />
@@ -95,6 +110,47 @@
     {{ $slot }}
 
     @fluxScripts
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('swal:confirm', (data) => {
+                const payload = Array.isArray(data) ? data[0] : data;
+                Swal.fire({
+                    title: payload.title,
+                    text: payload.text,
+                    icon: payload.icon,
+                    showCancelButton: true,
+                    confirmButtonColor: '#10b981', // green / primary
+                    cancelButtonColor: '#ef4444', // red
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch(payload.method, { id: payload.id });
+                    }
+                });
+            });
+
+            Livewire.on('swal:toast', (data) => {
+                const payload = Array.isArray(data) ? data[0] : data;
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: payload.icon,
+                    title: payload.title
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
