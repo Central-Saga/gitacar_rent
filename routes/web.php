@@ -16,27 +16,40 @@ require __DIR__ . '/settings.php';
 // Admin Routes (User & Role Management)
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     // Users Management
-    Volt::route('/users', 'pages.admin.users.index')->name('users.index');
-    Volt::route('/users/create', 'pages.admin.users.create')->name('users.create');
-    Volt::route('/users/{user}/edit', 'pages.admin.users.edit')->name('users.edit');
+    Route::middleware('can:kelola_user')->group(function () {
+        Volt::route('/users', 'pages.admin.users.index')->name('users.index');
+        Volt::route('/users/create', 'pages.admin.users.create')->name('users.create');
+        Volt::route('/users/{user}/edit', 'pages.admin.users.edit')->name('users.edit');
 
-    // Roles Management
-    Volt::route('/roles', 'pages.admin.roles.index')->name('roles.index');
-    Volt::route('/roles/create', 'pages.admin.roles.create')->name('roles.create');
-    Volt::route('/roles/{role}/edit', 'pages.admin.roles.edit')->name('roles.edit');
+        // Roles Management
+        Volt::route('/roles', 'pages.admin.roles.index')->name('roles.index');
+        Volt::route('/roles/create', 'pages.admin.roles.create')->name('roles.create');
+        Volt::route('/roles/{role}/edit', 'pages.admin.roles.edit')->name('roles.edit');
+    });
 
     // Pelanggans Management
-    Volt::route('/pelanggan', 'pages.admin.pelanggan.index')->name('pelanggans.index');
-    Volt::route('/pelanggan/create', 'pages.admin.pelanggan.create')->name('pelanggans.create');
-    Volt::route('/pelanggan/{pelanggan}/edit', 'pages.admin.pelanggan.edit')->name('pelanggans.edit');
+    Route::middleware('can:kelola_pelanggan')->group(function () {
+        Volt::route('/pelanggan', 'pages.admin.pelanggan.index')->name('pelanggans.index');
+        Volt::route('/pelanggan/create', 'pages.admin.pelanggan.create')->name('pelanggans.create');
+        Volt::route('/pelanggan/{pelanggan}/edit', 'pages.admin.pelanggan.edit')->name('pelanggans.edit');
+    });
 
     // Kendaraan Management
-    Volt::route('/kendaraan', 'pages.admin.kendaraan.index')->name('kendaraan.index');
-    Volt::route('/kendaraan/create', 'pages.admin.kendaraan.create')->name('kendaraan.create');
-    Volt::route('/kendaraan/{kendaraan}/edit', 'pages.admin.kendaraan.edit')->name('kendaraan.edit');
+    Route::middleware('can:kelola_kendaraan')->group(function () {
+        Volt::route('/kendaraan', 'pages.admin.kendaraan.index')->name('kendaraan.index');
+        Volt::route('/kendaraan/create', 'pages.admin.kendaraan.create')->name('kendaraan.create');
+        Volt::route('/kendaraan/{kendaraan}/edit', 'pages.admin.kendaraan.edit')->name('kendaraan.edit');
 
-    // Kendaraan Unit Management
-    Volt::route('/kendaraan-units', 'pages.admin.kendaraan-unit.index')->name('kendaraan-units.index');
-    Volt::route('/kendaraan-units/create', 'pages.admin.kendaraan-unit.create')->name('kendaraan-units.create');
-    Volt::route('/kendaraan-units/{kendaraanUnit}/edit', 'pages.admin.kendaraan-unit.edit')->name('kendaraan-units.edit');
+        // Kendaraan Unit routes
+        Volt::route('kendaraan-units', 'pages.admin.kendaraan-unit.index')->name('kendaraan-units.index');
+        Volt::route('kendaraan-units/create', 'pages.admin.kendaraan-unit.create')->name('kendaraan-units.create');
+        Volt::route('kendaraan-units/{kendaraanUnit}/edit', 'pages.admin.kendaraan-unit.edit')->name('kendaraan-units.edit');
+    });
+
+    // Pemesanan routes
+    Route::middleware('can:kelola_pemesanan')->group(function () {
+        Volt::route('pemesanan', 'pages.admin.pemesanan.index')->name('pemesanan.index');
+        Volt::route('pemesanan/create', 'pages.admin.pemesanan.create')->name('pemesanan.create');
+        Volt::route('pemesanan/{pemesanan}', 'pages.admin.pemesanan.show')->name('pemesanan.show');
+    });
 });

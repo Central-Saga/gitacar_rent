@@ -23,7 +23,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'kelola_kendaraan',
             'kelola_pemesanan',
             'kelola_diskon',
-            'kelola_status_pembayaran',
             'keterlambatan_pengembalian',
             'mencetak_laporan',
             'mengecek_ketersediaan_kendaraan',

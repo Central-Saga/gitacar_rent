@@ -21,4 +21,9 @@ class KendaraanUnit extends Model
     {
         return $this->belongsTo(Kendaraan::class);
     }
+
+    public function pemesanans()
+    {
+        return $this->hasMany(Pemesanan::class);
+    }
 }

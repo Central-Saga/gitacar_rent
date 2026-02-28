@@ -107,13 +107,20 @@ $save = function() {
                                     <label for="kendaraan_id" class="block text-sm font-medium text-gray-700 mb-2">
                                         Pilih Kendaraan <span class="text-red-500">*</span>
                                     </label>
-                                    <select wire:model="kendaraan_id" id="kendaraan_id"
-                                        class="block w-full px-4 py-3 border border-inputBorder rounded-xl bg-white text-textDark focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm @error('kendaraan_id') border-red-500 @endif">
-                                        <option value="">-- Pilih Kendaraan Master --</option>
-                                        @foreach($kendaraanList as $k)
-                                            <option value="{{ $k->id }}">{{ $k->nama_kendaraan }} ({{ ucfirst($k->jenis_kendaraan) }})</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="relative">
+                                        <select wire:model="kendaraan_id" id="kendaraan_id"
+                                            class="block w-full px-4 py-3 pr-10 appearance-none border border-inputBorder rounded-xl bg-white text-textDark focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm cursor-pointer @error('kendaraan_id') border-red-500 @endif">
+                                            <option value="">-- Pilih Kendaraan Master --</option>
+                                            @foreach($kendaraanList as $k)
+                                                <option value="{{ $k->id }}">{{ $k->nama_kendaraan }} ({{ ucfirst($k->jenis_kendaraan) }})</option>
+                                            @endforeach
+                                        </select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-textGray">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
                                     @error('kendaraan_id')
                                         <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,13 +167,20 @@ $save = function() {
                                     <label for="status_unit" class="block text-sm font-medium text-gray-700 mb-2">
                                         Status Unit <span class="text-red-500">*</span>
                                     </label>
-                                    <select wire:model="status_unit" id="status_unit"
-                                        class="block w-full px-4 py-3 border border-inputBorder rounded-xl bg-white text-textDark focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm @error('status_unit') border-red-500 @endif">
-                                        <option value="tersedia">Tersedia</option>
-                                        <option value="disewa">Sedang Disewa</option>
-                                        <option value="maintenance">Maintenance</option>
-                                        <option value="nonaktif">Nonaktif</option>
-                                    </select>
+                                    <div class="relative">
+                                        <select wire:model="status_unit" id="status_unit"
+                                            class="block w-full px-4 py-3 pr-10 appearance-none border border-inputBorder rounded-xl bg-white text-textDark focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm cursor-pointer @error('status_unit') border-red-500 @endif">
+                                            <option value="tersedia">Tersedia</option>
+                                            <option value="disewa">Sedang Disewa</option>
+                                            <option value="maintenance">Maintenance</option>
+                                            <option value="nonaktif">Nonaktif</option>
+                                        </select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-textGray">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
                                     @error('status_unit')
                                         <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

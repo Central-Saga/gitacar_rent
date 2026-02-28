@@ -132,11 +132,18 @@ $save = function() {
                                     <label for="jenis_kendaraan" class="block text-sm font-medium text-gray-700 mb-2">
                                         Jenis Kendaraan <span class="text-red-500">*</span>
                                     </label>
-                                    <select wire:model="jenis_kendaraan" id="jenis_kendaraan"
-                                        class="block w-full px-4 py-3 border border-inputBorder rounded-xl bg-white text-textDark focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm @error('jenis_kendaraan') border-red-500 @endif">
-                                        <option value="mobil">Mobil</option>
-                                        <option value="motor">Motor</option>
-                                    </select>
+                                    <div class="relative">
+                                        <select wire:model="jenis_kendaraan" id="jenis_kendaraan"
+                                            class="block w-full px-4 py-3 pr-10 appearance-none border border-inputBorder rounded-xl bg-white text-textDark focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm cursor-pointer @error('jenis_kendaraan') border-red-500 @endif">
+                                            <option value="mobil">Mobil</option>
+                                            <option value="motor">Motor</option>
+                                        </select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-textGray">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
                                     @error('jenis_kendaraan')
                                         <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

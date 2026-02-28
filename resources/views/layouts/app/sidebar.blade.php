@@ -21,6 +21,7 @@
                 </flux:sidebar.item>
             </flux:sidebar.group>
 
+            @can('kelola_user')
             <flux:sidebar.group :heading="__('User Management')" class="grid mt-4">
                 <flux:sidebar.item icon="users" :href="route('admin.users.index')"
                     :current="request()->routeIs('admin.users.*')"
@@ -34,6 +35,11 @@
                     wire:navigate>
                     {{ __('Roles') }}
                 </flux:sidebar.item>
+            </flux:sidebar.group>
+            @endcan
+
+            @can('kelola_pelanggan')
+            <flux:sidebar.group :heading="__('Manajemen Pelanggan')" class="grid mt-4">
                 <flux:sidebar.item icon="users" :href="route('admin.pelanggans.index')"
                     :current="request()->routeIs('admin.pelanggans.*')"
                     class="text-zinc-600 hover:text-primary hover:bg-primary/5 data-[current]:bg-primary data-[current]:text-white transition-colors duration-200 rounded-lg mx-2"
@@ -41,7 +47,9 @@
                     {{ __('Pelanggan') }}
                 </flux:sidebar.item>
             </flux:sidebar.group>
+            @endcan
 
+            @can('kelola_kendaraan')
             <flux:sidebar.group :heading="__('Manajemen Armada')" class="grid mt-4">
                 <flux:sidebar.item icon="truck" :href="route('admin.kendaraan.index')"
                     :current="request()->routeIs('admin.kendaraan.*')"
@@ -56,6 +64,18 @@
                     {{ __('Unit Kendaraan') }}
                 </flux:sidebar.item>
             </flux:sidebar.group>
+            @endcan
+
+            @can('kelola_pemesanan')
+            <flux:sidebar.group :heading="__('Manajemen Pemesanan')" class="grid mt-4">
+                <flux:sidebar.item icon="clipboard-document-list" :href="route('admin.pemesanan.index')"
+                    :current="request()->routeIs('admin.pemesanan.*')"
+                    class="text-zinc-600 hover:text-primary hover:bg-primary/5 data-[current]:bg-primary data-[current]:text-white transition-colors duration-200 rounded-lg mx-2"
+                    wire:navigate>
+                    {{ __('Data Pemesanan') }}
+                </flux:sidebar.item>
+            </flux:sidebar.group>
+            @endcan
         </flux:sidebar.nav>
 
         <flux:spacer />
