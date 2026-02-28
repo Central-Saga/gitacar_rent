@@ -14,17 +14,24 @@ class Pemesanan extends Model implements HasMedia
     protected $fillable = [
         'pelanggan_id',
         'kendaraan_unit_id',
-        'tanggal_mulai',
-        'tanggal_selesai',
+        'promo_id',
+        'waktu_mulai',
+        'waktu_selesai',
+        'waktu_kembali',
         'harga_per_hari',
+        'total_diskon',
         'total_harga',
+        'denda_per_hari',
+        'hari_terlambat',
+        'denda',
         'status_pemesanan',
         'catatan',
     ];
 
     protected $casts = [
-        'tanggal_mulai' => 'date',
-        'tanggal_selesai' => 'date',
+        'waktu_mulai' => 'datetime',
+        'waktu_selesai' => 'datetime',
+        'waktu_kembali' => 'datetime',
     ];
 
     public function pelanggan()
@@ -35,6 +42,11 @@ class Pemesanan extends Model implements HasMedia
     public function kendaraanUnit()
     {
         return $this->belongsTo(KendaraanUnit::class);
+    }
+
+    public function promo()
+    {
+        return $this->belongsTo(Promo::class);
     }
 
     public function registerMediaCollections(): void

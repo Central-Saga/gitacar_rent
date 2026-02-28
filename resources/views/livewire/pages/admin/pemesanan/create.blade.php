@@ -4,7 +4,9 @@ use function Livewire\Volt\{layout, title, state, with, rules, uses};
 use App\Models\Pemesanan;
 use App\Models\Pelanggan;
 use App\Models\KendaraanUnit;
+use App\Models\Promo;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Livewire\WithFileUploads;
 
 layout('layouts.app');
@@ -15,8 +17,8 @@ uses(WithFileUploads::class);
 state([
     'pelanggan_id' => '',
     'kendaraan_unit_id' => '',
-    'tanggal_mulai' => '',
-    'tanggal_selesai' => '',
+    'waktu_mulai' => '',
+    'waktu_selesai' => '',
     'status_pemesanan' => 'menunggu_konfirmasi',
     'catatan' => '',
     'bukti_pembayaran' => null,
@@ -25,29 +27,37 @@ state([
     'harga_per_hari' => 0,
     'total_harga' => 0,
     'durasi' => 0,
+
+    // Promo
+    'input_kode_promo' => '',
+    'promo_id' => null,
+    'total_diskon' => 0,
+    'promo_applied_message' => '',
+    'promo_error_message' => '',
 ]);
 
 rules([
     'pelanggan_id' => 'required|exists:pelanggans,id',
     'kendaraan_unit_id' => 'required|exists:kendaraan_units,id',
-    'tanggal_mulai' => 'required|date|after_or_equal:today',
-    'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+    'waktu_mulai' => 'required|date',
+    'waktu_selesai' => 'required|date|after:waktu_mulai',
     'status_pemesanan' => 'required|in:menunggu_konfirmasi,disetujui,ditolak,selesai,dibatalkan',
     'catatan' => 'nullable|string',
     'bukti_pembayaran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
 ]);
 
 with(function () {
-    // Only fetch available units or units currently in maintenance/booked but might be available later
-    // For simplicity, we just list all, but in real world we'd filter by date overlap
     return [
         'pelanggans' => Pelanggan::orderBy('nama')->get(),
-        'kendaraanUnits' => KendaraanUnit::with('kendaraan')->orderBy('nomor_plat')->get(),
+        'kendaraanUnits' => KendaraanUnit::with('kendaraan')
+            ->where('status_unit', 'tersedia')
+            ->orderBy('nomor_plat')
+            ->get(),
     ];
 });
 
 $calculatePricing = function () {
-    if (!$this->kendaraan_unit_id || !$this->tanggal_mulai || !$this->tanggal_selesai) {
+    if (!$this->kendaraan_unit_id || !$this->waktu_mulai || !$this->waktu_selesai) {
         $this->harga_per_hari = 0;
         $this->total_harga = 0;
         $this->durasi = 0;
@@ -55,8 +65,8 @@ $calculatePricing = function () {
     }
 
     try {
-        $start = \Carbon\Carbon::parse($this->tanggal_mulai);
-        $end = \Carbon\Carbon::parse($this->tanggal_selesai);
+        $start = Carbon::parse($this->waktu_mulai);
+        $end = Carbon::parse($this->waktu_selesai);
 
         if ($end->isBefore($start)) {
             return;
@@ -64,9 +74,29 @@ $calculatePricing = function () {
 
         $unit = KendaraanUnit::with('kendaraan')->find($this->kendaraan_unit_id);
         if ($unit && $unit->kendaraan) {
-            $this->durasi = $start->diffInDays($end) + 1;
+            // Durasi dihitung per 24 jam, minimum 1 hari
+            $diffHours = $start->diffInHours($end);
+            $this->durasi = max(1, (int) ceil($diffHours / 24));
             $this->harga_per_hari = $unit->kendaraan->harga_sewa_per_hari;
-            $this->total_harga = $this->harga_per_hari * $this->durasi;
+            $totalHargaAwal = $this->harga_per_hari * $this->durasi;
+
+            // Terapkan diskon jika ada promo yang valid
+            if ($this->promo_id) {
+                $promo = Promo::find($this->promo_id);
+                if ($promo && $promo->isValid()) {
+                    $diskon = ($totalHargaAwal * $promo->diskon_persen) / 100;
+                    if ($promo->maksimal_diskon !== null && $diskon > $promo->maksimal_diskon) {
+                        $diskon = $promo->maksimal_diskon;
+                    }
+                    $this->total_diskon = $diskon;
+                } else {
+                    $this->removePromo();
+                }
+            } else {
+                $this->total_diskon = 0;
+            }
+
+            $this->total_harga = $totalHargaAwal - $this->total_diskon;
         }
     } catch (\Exception $e) {
         // parsing error
@@ -77,56 +107,111 @@ $updatedKendaraanUnitId = function () {
     $this->calculatePricing();
 };
 
-$updatedTanggalMulai = function () {
+$updatedWaktuMulai = function () {
     $this->calculatePricing();
 };
 
-$updatedTanggalSelesai = function () {
+$updatedWaktuSelesai = function () {
+    $this->calculatePricing();
+};
+
+$applyPromo = function () {
+    $this->promo_error_message = '';
+    $this->promo_applied_message = '';
+
+    if (empty(trim($this->input_kode_promo))) {
+        return;
+    }
+
+    $promo = Promo::where('kode_promo', strtoupper(trim($this->input_kode_promo)))->first();
+
+    if (!$promo) {
+        $this->promo_error_message = 'Kode promo tidak ditemukan.';
+        return;
+    }
+
+    if (!$promo->isValid()) {
+        $this->promo_error_message = 'Kode promo tidak aktif, kadaluarsa, atau kuota habis.';
+        return;
+    }
+
+    $this->promo_id = $promo->id;
+    $this->promo_applied_message = "Promo {$promo->diskon_persen}% berhasil digunakan!";
+
+    // Re-kalkulasi harga agar total_diskon dan total_harga terupdate
+    $this->calculatePricing();
+};
+
+$removePromo = function () {
+    $this->promo_id = null;
+    $this->input_kode_promo = '';
+    $this->total_diskon = 0;
+    $this->promo_applied_message = '';
+    $this->promo_error_message = '';
+
     $this->calculatePricing();
 };
 
 $save = function () {
     $validated = $this->validate();
 
-    // Check availability logic
-    $isConflict = Pemesanan::where('kendaraan_unit_id', $this->kendaraan_unit_id)
-        ->whereIn('status_pemesanan', ['menunggu_konfirmasi', 'disetujui'])
-        ->where(function ($q) {
-            $q->whereBetween('tanggal_mulai', [$this->tanggal_mulai, $this->tanggal_selesai])
-                ->orWhereBetween('tanggal_selesai', [$this->tanggal_mulai, $this->tanggal_selesai])
-                ->orWhere(function ($q2) {
-                    $q2->where('tanggal_mulai', '<=', $this->tanggal_mulai)
-                        ->where('tanggal_selesai', '>=', $this->tanggal_selesai);
-                });
-        })->exists();
-
-    if ($isConflict) {
-        $this->addError('kendaraan_unit_id', 'Unit ini sudah dipesan pada rentang tanggal tersebut.');
-        return;
-    }
-
     // Set prices explicitly from calculated values to prevent manipulation
     $validated['harga_per_hari'] = $this->harga_per_hari;
     $validated['total_harga'] = $this->total_harga;
+    $validated['denda_per_hari'] = $this->harga_per_hari; // snapshot denda = harga per hari
+    $validated['promo_id'] = $this->promo_id;
+    $validated['total_diskon'] = $this->total_diskon;
 
-    $pemesanan = Pemesanan::create($validated);
+    $errorMessage = null;
 
-    if ($this->bukti_pembayaran) {
-        $pemesanan->addMedia($this->bukti_pembayaran->getRealPath())
-            ->usingName($this->bukti_pembayaran->getClientOriginalName())
-            ->toMediaCollection('bukti_pembayaran');
-    }
+    try {
+        DB::transaction(function () use ($validated, &$errorMessage) {
+            // Lock unit row to prevent double booking
+            $unit = KendaraanUnit::where('id', $this->kendaraan_unit_id)
+                ->lockForUpdate()
+                ->first();
 
-    // Update Unit Status if approved directly and starting soon
-    if ($pemesanan->status_pemesanan === 'disetujui') {
-        $today = Carbon::today();
-        $startDate = Carbon::parse($pemesanan->tanggal_mulai);
+            if (!$unit || $unit->status_unit !== 'tersedia') {
+                $errorMessage = 'Unit kendaraan sudah tidak tersedia.';
+                return;
+            }
 
-        if ($startDate->isSameDay($today) || $startDate->isPast() || $startDate->diffInDays($today) <= 1) {
-            $pemesanan->kendaraanUnit->update(['status_unit' => 'disewa']);
-        } else {
-            $pemesanan->kendaraanUnit->update(['status_unit' => 'dibooking']);
+            // Validasi ulang promo & potong kuota jika pakai promo
+            if ($validated['promo_id']) {
+                $promo = Promo::where('id', $validated['promo_id'])->lockForUpdate()->first();
+                if (!$promo || !$promo->isValid()) {
+                    $errorMessage = 'Kode promo mendadak tidak valid atau kuota habis. Silakan hapus kode promo atau gunakan kode lain.';
+                    return;
+                }
+
+                // Set parameter yang akan dimasukkan
+                $promo->increment('kuota_terpakai');
+            }
+
+            $pemesanan = Pemesanan::create($validated);
+
+            if ($this->bukti_pembayaran) {
+                $pemesanan->addMedia($this->bukti_pembayaran->getRealPath())
+                    ->usingName($this->bukti_pembayaran->getClientOriginalName())
+                    ->toMediaCollection('bukti_pembayaran');
+            }
+
+            // Set unit status based on pemesanan status
+            if ($pemesanan->status_pemesanan === 'disetujui') {
+                $unit->update(['status_unit' => 'disewa']);
+            } else {
+                // Default: menunggu_konfirmasi → dibooking
+                $unit->update(['status_unit' => 'dibooking']);
+            }
+        });
+
+        if ($errorMessage) {
+            $this->addError('kendaraan_unit_id', $errorMessage);
+            return;
         }
+    } catch (\Exception $e) {
+        $this->addError('kendaraan_unit_id', 'Terjadi kesalahan sistem: ' . $e->getMessage());
+        return;
     }
 
     $this->dispatch('swal:toast', title: 'Pemesanan berhasil dibuat!', icon: 'success');
@@ -243,7 +328,7 @@ $save = function () {
                                     <div class="relative">
                                         <select wire:model.live="kendaraan_unit_id"
                                             class="block w-full px-4 py-3 pr-10 appearance-none rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all cursor-pointer">
-                                            <option value="">-- Pilih Unit --</option>
+                                            <option value="">-- Pilih Unit (Tersedia) --</option>
                                             @foreach($kendaraanUnits as $u)
                                                 <option value="{{ $u->id }}">{{ $u->nomor_plat }} -
                                                     {{ $u->kendaraan->nama_kendaraan ?? 'Unknown' }} (Rp
@@ -265,39 +350,81 @@ $save = function () {
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-textDark mb-1">Tanggal Mulai
+                                        <label class="block text-sm font-semibold text-textDark mb-1">Waktu Mulai
                                             <span class="text-red-500">*</span></label>
-                                        <input wire:model.live="tanggal_mulai" type="date"
+                                        <input wire:model.live="waktu_mulai" type="datetime-local"
                                             class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all">
-                                        @error('tanggal_mulai') <span
+                                        @error('waktu_mulai') <span
                                             class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-textDark mb-1">Tanggal Selesai
+                                        <label class="block text-sm font-semibold text-textDark mb-1">Waktu Selesai
                                             <span class="text-red-500">*</span></label>
-                                        <input wire:model.live="tanggal_selesai" type="date"
+                                        <input wire:model.live="waktu_selesai" type="datetime-local"
                                             class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all">
-                                        @error('tanggal_selesai') <span
+                                        @error('waktu_selesai') <span
                                             class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
 
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <label class="block text-sm font-semibold text-textDark mb-1">Punya Kode Promo? <span class="text-xs text-textGray font-normal">(Opsional)</span></label>
+                                    <div class="flex gap-2">
+                                        <input wire:model="input_kode_promo" type="text" 
+                                            class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all uppercase"
+                                            placeholder="Masukkan kode promo"
+                                            @if($promo_id) disabled @endif>
+                                            
+                                        @if($promo_id)
+                                            <button type="button" wire:click="removePromo" class="px-6 py-3 bg-red-100 text-red-700 hover:bg-red-200 font-bold rounded-xl transition-colors whitespace-nowrap">
+                                                Hapus
+                                            </button>
+                                        @else
+                                            <button type="button" wire:click="applyPromo" class="px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap">
+                                                Terapkan
+                                            </button>
+                                        @endif
+                                    </div>
+                                    @if($promo_error_message)
+                                        <p class="text-red-500 text-xs font-medium mt-2">{{ $promo_error_message }}</p>
+                                    @endif
+                                    @if($promo_applied_message)
+                                        <p class="text-green-600 text-xs font-medium mt-2 flex items-center gap-1">
+                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            {{ $promo_applied_message }}
+                                        </p>
+                                    @endif
+                                </div>
+
                                 @if($durasi > 0)
                                     <div
-                                        class="p-4 bg-primaryLight/10 rounded-xl border border-primaryLight/20 mt-4 flex items-center justify-between">
-                                        <div>
-                                            <p class="text-sm text-textGray font-semibold">Estimasi Biaya ({{ $durasi }}
-                                                Hari)</p>
-                                            <p class="text-2xl font-black text-primary mt-1">Rp
-                                                {{ number_format($total_harga, 0, ',', '.') }}
-                                            </p>
+                                        class="p-4 bg-primaryLight/10 rounded-xl border border-primaryLight/20 mt-4">
+
+                                        <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
+                                            <p class="text-sm text-textGray">Harga per Hari</p>
+                                            <p class="text-sm font-bold text-textDark">Rp {{ number_format($harga_per_hari, 0, ',', '.') }}</p>
                                         </div>
-                                        <div class="text-right">
-                                            <p class="text-xs text-textGray">Harga per Hari</p>
-                                            <p class="text-sm font-bold text-textDark">Rp
-                                                {{ number_format($harga_per_hari, 0, ',', '.') }}
+
+                                        <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
+                                            <p class="text-sm text-textGray">Subtotal ({{ $durasi }} Hari)</p>
+                                            <p class="text-sm font-bold text-textDark">Rp {{ number_format($harga_per_hari * $durasi, 0, ',', '.') }}</p>
+                                        </div>
+
+                                        @if($total_diskon > 0)
+                                            <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
+                                                <p class="text-sm text-green-600 font-medium">Potongan Promo</p>
+                                                <p class="text-sm font-bold text-green-600">- Rp {{ number_format($total_diskon, 0, ',', '.') }}</p>
+                                            </div>
+                                        @endif
+
+                                        <div class="flex items-center justify-between mt-2 pt-2">
+                                            <p class="text-sm text-textDark font-bold">Total Harga</p>
+                                            <p class="text-2xl font-black text-primary">Rp
+                                                {{ number_format($total_harga, 0, ',', '.') }}
                                             </p>
                                         </div>
                                     </div>
@@ -344,7 +471,6 @@ $save = function () {
                                             class="block w-full px-4 py-3 pr-10 appearance-none rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all cursor-pointer">
                                             <option value="menunggu_konfirmasi">Menunggu Konfirmasi</option>
                                             <option value="disetujui">Disetujui (Langsung Aktif)</option>
-                                            <option value="selesai">Selesai (Riwayat)</option>
                                         </select>
                                         <div
                                             class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-textGray">

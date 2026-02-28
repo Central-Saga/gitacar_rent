@@ -14,10 +14,14 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('pelanggan_id')->constrained()->cascadeOnDelete();
             $table->foreignId('kendaraan_unit_id')->constrained()->cascadeOnDelete();
-            $table->date('tanggal_mulai');
-            $table->date('tanggal_selesai');
+            $table->dateTime('waktu_mulai');
+            $table->dateTime('waktu_selesai');
+            $table->dateTime('waktu_kembali')->nullable();
             $table->integer('harga_per_hari');
             $table->integer('total_harga');
+            $table->integer('denda_per_hari')->default(0);
+            $table->integer('hari_terlambat')->default(0);
+            $table->integer('denda')->default(0);
             $table->enum('status_pemesanan', ['menunggu_konfirmasi', 'disetujui', 'ditolak', 'dibatalkan', 'selesai'])->default('menunggu_konfirmasi');
             $table->text('catatan')->nullable();
             $table->timestamps();

@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('kendaraan_id')->constrained()->cascadeOnDelete();
             $table->string('nomor_plat')->unique();
             $table->year('tahun');
-            $table->enum('status_unit', ['tersedia', 'disewa', 'maintenance', 'nonaktif'])->default('tersedia');
+            $table->enum('status_unit', ['tersedia', 'dibooking', 'disewa', 'maintenance', 'nonaktif'])->default('tersedia');
             $table->timestamps();
         });
     }

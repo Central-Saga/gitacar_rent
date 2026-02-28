@@ -23,9 +23,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'kelola_kendaraan',
             'kelola_pemesanan',
             'kelola_diskon',
-            'keterlambatan_pengembalian',
             'mencetak_laporan',
-            'mengecek_ketersediaan_kendaraan',
         ];
 
         foreach ($permissions as $permission) {
@@ -42,7 +40,6 @@ class RolesAndPermissionsSeeder extends Seeder
         $rolePelanggan = Role::firstOrCreate(['name' => 'pelanggan']);
         $rolePelanggan->givePermissionTo([
             'kelola_pemesanan',
-            'mengecek_ketersediaan_kendaraan',
         ]);
 
         // C) Manajemen

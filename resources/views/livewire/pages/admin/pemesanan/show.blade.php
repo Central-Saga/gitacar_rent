@@ -2,7 +2,9 @@
 
 use function Livewire\Volt\{layout, title, state, mount, rules};
 use App\Models\Pemesanan;
+use App\Models\KendaraanUnit;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 layout('layouts.app');
 title('Detail Pemesanan');
@@ -10,11 +12,15 @@ title('Detail Pemesanan');
 state([
     'pemesanan' => null,
     'catatanAdmin' => '',
+    'waktuKembali' => '',
 ]);
 
 mount(function (Pemesanan $pemesanan) {
     $this->pemesanan = $pemesanan->load(['pelanggan', 'kendaraanUnit.kendaraan']);
     $this->catatanAdmin = $pemesanan->catatan ?? '';
+    $this->waktuKembali = $pemesanan->waktu_kembali
+        ? Carbon::parse($pemesanan->waktu_kembali)->format('Y-m-d\TH:i')
+        : '';
 });
 
 $approve = function () {
@@ -22,22 +28,20 @@ $approve = function () {
         return;
     }
 
-    $this->pemesanan->update([
-        'status_pemesanan' => 'disetujui',
-        'catatan' => $this->catatanAdmin
-    ]);
+    DB::transaction(function () {
+        $unit = KendaraanUnit::where('id', $this->pemesanan->kendaraan_unit_id)
+            ->lockForUpdate()
+            ->first();
 
-    // Update status unit logic
-    $today = Carbon::today();
-    $startDate = Carbon::parse($this->pemesanan->tanggal_mulai);
-    $unit = $this->pemesanan->kendaraanUnit;
+        $this->pemesanan->update([
+            'status_pemesanan' => 'disetujui',
+            'catatan' => $this->catatanAdmin
+        ]);
 
-    if ($startDate->isSameDay($today) || $startDate->isPast() || $startDate->diffInDays($today) <= 1) {
         $unit->update(['status_unit' => 'disewa']);
-    } else {
-        $unit->update(['status_unit' => 'dibooking']);
-    }
+    });
 
+    $this->pemesanan->refresh();
     $this->dispatch('swal:toast', title: 'Pemesanan disetujui.', icon: 'success');
 };
 
@@ -53,14 +57,17 @@ $reject = function () {
         'catatanAdmin.min' => 'Catatan penolakan minimal 5 karakter.'
     ]);
 
-    $this->pemesanan->update([
-        'status_pemesanan' => 'ditolak',
-        'catatan' => $this->catatanAdmin
-    ]);
+    DB::transaction(function () {
+        $this->pemesanan->update([
+            'status_pemesanan' => 'ditolak',
+            'catatan' => $this->catatanAdmin
+        ]);
 
-    // Unit back to tersedia
-    $this->pemesanan->kendaraanUnit->update(['status_unit' => 'tersedia']);
+        // Unit back to tersedia
+        $this->pemesanan->kendaraanUnit->update(['status_unit' => 'tersedia']);
+    });
 
+    $this->pemesanan->refresh();
     $this->dispatch('swal:toast', title: 'Pemesanan ditolak.', icon: 'info');
 };
 
@@ -69,14 +76,39 @@ $complete = function () {
         return;
     }
 
-    $this->pemesanan->update([
-        'status_pemesanan' => 'selesai',
-        'catatan' => $this->catatanAdmin
+    $this->validate([
+        'waktuKembali' => 'required|date',
+    ], [
+        'waktuKembali.required' => 'Waktu kembali wajib diisi untuk menyelesaikan pemesanan.',
     ]);
 
-    // Unit back to tersedia
-    $this->pemesanan->kendaraanUnit->update(['status_unit' => 'tersedia']);
+    $waktuKembali = Carbon::parse($this->waktuKembali);
+    $waktuSelesai = Carbon::parse($this->pemesanan->waktu_selesai);
 
+    $hariTerlambat = 0;
+    $denda = 0;
+
+    // Jika terlambat lebih dari 1 jam, hitung keterlambatan per 24 jam (pembulatan ke atas)
+    if ($waktuKembali->greaterThan($waktuSelesai->copy()->addHour())) {
+        $selisihJam = $waktuSelesai->diffInHours($waktuKembali);
+        $hariTerlambat = (int) ceil($selisihJam / 24);
+        $denda = $hariTerlambat * $this->pemesanan->denda_per_hari;
+    }
+
+    DB::transaction(function () use ($waktuKembali, $hariTerlambat, $denda) {
+        $this->pemesanan->update([
+            'status_pemesanan' => 'selesai',
+            'waktu_kembali' => $waktuKembali,
+            'hari_terlambat' => $hariTerlambat,
+            'denda' => $denda,
+            'catatan' => $this->catatanAdmin,
+        ]);
+
+        // Unit back to tersedia
+        $this->pemesanan->kendaraanUnit->update(['status_unit' => 'tersedia']);
+    });
+
+    $this->pemesanan->refresh();
     $this->dispatch('swal:toast', title: 'Pemesanan diselesaikan.', icon: 'success');
 };
 
@@ -86,13 +118,16 @@ $cancel = function () {
         return;
     }
 
-    $this->pemesanan->update([
-        'status_pemesanan' => 'dibatalkan',
-        'catatan' => $this->catatanAdmin
-    ]);
+    DB::transaction(function () {
+        $this->pemesanan->update([
+            'status_pemesanan' => 'dibatalkan',
+            'catatan' => $this->catatanAdmin
+        ]);
 
-    $this->pemesanan->kendaraanUnit->update(['status_unit' => 'tersedia']);
-    
+        $this->pemesanan->kendaraanUnit->update(['status_unit' => 'tersedia']);
+    });
+
+    $this->pemesanan->refresh();
     $this->dispatch('swal:toast', title: 'Pemesanan dibatalkan.', icon: 'warning');
 };
 
@@ -201,21 +236,31 @@ $cancel = function () {
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">
                             <div>
-                                <p class="text-sm text-textGray font-medium">Tanggal Mulai</p>
-                                <p class="text-base text-textDark font-bold mt-1">{{ \Carbon\Carbon::parse($pemesanan->tanggal_mulai)->format('d M Y') }}</p>
+                                <p class="text-sm text-textGray font-medium">Waktu Mulai</p>
+                                <p class="text-base text-textDark font-bold mt-1">{{ \Carbon\Carbon::parse($pemesanan->waktu_mulai)->format('d M Y H:i') }}</p>
                             </div>
                             <div>
-                                <p class="text-sm text-textGray font-medium">Tanggal Selesai</p>
-                                <p class="text-base text-textDark font-bold mt-1">{{ \Carbon\Carbon::parse($pemesanan->tanggal_selesai)->format('d M Y') }}</p>
+                                <p class="text-sm text-textGray font-medium">Waktu Selesai</p>
+                                <p class="text-base text-textDark font-bold mt-1">{{ \Carbon\Carbon::parse($pemesanan->waktu_selesai)->format('d M Y H:i') }}</p>
                             </div>
                             <div>
                                 <p class="text-sm text-textGray font-medium">Durasi Sewa</p>
-                                <p class="text-base text-textDark font-bold mt-1">{{ \Carbon\Carbon::parse($pemesanan->tanggal_mulai)->diffInDays(\Carbon\Carbon::parse($pemesanan->tanggal_selesai)) + 1 }} Hari</p>
+                                @php
+                                    $diffHours = \Carbon\Carbon::parse($pemesanan->waktu_mulai)->diffInHours(\Carbon\Carbon::parse($pemesanan->waktu_selesai));
+                                    $durasiHari = max(1, (int) ceil($diffHours / 24));
+                                @endphp
+                                <p class="text-base text-textDark font-bold mt-1">{{ $durasiHari }} Hari</p>
                             </div>
                             <div>
                                 <p class="text-sm text-textGray font-medium">Dibuat Pada</p>
                                 <p class="text-base text-textDark font-bold mt-1">{{ $pemesanan->created_at->format('d M Y H:i') }}</p>
                             </div>
+                            @if($pemesanan->waktu_kembali)
+                                <div>
+                                    <p class="text-sm text-textGray font-medium">Waktu Kembali</p>
+                                    <p class="text-base text-textDark font-bold mt-1">{{ \Carbon\Carbon::parse($pemesanan->waktu_kembali)->format('d M Y H:i') }}</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -258,14 +303,56 @@ $cancel = function () {
                             </div>
                             <div class="flex justify-between items-center text-sm font-medium text-textGray">
                                 <span>Durasi</span>
-                                <span>{{ \Carbon\Carbon::parse($pemesanan->tanggal_mulai)->diffInDays(\Carbon\Carbon::parse($pemesanan->tanggal_selesai)) + 1 }} Hari</span>
+                                <span>{{ $durasiHari ?? 0 }} Hari</span>
                             </div>
-                            <div class="pt-4 border-t border-dashed border-gray-200 mt-2">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-base font-bold text-textDark">Total Harga</span>
+                            <div class="pt-4 border-t border-dashed border-gray-200 mt-2 space-y-3">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium text-textGray">Subtotal Harga</span>
+                                    <span class="font-bold text-textDark">Rp {{ number_format($pemesanan->harga_per_hari * ($durasiHari ?? 0), 0, ',', '.') }}</span>
+                                </div>
+                                
+                                {{-- Potongan Promo --}}
+                                @if($pemesanan->promo)
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium text-green-600">Diskon Promo ({{ $pemesanan->promo->kode_promo }})</span>
+                                    <span class="font-bold text-green-600">- Rp {{ number_format($pemesanan->total_diskon, 0, ',', '.') }}</span>
+                                </div>
+                                @endif
+
+                                <div class="flex justify-between items-center mt-2 pt-2 border-t mt-2">
+                                    <span class="text-base font-bold text-textDark">Total Harga Final</span>
                                     <span class="text-xl font-black text-primary">Rp {{ number_format($pemesanan->total_harga, 0, ',', '.') }}</span>
                                 </div>
                             </div>
+
+                            {{-- Late Fee Section --}}
+                            @if($pemesanan->hari_terlambat > 0)
+                                <div class="pt-4 border-t border-dashed border-red-200 mt-2 space-y-3">
+                                    <p class="text-xs font-bold text-red-600 uppercase tracking-wider">Keterlambatan</p>
+                                    <div class="flex justify-between items-center text-sm font-medium text-textGray">
+                                        <span>Denda per Hari</span>
+                                        <span>Rp {{ number_format($pemesanan->denda_per_hari, 0, ',', '.') }}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-sm font-medium text-textGray">
+                                        <span>Hari Terlambat</span>
+                                        <span class="text-red-600 font-bold">{{ $pemesanan->hari_terlambat }} Hari</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-base font-bold text-red-600">Total Denda</span>
+                                        <span class="text-xl font-black text-red-600">Rp {{ number_format($pemesanan->denda, 0, ',', '.') }}</span>
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{-- Grand Total with Denda --}}
+                            @if($pemesanan->denda > 0)
+                                <div class="pt-4 border-t-2 border-gray-300 mt-2">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-base font-bold text-textDark">Grand Total</span>
+                                        <span class="text-xl font-black text-primary">Rp {{ number_format($pemesanan->total_harga + $pemesanan->denda, 0, ',', '.') }}</span>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -292,9 +379,16 @@ $cancel = function () {
                                 @endif
 
                                 @if($pemesanan->status_pemesanan === 'disetujui')
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-semibold text-textDark mb-1">Waktu Kembali <span class="text-red-500">*</span></label>
+                                        <input wire:model="waktuKembali" type="datetime-local"
+                                            class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all">
+                                        @error('waktuKembali') <span class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
+                                        <p class="text-xs text-textGray mt-1">Isi waktu aktual kendaraan dikembalikan. Keterlambatan >1 jam dihitung sebagai denda.</p>
+                                    </div>
                                     <button wire:click="complete" type="button" class="w-full inline-flex justify-center items-center gap-2 px-5 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow-sm shadow-blue-200 transition-all">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                        Tandai Selesai
+                                        Tandai Selesai & Hitung Denda
                                     </button>
                                 @endif
 
@@ -317,7 +411,6 @@ $cancel = function () {
                                         <p class="text-sm font-medium text-gray-500">Pemesanan telah {{ strtolower($labels[$pemesanan->status_pemesanan] ?? $pemesanan->status_pemesanan) }}. Tidak ada aksi lebih lanjut untuk pesanan ini.</p>
                                         <button wire:click="saveNote" type="button" class="mt-3 text-xs font-bold text-primary hover:text-primaryDark">Simpan Update Catatan Saja</button>
                                     </div>
-                                    <!-- Provide a fallback function to save just note -->
                                     <?php
                                         $saveNote = function () {
                                             $this->pemesanan->update(['catatan' => $this->catatanAdmin]);

@@ -52,4 +52,11 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Volt::route('pemesanan/create', 'pages.admin.pemesanan.create')->name('pemesanan.create');
         Volt::route('pemesanan/{pemesanan}', 'pages.admin.pemesanan.show')->name('pemesanan.show');
     });
+
+    // Promo & Diskon routes
+    Route::middleware('can:kelola_diskon')->group(function () {
+        Volt::route('promo', 'pages.admin.promo.index')->name('promo.index');
+        Volt::route('promo/create', 'pages.admin.promo.create')->name('promo.create');
+        Volt::route('promo/{promo}/edit', 'pages.admin.promo.edit')->name('promo.edit');
+    });
 });

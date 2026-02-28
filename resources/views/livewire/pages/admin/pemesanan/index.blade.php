@@ -100,7 +100,7 @@ with(function () {
                             <tr>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Pemesan</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Unit</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Tanggal Sewa</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Waktu Sewa</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Total Harga</th>
                                 <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -121,15 +121,25 @@ with(function () {
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-textDark">
-                                            {{ $p->tanggal_mulai->format('d M Y') }} - {{ $p->tanggal_selesai->format('d M Y') }}
+                                            {{ $p->waktu_mulai->format('d M Y H:i') }}
                                         </div>
-                                        <div class="text-xs text-textGray mt-1">
-                                            {{ $p->tanggal_mulai->diffInDays($p->tanggal_selesai) + 1 }} Hari
+                                        <div class="text-sm font-medium text-textDark">
+                                            s/d {{ $p->waktu_selesai->format('d M Y H:i') }}
                                         </div>
+                                        @php $durHrs = $p->waktu_mulai->diffInHours($p->waktu_selesai); $durDays = max(1, (int) ceil($durHrs / 24)); @endphp
+                                        <div class="text-xs text-textGray mt-1">{{ $durDays }} Hari</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-bold text-textDark">Rp {{ number_format($p->total_harga, 0, ',', '.') }}</div>
-                                        <div class="text-xs text-textGray mt-1">Rp {{ number_format($p->harga_per_hari, 0, ',', '.') }}/hari</div>
+                                        <div class="text-xs text-textGray mt-1 mb-1">Rp {{ number_format($p->harga_per_hari, 0, ',', '.') }}/hari</div>
+                                        @if($p->promo_id)
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-800">
+                                                <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                                </svg>
+                                                Promo: {{ $p->promo->kode_promo }}
+                                            </span>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                         @php
