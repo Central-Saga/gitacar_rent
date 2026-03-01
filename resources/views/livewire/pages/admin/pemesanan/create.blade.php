@@ -380,7 +380,7 @@ $save = function () {
                                                 Hapus
                                             </button>
                                         @else
-                                            <button type="button" wire:click="applyPromo" class="px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap">
+                                            <button type="button" wire:click="applyPromo" class="px-6 py-3 bg-teal-600 text-white hover:bg-teal-700 font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap">
                                                 Terapkan
                                             </button>
                                         @endif
@@ -492,8 +492,7 @@ $save = function () {
 
                                 <div>
                                     <label class="block text-sm font-semibold text-textDark mb-1">Upload Bukti
-                                        Pembayaran /
-                                        DP</label>
+                                        Pembayaran</label>
                                     @if ($bukti_pembayaran)
                                         <div x-data="{ isModalOpen: false, imgUrl: '{{ $bukti_pembayaran->temporaryUrl() }}' }" class="mt-1">
                                             <div class="rounded-xl border border-inputBorder overflow-hidden bg-white">
