@@ -368,7 +368,7 @@ $save = function () {
                                 </div>
 
                                 <div class="mt-4 pt-4 border-t border-gray-100">
-                                    <label class="block text-sm font-semibold text-textDark mb-1">Punya Kode Promo? <span class="text-xs text-textGray font-normal">(Opsional)</span></label>
+                                    <label class="block text-sm font-semibold text-textDark mb-1">Kode Promo<span class="text-xs text-textGray font-normal">(Opsional)</span></label>
                                     <div class="flex gap-2">
                                         <input wire:model="input_kode_promo" type="text" 
                                             class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all uppercase"
