@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'livewire.pages.dashboard.dashboard')
+Volt::route('dashboard', 'pages.dashboard.dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
