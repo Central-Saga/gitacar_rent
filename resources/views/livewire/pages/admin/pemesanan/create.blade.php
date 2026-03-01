@@ -220,9 +220,7 @@ $save = function () {
 
 ?>
 
-<div class="min-h-screen bg-backgroundSoft">
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="w-full max-w-none">
             <div class="mb-8">
                 <a href="{{ route('admin.pemesanan.index') }}" wire:navigate
                     class="inline-flex items-center text-sm font-medium text-textGray hover:text-primary transition-colors mb-4">
@@ -551,6 +549,4 @@ $save = function () {
                 </form>
             </div>
 
-        </div>
-    </div>
 </div>

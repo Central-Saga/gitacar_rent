@@ -48,9 +48,7 @@ with(function () {
 });
 ?>
 
-<div class="min-h-screen bg-backgroundSoft">
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div>
             <!-- Header -->
             <div class="mb-10">
                 <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
@@ -196,5 +194,3 @@ with(function () {
                 @endif
             </div>
         </div>
-    </div>
-</div>

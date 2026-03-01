@@ -43,9 +43,7 @@ $save = function () {
 
 ?>
 
-<div class="min-h-screen bg-backgroundSoft">
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="w-full max-w-none">
             <!-- Header -->
             <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
@@ -220,5 +218,3 @@ $save = function () {
             </div>
         </div>
     </div>
-</div>
-</div>

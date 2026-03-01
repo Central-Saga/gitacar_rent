@@ -38,8 +38,8 @@ new class extends Component {
         $this->diskon_persen = $promo->diskon_persen;
         $this->maksimal_diskon = $promo->maksimal_diskon;
         $this->kuota_total = $promo->kuota_total;
-        $this->tanggal_mulai = $promo->tanggal_mulai->format('Y-m-d');
-        $this->tanggal_selesai = $promo->tanggal_selesai->format('Y-m-d');
+        $this->tanggal_mulai = \Carbon\Carbon::parse($promo->tanggal_mulai)->format('Y-m-d');
+        $this->tanggal_selesai = \Carbon\Carbon::parse($promo->tanggal_selesai)->format('Y-m-d');
         $this->is_active = $promo->is_active;
     }
 
@@ -68,45 +68,42 @@ new class extends Component {
 }
 ?>
 
-<div>
-    <div class="mb-6 flex justify-between items-center">
-        <div>
-            <h1 class="text-2xl font-bold text-textDark flex items-center gap-2">
-                <a href="{{ route('admin.promo.index') }}" wire:navigate class="hover:text-primary transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                </a>
-                Edit Data Promo
-            </h1>
-            <p class="text-textGray text-sm mt-1 ml-8">Ubah rincian informasi dan status kode promo diskon.</p>
-        </div>
+<div class="w-full max-w-none">
+    <div class="mb-8">
+        <a href="{{ route('admin.promo.index') }}" wire:navigate
+            class="inline-flex items-center text-sm font-medium text-textGray hover:text-primary transition-colors mb-4">
+            <svg class="h-4 w-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Kembali ke Daftar
+        </a>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Data Promo</h1>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300 font-medium">Ubah rincian informasi dan status kode
+            promo diskon.</p>
     </div>
 
     <!-- Info Kuota Terpakai (Read Only Reminder) -->
-    <div class="mb-4 bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
-        <div class="flex">
+    <div class="mb-6 bg-blue-50 border border-blue-200 px-6 py-5 rounded-2xl shadow-sm">
+        <div class="flex items-center">
             <div class="flex-shrink-0">
-                <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                <svg class="h-6 w-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                     fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
                         d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                         clip-rule="evenodd" />
                 </svg>
             </div>
-            <div class="ml-3">
-                <p class="text-sm text-blue-700">
-                    Promo ini sudah digunakan sebanyak <strong>{{ $promo->kuota_terpakai }} kali</strong> oleh
-                    pelanggan.
+            <div class="ml-4">
+                <p class="text-sm font-medium text-blue-800">
+                    Promo ini sudah digunakan sebanyak <strong class="text-blue-900">{{ $promo->kuota_terpakai }}
+                        kali</strong> oleh pelanggan.
                 </p>
             </div>
         </div>
     </div>
 
-    <form wire:submit="save" class="bg-white rounded-xl shadow-card overflow-hidden">
-        <div class="p-6 md:p-8 space-y-8">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-8">
+        <form wire:submit="save" class="space-y-8">
 
             <!-- Section: Detail Promo & Deskripsi -->
             <div x-data="{ open: true }"
@@ -140,7 +137,8 @@ new class extends Component {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Kode Promo -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Kode Promo *</label>
+                            <label class="block text-sm font-semibold text-textDark mb-2">Kode Promo <span
+                                    class="text-red-500">*</span></label>
                             <input type="text" wire:model="kode_promo"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors uppercase"
                                 placeholder="Contoh: MERDEKA2026">
@@ -149,7 +147,8 @@ new class extends Component {
 
                         <!-- Status -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Status Promo *</label>
+                            <label class="block text-sm font-semibold text-textDark mb-2">Status Promo <span
+                                    class="text-red-500">*</span></label>
                             <div class="relative">
                                 <select wire:model="is_active"
                                     class="w-full px-4 py-3 pr-10 appearance-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors cursor-pointer bg-white">
@@ -169,7 +168,8 @@ new class extends Component {
 
                         <!-- Besaran Diskon -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Besaran Diskon (%) *</label>
+                            <label class="block text-sm font-semibold text-textDark mb-2">Besaran Diskon (%) <span
+                                    class="text-red-500">*</span></label>
                             <div class="relative">
                                 <input type="number" wire:model="diskon_persen"
                                     class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
@@ -184,7 +184,7 @@ new class extends Component {
 
                         <!-- Maksimal Diskon -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Maksimal Potongan Rupiah <span
+                            <label class="block text-sm font-semibold text-textDark mb-2">Maksimal Potongan Rupiah <span
                                     class="text-xs text-textGray font-normal">(Opsional)</span></label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -243,7 +243,8 @@ new class extends Component {
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Tanggal Mulai -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Penyewaan Dari *</label>
+                            <label class="block text-sm font-semibold text-textDark mb-2">Penyewaan Dari <span
+                                    class="text-red-500">*</span></label>
                             <input type="date" wire:model="tanggal_mulai"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
                             @error('tanggal_mulai') <span class="text-danger text-xs mt-1">{{ $message }}</span>
@@ -252,7 +253,8 @@ new class extends Component {
 
                         <!-- Tanggal Selesai -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Sampai Tanggal *</label>
+                            <label class="block text-sm font-semibold text-textDark mb-2">Sampai Tanggal <span
+                                    class="text-red-500">*</span></label>
                             <input type="date" wire:model="tanggal_selesai"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
                             @error('tanggal_selesai') <span class="text-danger text-xs mt-1">{{ $message }}</span>
@@ -272,17 +274,19 @@ new class extends Component {
                 </div>
             </div>
 
-        </div>
-
-        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 flex-wrap">
-            <a href="{{ route('admin.promo.index') }}" wire:navigate
-                class="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 font-medium transition-colors text-sm w-full sm:w-auto text-center">
-                Batal
-            </a>
-            <button type="submit"
-                class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primaryDark font-medium transition-colors shadow-sm text-sm w-full sm:w-auto">
-                Simpan Perubahan
-            </button>
-        </div>
-    </form>
+            <div class="flex items-center justify-end gap-4 pt-8 border-t border-gray-200 mt-8">
+                <a href="{{ route('admin.promo.index') }}" wire:navigate
+                    class="px-6 py-3 bg-gray-100 hover:bg-gray-200 border-none text-textDark font-bold rounded-xl transition-colors">
+                    Batal
+                </a>
+                <button type="submit"
+                    class="px-8 py-3 bg-primary hover:bg-primaryDark text-white font-bold rounded-xl shadow-sm shadow-primary/30 transition-all flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

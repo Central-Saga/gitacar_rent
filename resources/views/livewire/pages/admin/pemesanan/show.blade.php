@@ -133,9 +133,8 @@ $cancel = function () {
 
 ?>
 
-<div class="min-h-screen bg-backgroundSoft">
-    <div class="py-8">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+<div>
+    <div class="py-6">
             <!-- Header & Flash -->
             <div class="mb-8 flex items-center justify-between">
                 <div>
@@ -171,7 +170,7 @@ $cancel = function () {
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Left Column: Details -->
                 <div class="lg:col-span-2 space-y-8">
                     
@@ -297,31 +296,31 @@ $cancel = function () {
                             <h3 class="text-lg font-bold text-textDark">Rincian Biaya</h3>
                         </div>
                         <div class="p-6 space-y-4">
-                            <div class="flex justify-between items-center text-sm font-medium text-textGray">
-                                <span>Harga per Hari</span>
-                                <span>Rp {{ number_format($pemesanan->harga_per_hari, 0, ',', '.') }}</span>
+                            <div class="flex items-center justify-between gap-3 text-sm font-medium text-textGray">
+                                <span class="flex-1 min-w-0">Harga per Hari</span>
+                                <span class="whitespace-nowrap shrink-0">Rp {{ number_format($pemesanan->harga_per_hari, 0, ',', '.') }}</span>
                             </div>
-                            <div class="flex justify-between items-center text-sm font-medium text-textGray">
-                                <span>Durasi</span>
-                                <span>{{ $durasiHari ?? 0 }} Hari</span>
+                            <div class="flex items-center justify-between gap-3 text-sm font-medium text-textGray">
+                                <span class="flex-1 min-w-0">Durasi</span>
+                                <span class="whitespace-nowrap shrink-0">{{ $durasiHari ?? 0 }} Hari</span>
                             </div>
                             <div class="pt-4 border-t border-dashed border-gray-200 mt-2 space-y-3">
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="font-medium text-textGray">Subtotal Harga</span>
-                                    <span class="font-bold text-textDark">Rp {{ number_format($pemesanan->harga_per_hari * ($durasiHari ?? 0), 0, ',', '.') }}</span>
+                                <div class="flex items-center justify-between gap-3 text-sm">
+                                    <span class="font-medium text-textGray flex-1 min-w-0">Subtotal Harga</span>
+                                    <span class="font-bold text-textDark whitespace-nowrap shrink-0">Rp {{ number_format($pemesanan->harga_per_hari * ($durasiHari ?? 0), 0, ',', '.') }}</span>
                                 </div>
                                 
                                 {{-- Potongan Promo --}}
                                 @if($pemesanan->promo)
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="font-medium text-green-600">Diskon Promo ({{ $pemesanan->promo->kode_promo }})</span>
-                                    <span class="font-bold text-green-600">- Rp {{ number_format($pemesanan->total_diskon, 0, ',', '.') }}</span>
+                                <div class="flex items-start justify-between gap-3 text-sm">
+                                    <span class="font-medium text-green-600 flex-1 min-w-0">Diskon Promo<br><span class="text-xs">({{ $pemesanan->promo->kode_promo }})</span></span>
+                                    <span class="font-bold text-green-600 whitespace-nowrap shrink-0">- Rp {{ number_format($pemesanan->total_diskon, 0, ',', '.') }}</span>
                                 </div>
                                 @endif
 
-                                <div class="flex justify-between items-center mt-2 pt-2 border-t mt-2">
-                                    <span class="text-base font-bold text-textDark">Total Harga Final</span>
-                                    <span class="text-xl font-black text-primary">Rp {{ number_format($pemesanan->total_harga, 0, ',', '.') }}</span>
+                                <div class="flex items-center justify-between gap-3 mt-2 pt-2 border-t">
+                                    <span class="text-sm font-bold text-textDark flex-1 min-w-0">Total Harga Final</span>
+                                    <span class="text-lg font-black text-primary whitespace-nowrap shrink-0">Rp {{ number_format($pemesanan->total_harga, 0, ',', '.') }}</span>
                                 </div>
                             </div>
 
@@ -329,17 +328,17 @@ $cancel = function () {
                             @if($pemesanan->hari_terlambat > 0)
                                 <div class="pt-4 border-t border-dashed border-red-200 mt-2 space-y-3">
                                     <p class="text-xs font-bold text-red-600 uppercase tracking-wider">Keterlambatan</p>
-                                    <div class="flex justify-between items-center text-sm font-medium text-textGray">
-                                        <span>Denda per Hari</span>
-                                        <span>Rp {{ number_format($pemesanan->denda_per_hari, 0, ',', '.') }}</span>
+                                    <div class="flex items-center justify-between gap-3 text-sm font-medium text-textGray">
+                                        <span class="flex-1 min-w-0">Denda per Hari</span>
+                                        <span class="whitespace-nowrap shrink-0">Rp {{ number_format($pemesanan->denda_per_hari, 0, ',', '.') }}</span>
                                     </div>
-                                    <div class="flex justify-between items-center text-sm font-medium text-textGray">
-                                        <span>Hari Terlambat</span>
-                                        <span class="text-red-600 font-bold">{{ $pemesanan->hari_terlambat }} Hari</span>
+                                    <div class="flex items-center justify-between gap-3 text-sm font-medium text-textGray">
+                                        <span class="flex-1 min-w-0">Hari Terlambat</span>
+                                        <span class="text-red-600 font-bold whitespace-nowrap shrink-0">{{ $pemesanan->hari_terlambat }} Hari</span>
                                     </div>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-base font-bold text-red-600">Total Denda</span>
-                                        <span class="text-xl font-black text-red-600">Rp {{ number_format($pemesanan->denda, 0, ',', '.') }}</span>
+                                    <div class="flex items-center justify-between gap-3">
+                                        <span class="text-sm font-bold text-red-600 flex-1 min-w-0">Total Denda</span>
+                                        <span class="text-lg font-black text-red-600 whitespace-nowrap shrink-0">Rp {{ number_format($pemesanan->denda, 0, ',', '.') }}</span>
                                     </div>
                                 </div>
                             @endif
@@ -347,9 +346,9 @@ $cancel = function () {
                             {{-- Grand Total with Denda --}}
                             @if($pemesanan->denda > 0)
                                 <div class="pt-4 border-t-2 border-gray-300 mt-2">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-base font-bold text-textDark">Grand Total</span>
-                                        <span class="text-xl font-black text-primary">Rp {{ number_format($pemesanan->total_harga + $pemesanan->denda, 0, ',', '.') }}</span>
+                                    <div class="flex items-center justify-between gap-3">
+                                        <span class="text-sm font-bold text-textDark flex-1 min-w-0">Grand Total</span>
+                                        <span class="text-lg font-black text-primary whitespace-nowrap shrink-0">Rp {{ number_format($pemesanan->total_harga + $pemesanan->denda, 0, ',', '.') }}</span>
                                     </div>
                                 </div>
                             @endif
@@ -424,6 +423,5 @@ $cancel = function () {
 
                 </div>
             </div>
-        </div>
     </div>
 </div>

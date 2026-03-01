@@ -53,25 +53,22 @@ new class extends Component {
 }
 ?>
 
-<div>
-    <div class="mb-6 flex justify-between items-center">
-        <div>
-            <h1 class="text-2xl font-bold text-textDark flex items-center gap-2">
-                <a href="{{ route('admin.promo.index') }}" wire:navigate class="hover:text-primary transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                </a>
-                Tambah Promo Baru
-            </h1>
-            <p class="text-textGray text-sm mt-1 ml-8">Isi formulir di bawah untuk membuat kode promo baru.</p>
-        </div>
+<div class="w-full max-w-none">
+    <div class="mb-8">
+        <a href="{{ route('admin.promo.index') }}" wire:navigate
+            class="inline-flex items-center text-sm font-medium text-textGray hover:text-primary transition-colors mb-4">
+            <svg class="h-4 w-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Kembali ke Daftar
+        </a>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Tambah Promo Baru</h1>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300 font-medium">Isi formulir di bawah untuk membuat kode
+            promo baru.</p>
     </div>
 
-    <form wire:submit="save" class="bg-white rounded-xl shadow-card overflow-hidden">
-        <div class="p-6 md:p-8 space-y-8">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-8">
+        <form wire:submit="save" class="space-y-8">
 
             <!-- Section: Detail Promo & Deskripsi -->
             <div x-data="{ open: true }"
@@ -105,7 +102,8 @@ new class extends Component {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Kode Promo -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Kode Promo *</label>
+                            <label class="block text-sm font-semibold text-textDark mb-2">Kode Promo <span
+                                    class="text-red-500">*</span></label>
                             <input type="text" wire:model="kode_promo"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors uppercase"
                                 placeholder="Contoh: MERDEKA2026">
@@ -116,7 +114,8 @@ new class extends Component {
 
                         <!-- Status -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Status Promo *</label>
+                            <label class="block text-sm font-semibold text-textDark mb-2">Status Promo <span
+                                    class="text-red-500">*</span></label>
                             <div class="relative">
                                 <select wire:model="is_active"
                                     class="w-full px-4 py-3 pr-10 appearance-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors cursor-pointer bg-white">
@@ -136,7 +135,8 @@ new class extends Component {
 
                         <!-- Besaran Diskon -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Besaran Diskon (%) *</label>
+                            <label class="block text-sm font-semibold text-textDark mb-2">Besaran Diskon (%) <span
+                                    class="text-red-500">*</span></label>
                             <div class="relative">
                                 <input type="number" wire:model="diskon_persen"
                                     class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
@@ -151,7 +151,7 @@ new class extends Component {
 
                         <!-- Maksimal Diskon -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Maksimal Potongan Rupiah <span
+                            <label class="block text-sm font-semibold text-textDark mb-2">Maksimal Potongan Rupiah <span
                                     class="text-xs text-textGray font-normal">(Opsional)</span></label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -171,7 +171,7 @@ new class extends Component {
 
                     <!-- Deskripsi Promo -->
                     <div>
-                        <label class="block text-sm font-medium text-textDark mb-2">Deskripsi Promo <span
+                        <label class="block text-sm font-semibold text-textDark mb-2">Deskripsi Promo <span
                                 class="text-xs text-textGray font-normal">(Opsional)</span></label>
                         <textarea wire:model="deskripsi" rows="3"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
@@ -213,7 +213,8 @@ new class extends Component {
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Tanggal Mulai -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Penyewaan Dari *</label>
+                            <label class="block text-sm font-semibold text-textDark mb-2">Penyewaan Dari <span
+                                    class="text-red-500">*</span></label>
                             <input type="date" wire:model="tanggal_mulai"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
                             @error('tanggal_mulai') <span class="text-danger text-xs mt-1">{{ $message }}</span>
@@ -222,7 +223,8 @@ new class extends Component {
 
                         <!-- Tanggal Selesai -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Sampai Tanggal *</label>
+                            <label class="block text-sm font-semibold text-textDark mb-2">Sampai Tanggal <span
+                                    class="text-red-500">*</span></label>
                             <input type="date" wire:model="tanggal_selesai"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
                             @error('tanggal_selesai') <span class="text-danger text-xs mt-1">{{ $message }}</span>
@@ -231,7 +233,7 @@ new class extends Component {
 
                         <!-- Kuota Total -->
                         <div>
-                            <label class="block text-sm font-medium text-textDark mb-2">Kuota Pengguna <span
+                            <label class="block text-sm font-semibold text-textDark mb-2">Kuota Pengguna <span
                                     class="text-xs text-textGray font-normal">(Opsional)</span></label>
                             <input type="number" wire:model="kuota_total"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
@@ -243,17 +245,19 @@ new class extends Component {
                 </div>
             </div>
 
-        </div>
-
-        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 flex-wrap">
-            <a href="{{ route('admin.promo.index') }}" wire:navigate
-                class="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 font-medium transition-colors text-sm w-full sm:w-auto text-center">
-                Batal
-            </a>
-            <button type="submit"
-                class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primaryDark font-medium transition-colors shadow-sm text-sm w-full sm:w-auto">
-                Simpan Promo
-            </button>
-        </div>
-    </form>
+            <div class="flex items-center justify-end gap-4 pt-8 border-t border-gray-200 mt-8">
+                <a href="{{ route('admin.promo.index') }}" wire:navigate
+                    class="px-6 py-3 bg-gray-100 hover:bg-gray-200 border-none text-textDark font-bold rounded-xl transition-colors">
+                    Batal
+                </a>
+                <button type="submit"
+                    class="px-8 py-3 bg-primary hover:bg-primaryDark text-white font-bold rounded-xl shadow-sm shadow-primary/30 transition-all flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Simpan Promo
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
