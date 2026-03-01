@@ -33,13 +33,11 @@ class CustomPathGenerator implements PathGenerator
     }
 
     /**
-     * Build the base storage path using the collection name and media ID.
-     * Example: bukti_pembayaran/5
+     * Build the base storage path using the collection name only.
+     * Example: bukti_pembayaran/  (no ID subfolder)
      */
     protected function getBasePath(Media $media): string
     {
-        $collectionName = $media->collection_name ?: 'media';
-
-        return $collectionName . '/' . $media->id;
+        return $media->collection_name ?: 'media';
     }
 }

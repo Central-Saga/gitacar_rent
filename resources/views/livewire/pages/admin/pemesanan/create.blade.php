@@ -494,18 +494,61 @@ $save = function () {
                                     <label class="block text-sm font-semibold text-textDark mb-1">Upload Bukti
                                         Pembayaran /
                                         DP</label>
-                                    <div
-                                        class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl bg-white hover:bg-gray-50 transition-colors relative">
-                                        <div class="space-y-1 text-center">
-                                            @if ($bukti_pembayaran)
-                                                <svg class="mx-auto h-12 w-12 text-primary" stroke="currentColor"
-                                                    fill="none" viewBox="0 0 48 48">
-                                                    <path
-                                                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
-                                                <div class="text-sm text-gray-600 font-medium">1 File dipilih</div>
-                                            @else
+                                    @if ($bukti_pembayaran)
+                                        <div x-data="{ isModalOpen: false, imgUrl: '{{ $bukti_pembayaran->temporaryUrl() }}' }" class="mt-1">
+                                            <div class="rounded-xl border border-inputBorder overflow-hidden bg-white">
+                                                <div @click="isModalOpen = true" class="block hover:opacity-90 transition-opacity cursor-pointer">
+                                                    <img src="{{ $bukti_pembayaran->temporaryUrl() }}" alt="Preview Bukti Pembayaran" class="w-full object-cover max-h-48">
+                                                </div>
+                                                <div class="flex items-center justify-between px-3 py-2 bg-gray-50 border-t border-gray-100">
+                                                    <span class="text-xs text-textGray font-medium truncate">{{ $bukti_pembayaran->getClientOriginalName() }}</span>
+                                                    <label class="cursor-pointer text-xs text-primary hover:text-primaryDark font-semibold ml-3 whitespace-nowrap">
+                                                        Ganti File
+                                                        <input wire:model="bukti_pembayaran" type="file" class="sr-only" accept=".jpg,.jpeg,.png,.pdf">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <p class="text-xs text-textGray mt-1 flex items-center gap-1">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                                Klik gambar untuk melihat ukuran penuh
+                                            </p>
+
+                                            <!-- Modal -->
+                                            <template x-teleport="body">
+                                                <div x-show="isModalOpen" style="display: none;" class="fixed inset-0 z-[999] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+                                                    x-transition:enter="transition ease-out duration-300"
+                                                    x-transition:enter-start="opacity-0"
+                                                    x-transition:enter-end="opacity-100"
+                                                    x-transition:leave="transition ease-in duration-200"
+                                                    x-transition:leave-start="opacity-100"
+                                                    x-transition:leave-end="opacity-0">
+                                                    
+                                                    <div class="relative w-full max-w-5xl h-full flex flex-col items-center justify-center p-4">
+                                                        <!-- Close button -->
+                                                        <button type="button" @click="isModalOpen = false" class="absolute top-6 right-6 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full p-2 transition-all cursor-pointer z-[1000]">
+                                                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                                        </button>
+                                                        
+                                                        <!-- Image -->
+                                                        <img :src="imgUrl" @click.away="isModalOpen = false" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl mb-6 relative z-50">
+                                                        
+                                                        <!-- Action Buttons -->
+                                                        <div class="flex gap-4 relative z-50">
+                                                            <a :href="imgUrl" download class="px-6 py-3 bg-primary text-white font-bold rounded-xl shadow-sm hover:bg-primaryDark transition-colors flex items-center gap-2">
+                                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                                                Download Gambar
+                                                            </a>
+                                                            <button type="button" @click="isModalOpen = false" class="px-6 py-3 bg-gray-700 text-white font-bold rounded-xl hover:bg-gray-800 border border-gray-600 transition-colors cursor-pointer">
+                                                                Tutup
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    @else
+                                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl bg-white hover:bg-gray-50 transition-colors relative">
+                                            <div class="space-y-1 text-center">
                                                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor"
                                                     fill="none" viewBox="0 0 48 48">
                                                     <path
@@ -521,9 +564,9 @@ $save = function () {
                                                     </label>
                                                 </div>
                                                 <p class="text-xs text-gray-500">PNG, JPG, PDF up to 2MB</p>
-                                            @endif
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                     @error('bukti_pembayaran') <span
                                     class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
                                 </div>

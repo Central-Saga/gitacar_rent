@@ -267,18 +267,57 @@ $cancel = function () {
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-inputBorder">
                         <h3 class="text-lg font-bold text-textDark mb-4 flex items-center gap-2">
                             <svg class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-                            Bukti Pembayaran / DP
+                            Bukti Pembayaran
                         </h3>
                         @if ($pemesanan->hasMedia('bukti_pembayaran'))
-                            <div class="rounded-xl overflow-hidden border border-inputBorder max-w-sm">
-                                <a href="{{ $pemesanan->getFirstMediaUrl('bukti_pembayaran') }}" target="_blank" class="block hover:opacity-90 transition-opacity">
-                                    <img src="{{ $pemesanan->getFirstMediaUrl('bukti_pembayaran') }}" alt="Bukti Pembayaran" class="w-full object-cover">
-                                </a>
+                            @php
+                                $mediaUrl = $pemesanan->getFirstMediaUrl('bukti_pembayaran');
+                                $relativeUrl = parse_url($mediaUrl, PHP_URL_PATH);
+                            @endphp
+                            <div x-data="{ isModalOpen: false, imgUrl: '{{ $relativeUrl }}' }">
+                                <div class="rounded-xl overflow-hidden border border-inputBorder max-w-sm cursor-pointer" @click="isModalOpen = true">
+                                    <div class="block hover:opacity-90 transition-opacity">
+                                        <img src="{{ $relativeUrl }}" alt="Bukti Pembayaran" class="w-full object-cover">
+                                    </div>
+                                </div>
+                                <p class="text-xs text-textGray mt-3 flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    Klik gambar untuk melihat ukuran penuh
+                                </p>
+
+                                <!-- Modal -->
+                                <template x-teleport="body">
+                                    <div x-show="isModalOpen" style="display: none;" class="fixed inset-0 z-[999] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+                                        x-transition:enter="transition ease-out duration-300"
+                                        x-transition:enter-start="opacity-0"
+                                        x-transition:enter-end="opacity-100"
+                                        x-transition:leave="transition ease-in duration-200"
+                                        x-transition:leave-start="opacity-100"
+                                        x-transition:leave-end="opacity-0">
+                                        
+                                        <div class="relative w-full max-w-5xl h-full flex flex-col items-center justify-center p-4">
+                                            <!-- Close button -->
+                                            <button @click="isModalOpen = false" class="absolute top-6 right-6 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full p-2 transition-all">
+                                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                            </button>
+                                            
+                                            <!-- Image -->
+                                            <img :src="imgUrl" @click.away="isModalOpen = false" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl mb-6">
+                                            
+                                            <!-- Action Buttons -->
+                                            <div class="flex gap-4">
+                                                <a :href="imgUrl" download class="px-6 py-3 bg-primary text-white font-bold rounded-xl shadow-sm hover:bg-primaryDark transition-colors flex items-center gap-2">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                                    Download Gambar
+                                                </a>
+                                                <button @click="isModalOpen = false" class="px-6 py-3 bg-gray-700 text-white font-bold rounded-xl hover:bg-gray-800 border border-gray-600 transition-colors">
+                                                    Tutup
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
                             </div>
-                            <p class="text-xs text-textGray mt-3 flex items-center gap-1">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                Klik gambar untuk melihat ukuran penuh
-                            </p>
                         @else
                             <div class="bg-gray-50 rounded-xl p-8 border border-dashed border-gray-300 text-center text-textGray">
                                 Belum ada bukti pembayaran yang diunggah.
