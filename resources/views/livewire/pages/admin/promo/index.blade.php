@@ -83,7 +83,7 @@ new class extends Component
                         @forelse($promos as $promo)
                             <tr class="hover:bg-gray-50 transition-colors duration-200 group">
                                 <td class="px-8 py-6 whitespace-nowrap">
-                                    <div class="text-sm font-bold text-primary capitalize">{{ $promo->kode_promo }}</div>
+                                    <div class="text-sm font-bold text-textDark capitalize">{{ $promo->kode_promo }}</div>
                                     <div class="text-xs text-textGray truncate max-w-[200px] mt-1">{{ $promo->deskripsi ?: '-' }}</div>
                                 </td>
                                 <td class="px-8 py-6 whitespace-nowrap text-sm font-semibold text-textDark">

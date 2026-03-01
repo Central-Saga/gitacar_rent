@@ -96,23 +96,23 @@ with(function () {
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50 border-b border-inputBorder">
                             <tr>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Pemesan</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Unit</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Waktu Sewa</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Total Harga</th>
-                                <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Aksi</th>
+                                <th class="px-8 py-6 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Pemesan</th>
+                                <th class="px-8 py-6 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Unit</th>
+                                <th class="px-8 py-6 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Waktu Sewa</th>
+                                <th class="px-8 py-6 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Total Harga</th>
+                                <th class="px-8 py-6 text-center text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Status</th>
+                                <th class="px-8 py-6 text-right text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-100">
                             @forelse($pemesanans as $p)
                                 <tr class="hover:bg-gray-50 transition-colors duration-200">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="font-bold text-textDark">{{ $p->pelanggan->nama ?? 'Unknown' }}</div>
+                                        <div class="text-sm font-bold text-textDark">{{ $p->pelanggan->nama ?? 'Unknown' }}</div>
                                         <div class="text-xs text-textGray">{{ $p->pelanggan->email ?? '-' }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="font-bold text-textDark">{{ $p->kendaraanUnit->kendaraan->nama_kendaraan ?? 'Unknown' }}</div>
+                                        <div class="text-sm font-bold text-textDark">{{ $p->kendaraanUnit->kendaraan->nama_kendaraan ?? 'Unknown' }}</div>
                                         <div class="text-xs text-textGray bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded inline-block mt-1 font-mono">
                                             {{ $p->kendaraanUnit->nomor_plat ?? '-' }}
                                         </div>
