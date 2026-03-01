@@ -12,6 +12,9 @@ new
     #[Layout('layouts.app')]
     #[Title('Dashboard')]
     class extends Component {
+
+    public int $chartDays = 7;
+
     public function with(): array
     {
         $now = Carbon::now();
@@ -32,16 +35,29 @@ new
             ->whereBetween('updated_at', [$startOfMonth, $endOfMonth])
             ->sum(DB::raw('total_harga + denda'));
 
-        // Data for Revenue Chart (Last 7 Days)
+        // Data for Revenue Chart
         $revenueDates = [];
         $revenueData = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::today()->subDays($i);
-            $revenueDates[] = $date->format('d M');
-            $dailyRevenue = Pemesanan::whereIn('status_pemesanan', ['selesai'])
-                ->whereDate('updated_at', $date)
-                ->sum(DB::raw('total_harga + denda'));
-            $revenueData[] = $dailyRevenue;
+
+        if ($this->chartDays === 1) { // Hari Ini
+            for ($i = 0; $i < 24; $i += 3) {
+                $startHour = Carbon::today()->addHours($i);
+                $endHour = $startHour->copy()->addHours(2)->endOfHour();
+                $revenueDates[] = $startHour->format('H:i');
+                $dailyRevenue = Pemesanan::whereIn('status_pemesanan', ['selesai'])
+                    ->whereBetween('updated_at', [$startHour, $endHour])
+                    ->sum(DB::raw('total_harga + denda'));
+                $revenueData[] = $dailyRevenue;
+            }
+        } else { // 7 or 30 days
+            for ($i = $this->chartDays - 1; $i >= 0; $i--) {
+                $date = Carbon::today()->subDays($i);
+                $revenueDates[] = $date->format('d M');
+                $dailyRevenue = Pemesanan::whereIn('status_pemesanan', ['selesai'])
+                    ->whereDate('updated_at', $date)
+                    ->sum(DB::raw('total_harga + denda'));
+                $revenueData[] = $dailyRevenue;
+            }
         }
 
         // Data for Fleet Status
@@ -97,7 +113,8 @@ new
         <div>
             <h1 class="text-2xl font-bold text-textDark">{{ __('Dashboard Operasional') }}</h1>
             <p class="text-sm text-textGray font-medium mt-1">Ringkasan hari ini,
-                {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
+            </p>
         </div>
     </div>
 
@@ -193,14 +210,25 @@ new
     <!-- 2. Baris Kedua (Grafik & Status Armada) -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Grafik Pendapatan -->
-        <div class="lg:col-span-2 bg-white rounded-2xl border border-inputBorder shadow-sm p-6 overflow-hidden">
-            <div class="mb-4">
-                <h3 class="text-lg font-bold text-textDark">Grafik Pendapatan (7 Hari Terakhir)</h3>
-                <p class="text-xs text-textGray">Statistik pendapatan dari penyewaan yang terselesaikan.</p>
+        <div
+            class="lg:col-span-2 bg-white rounded-2xl border border-inputBorder shadow-sm p-6 overflow-hidden flex flex-col">
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-lg font-bold text-textDark">Grafik Pendapatan</h3>
+                    <p class="text-xs text-textGray">Statistik pendapatan dari penyewaan yang terselesaikan.</p>
+                </div>
+                <div class="shrink-0">
+                    <select wire:model.live="chartDays"
+                        class="text-sm border-inputBorder rounded-lg focus:ring-primary focus:border-primary shadow-sm bg-gray-50 text-textDark cursor-pointer py-1.5 px-3">
+                        <option value="1">Hari Ini</option>
+                        <option value="7">7 Hari Terakhir</option>
+                        <option value="30">30 Hari Terakhir</option>
+                    </select>
+                </div>
             </div>
-            <div class="relative h-64 w-full" x-data="{
+            <div wire:key="revenue-chart-{{ $chartDays }}" class="relative w-full flex-1 min-h-[16rem]" x-data="{
                     initChart() {
-                        const ctx = document.getElementById('revenueChart').getContext('2d');
+                        const ctx = this.$refs.canvas.getContext('2d');
                         new Chart(ctx, {
                             type: 'line',
                             data: {
@@ -235,7 +263,7 @@ new
                         });
                     }
                 }" x-init="initChart()">
-                <canvas id="revenueChart"></canvas>
+                <canvas x-ref="canvas"></canvas>
             </div>
         </div>
 
@@ -245,7 +273,7 @@ new
                 <h3 class="text-lg font-bold text-textDark">Status Armada</h3>
                 <p class="text-xs text-textGray">Distribusi kendaraan berdasarkan status.</p>
             </div>
-            <div class="h-56 relative w-full flex items-center justify-center" x-data="{
+            <div wire:ignore class="h-56 relative w-full flex items-center justify-center" x-data="{
                     initPieChart() {
                         const ctx = document.getElementById('fleetChart').getContext('2d');
                         new Chart(ctx, {
@@ -333,11 +361,11 @@ new
                             </p>
                             <div class="flex items-center gap-2 mt-1">
                                 <span class="text-xs px-2 py-0.5 rounded-full font-medium 
-                                        @if($activity->status_pemesanan === 'menunggu_konfirmasi') bg-orange-100 text-orange-700
-                                        @elseif($activity->status_pemesanan === 'disetujui') bg-blue-100 text-blue-700
-                                        @elseif($activity->status_pemesanan === 'selesai') bg-green-100 text-green-700
-                                        @else bg-red-100 text-red-700
-                                        @endif">
+                                                @if($activity->status_pemesanan === 'menunggu_konfirmasi') bg-orange-100 text-orange-700
+                                                @elseif($activity->status_pemesanan === 'disetujui') bg-blue-100 text-blue-700
+                                                @elseif($activity->status_pemesanan === 'selesai') bg-green-100 text-green-700
+                                                @else bg-red-100 text-red-700
+                                                @endif">
                                     {{ str_replace('_', ' ', Str::title($activity->status_pemesanan)) }}
                                 </span>
                                 <span class="text-[11px] text-textBody">{{ $activity->updated_at->diffForHumans() }}</span>
