@@ -10,6 +10,11 @@ Volt::route('/about-us', 'pages.landingpage.aboutus.index')->name('about');
 // Katalog Routes
 Volt::route('/katalog/mobil', 'pages.landingpage.katalog.mobil.index')->name('katalog.mobil');
 Volt::route('/katalog/motor', 'pages.landingpage.katalog.motor.index')->name('katalog.motor');
+Volt::route('/katalog/{kendaraan}', 'pages.landingpage.katalog.detail')->name('katalog.detail');
+
+// Booking User
+Volt::route('/booking/{kendaraanUnit?}', 'pages.landingpage.booking.index')->middleware(['auth', 'verified'])->name('booking');
+
 Volt::route('/reservasi', 'pages.landingpage.reservasi.index')->middleware(['auth', 'verified'])->name('reservasi');
 
 Volt::route('dashboard', 'pages.dashboard.dashboard')

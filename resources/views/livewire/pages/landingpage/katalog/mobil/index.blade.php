@@ -19,7 +19,7 @@ mount(function () {
 <div class="text-[#2D2D2D] bg-[#F5F6F7] min-h-screen pt-[var(--nav-h)]">
     <!-- Header Hero -->
     <section class="relative bg-white border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 lg:py-24" data-aos="fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 lg:py-32" data-aos="fade-up">
             <h1
                 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#2D2D2D] leading-tight mb-6 tracking-tight">
                 Pilihan Mobil <span class="text-[#2FAE9B]">Terbaik</span>
@@ -61,17 +61,22 @@ mount(function () {
                                 <span class="flex items-center"><i class="fas fa-info-circle mr-1.5 text-[#2FAE9B]"></i>
                                     Nyaman & Terawat</span>
                             </div>
-                            <div class="flex justify-between items-center border-t border-gray-100 pt-4">
+                            <div class="flex justify-between items-center border-t border-gray-100 pt-4 mb-4">
                                 <div>
                                     <span class="text-xs text-[#6C757D] block">Mulai dari</span>
                                     <span class="text-lg font-bold text-[#2FAE9B]">Rp
                                         {{ number_format($mobil->harga_sewa_per_hari, 0, ',', '.') }}<span
                                             class="text-xs font-normal text-gray-500">/hari</span></span>
                                 </div>
-                                <a href="https://wa.me/628123929934?text=Halo%20Gita%20Car%20Rental,%20saya%20tertarik%20menyewa%20Mobil%20{{ urlencode($mobil->nama_kendaraan) }}"
-                                    target="_blank"
-                                    class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white px-5 py-2 rounded-full font-medium text-sm transition flex items-center gap-2 shadow-lg">
-                                    <i class="fab fa-whatsapp"></i> Sewa
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="{{ route('katalog.detail', $mobil->id) }}" wire:navigate
+                                    class="flex-1 py-2 rounded-xl font-medium text-sm text-center bg-gray-100 hover:bg-gray-200 text-[#2D2D2D] transition-colors">
+                                    Lihat Detail
+                                </a>
+                                <a href="{{ route('booking') }}?kendaraan_id={{ $mobil->id }}" wire:navigate
+                                    class="flex-1 py-2 rounded-xl font-medium text-sm text-center bg-[#2FAE9B] hover:bg-[#249584] text-white transition-colors shadow-sm">
+                                    Sewa
                                 </a>
                             </div>
                         </div>
