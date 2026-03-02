@@ -136,11 +136,11 @@
                         <div
                             class="dropdown-menu absolute left-0 mt-4 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
                             <div class="py-1">
-                                <a href="#sewa-mobil"
+                                <a href="{{ route('katalog.mobil') }}"
                                     class="block px-4 py-3 text-sm text-gray-700 hover:bg-soft hover:text-primary transition-colors">
                                     <i class="fas fa-car w-5 mr-1 text-center text-secondary"></i> Sewa Mobil
                                 </a>
-                                <a href="#sewa-motor"
+                                <a href="{{ route('katalog.motor') }}"
                                     class="block px-4 py-3 text-sm text-gray-700 hover:bg-soft hover:text-primary transition-colors">
                                     <i class="fas fa-motorcycle w-5 mr-1 text-center text-secondary"></i> Sewa Motor
                                 </a>
@@ -148,8 +148,10 @@
                         </div>
                     </div>
 
-                    <a href="#about" class="text-gray-800 hover:text-primary font-medium transition-colors">About Us</a>
-                    <a href="#contact" class="text-gray-800 hover:text-primary font-medium transition-colors">Contact
+                    <a href="{{ route('about') }}"
+                        class="text-gray-800 hover:text-primary font-medium transition-colors">About Us</a>
+                    <a href="{{ route('contact') }}"
+                        class="text-gray-800 hover:text-primary font-medium transition-colors">Contact
                         Us</a>
                 </div>
 
@@ -188,18 +190,18 @@
 
                 <div class="border-t border-gray-100 my-1"></div>
                 <div class="px-3 py-2 text-xs font-semibold text-secondary uppercase tracking-wider">Katalog</div>
-                <a href="#sewa-mobil"
+                <a href="{{ route('katalog.mobil') }}"
                     class="block px-3 py-2 pl-6 rounded-md text-base font-medium text-gray-700 hover:bg-soft hover:text-primary"><i
                         class="fas fa-car mr-2 text-secondary"></i> Mobil</a>
-                <a href="#sewa-motor"
+                <a href="{{ route('katalog.motor') }}"
                     class="block px-3 py-2 pl-6 rounded-md text-base font-medium text-gray-700 hover:bg-soft hover:text-primary"><i
                         class="fas fa-motorcycle mr-2 text-secondary"></i> Motor</a>
                 <div class="border-t border-gray-100 my-1"></div>
 
-                <a href="#about"
+                <a href="{{ route('about') }}"
                     class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-soft hover:text-primary">About
                     Us</a>
-                <a href="#contact"
+                <a href="{{ route('contact') }}"
                     class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-soft hover:text-primary">Contact
                     Us</a>
 
@@ -243,17 +245,13 @@
                         armada terawat dan pelayanan terbaik.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#"
+                        <a href="https://www.instagram.com/gitacarrental/" target="_blank"
                             class="w-10 h-10 rounded-full bg-soft flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-colors">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#"
+                        <a href="https://www.facebook.com/gitacarrentalbali/" target="_blank"
                             class="w-10 h-10 rounded-full bg-soft flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-colors">
                             <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#"
-                            class="w-10 h-10 rounded-full bg-soft flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-colors">
-                            <i class="fab fa-tiktok"></i>
                         </a>
                     </div>
                 </div>
@@ -261,13 +259,17 @@
                 <div>
                     <h3 class="font-bold text-lg mb-4 text-[#2D2D2D]">Layanan Kami</h3>
                     <ul class="space-y-3">
-                        <li><a href="#sewa-mobil" class="text-secondary hover:text-primary transition-colors">Sewa
+                        <li><a href="{{ route('katalog.mobil') }}"
+                                class="text-secondary hover:text-primary transition-colors">Sewa
                                 Mobil</a></li>
-                        <li><a href="#sewa-motor" class="text-secondary hover:text-primary transition-colors">Sewa
+                        <li><a href="{{ route('katalog.motor') }}"
+                                class="text-secondary hover:text-primary transition-colors">Sewa
                                 Motor</a></li>
-                        <li><a href="#syarat" class="text-secondary hover:text-primary transition-colors">Syarat &
+                        <li><a href="{{ request()->routeIs('home') ? '#syarat' : url('/#syarat') }}"
+                                class="text-secondary hover:text-primary transition-colors">Syarat &
                                 Ketentuan</a></li>
-                        <li><a href="#faq" class="text-secondary hover:text-primary transition-colors">FAQ</a></li>
+                        <li><a href="{{ request()->routeIs('home') ? '#faq' : url('/#faq') }}"
+                                class="text-secondary hover:text-primary transition-colors">FAQ</a></li>
                     </ul>
                 </div>
 
@@ -281,8 +283,8 @@
                         </li>
                         <li class="flex items-center">
                             <i class="fab fa-whatsapp text-primary mr-3"></i>
-                            <a href="https://wa.me/6287862173133" target="_blank"
-                                class="text-secondary hover:text-primary transition-colors">0878-6217-3133</a>
+                            <a href="https://wa.me/628123929934" target="_blank"
+                                class="text-secondary hover:text-primary transition-colors">0812-3929-934</a>
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-envelope text-primary mr-3"></i>

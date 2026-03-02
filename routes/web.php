@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 Volt::route('/', 'pages.landingpage.home.index')->name('home');
+Volt::route('/contact-us', 'pages.landingpage.contact us.index')->name('contact');
+Volt::route('/about-us', 'pages.landingpage.aboutus.index')->name('about');
+
+// Katalog Routes
+Volt::route('/katalog/mobil', 'pages.landingpage.katalog.mobil.index')->name('katalog.mobil');
+Volt::route('/katalog/motor', 'pages.landingpage.katalog.motor.index')->name('katalog.motor');
 
 Volt::route('dashboard', 'pages.dashboard.dashboard')
     ->middleware(['auth', 'verified'])
