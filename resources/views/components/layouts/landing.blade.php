@@ -268,8 +268,6 @@
                         <li><a href="{{ request()->routeIs('home') ? '#syarat' : url('/#syarat') }}"
                                 class="text-secondary hover:text-primary transition-colors">Syarat &
                                 Ketentuan</a></li>
-                        <li><a href="{{ request()->routeIs('home') ? '#faq' : url('/#faq') }}"
-                                class="text-secondary hover:text-primary transition-colors">FAQ</a></li>
                     </ul>
                 </div>
 
