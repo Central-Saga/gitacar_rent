@@ -32,9 +32,9 @@ mount(function () {
   <section id="hero" class="relative min-h-[90svh] pt-[var(--nav-h)] overflow-hidden flex items-center bg-white">
     <!-- BG Image with Gradient Overlay -->
     <div class="absolute inset-0">
-      <img src="{{ asset('img/hero-canggu.jpg') }}" alt="Sewa Mobil dan Motor Canggu"
-        onerror="this.src='https://images.unsplash.com/photo-1549488344-9ece322bd54b?q=80&w=2070&auto=format&fit=crop'"
-        class="w-full h-full object-cover object-center" fetchpriority="high">
+      <img src="{{ asset('hero-section1.png') }}" alt="Koleksi Mobil dan Motor Gita Car Rental Bali"
+     onerror="this.src='https://images.unsplash.com/photo-1549488344-9ece322bd54b?q=80&w=2070&auto=format&fit=crop'"
+     class="w-full h-full object-cover object-center" fetchpriority="high">
       <div class="absolute inset-0 bg-gradient-to-r from-[#2D2D2D]/90 via-[#2D2D2D]/70 to-transparent"></div>
     </div>
 
@@ -236,7 +236,7 @@ mount(function () {
           </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           @forelse($motors as $motor)
             <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
               data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">

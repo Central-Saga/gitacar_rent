@@ -1,0 +1,78 @@
+services:
+  laravel.test:
+    build:
+      context: ./vendor/laravel/sail/runtimes/8.3
+      dockerfile: Dockerfile
+      args:
+        WWWGROUP: "${WWWGROUP:-1000}"
+    image: sail-8.3/app
+    depends_on:
+      mysql:
+        condition: service_started
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - target: 80
+        published: ${APP_PORT:-8000}
+        protocol: tcp
+      - target: 5173
+        published: ${VITE_PORT:-5173}
+        protocol: tcp
+    environment:
+      WWWUSER: "${WWWUSER:-1000}"
+      LARAVEL_SAIL: 1
+      XDEBUG_MODE: "${SAIL_XDEBUG_MODE:-off}"
+      XDEBUG_CONFIG: "${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}"
+      IGNITION_LOCAL_SITES_PATH: "${PWD}"
+    volumes:
+      - type: bind
+        source: .
+        target: /var/www/html
+      - type: volume
+        source: sail-views
+        target: /var/www/html/storage/framework/views
+      - type: volume
+        source: sail-cache
+        target: /var/www/html/bootstrap/cache
+    networks:
+      sail:
+        ipv4_address: 10.20.0.5
+
+  mysql:
+    image: mysql:8.4
+    ports:
+      - target: 3306
+        published: ${FORWARD_DB_PORT:-3306}
+        protocol: tcp
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "sail"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - type: volume
+        source: sail-mysql
+        target: /var/lib/mysql
+    networks:
+      sail:
+        ipv4_address: 10.20.0.10
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+      retries: 10
+      timeout: 5s
+
+networks:
+  sail:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.0.0/16
+
+volumes:
+  sail-mysql:
+    driver: local
+  sail-views:
+    driver: local
+  sail-cache:
+    driver: local
