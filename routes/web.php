@@ -10,6 +10,7 @@ Volt::route('/about-us', 'pages.landingpage.aboutus.index')->name('about');
 // Katalog Routes
 Volt::route('/katalog/mobil', 'pages.landingpage.katalog.mobil.index')->name('katalog.mobil');
 Volt::route('/katalog/motor', 'pages.landingpage.katalog.motor.index')->name('katalog.motor');
+Volt::route('/reservasi', 'pages.landingpage.reservasi.index')->middleware(['auth', 'verified'])->name('reservasi');
 
 Volt::route('dashboard', 'pages.dashboard.dashboard')
     ->middleware(['auth', 'verified'])

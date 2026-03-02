@@ -158,8 +158,37 @@
                 <!-- Auth Buttons -->
                 <div class="hidden md:flex items-center space-x-4">
                     @auth
-                        <a href="{{ url('/dashboard') }}"
-                            class="text-sm font-semibold text-gray-800 hover:text-primary transition-colors">Dashboard</a>
+                        <div class="relative group py-6">
+                            <button
+                                class="flex items-center gap-2 bg-soft hover:bg-gray-200 text-gray-800 px-3 py-1.5 rounded-full transition-colors focus:outline-none">
+                                <i class="fas fa-user-circle text-lg text-primary"></i>
+                                <span class="text-sm font-semibold">{{ Auth::user()->name ?? 'Pengunjung' }}</span>
+                                <i
+                                    class="fas fa-chevron-down text-[10px] ml-1 text-secondary transition-transform group-hover:rotate-180"></i>
+                            </button>
+                            <div
+                                class="dropdown-menu absolute right-0 mt-4 w-56 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
+                                <div class="py-1">
+                                    <a href="{{ route('home') }}"
+                                        class="block px-4 py-3 text-sm text-gray-700 hover:bg-soft hover:text-primary transition-colors">
+                                        <i class="fas fa-home w-5 mr-3 text-center text-primary"></i> Beranda
+                                    </a>
+                                    <a href="{{ route('reservasi') }}"
+                                        class="block px-4 py-3 text-sm text-gray-700 hover:bg-soft hover:text-primary transition-colors">
+                                        <i class="fas fa-calendar-check w-5 mr-3 text-center text-primary"></i> Reservasi
+                                        Saya
+                                    </a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <form method="POST" action="{{ route('logout') }}" x-data>
+                                        @csrf
+                                        <button type="submit"
+                                            class="w-full text-left block px-4 py-3 text-sm text-red-600 font-medium hover:bg-red-50 transition-colors">
+                                            <i class="fas fa-sign-out-alt w-5 mr-3 text-center"></i> Logout
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     @else
                         <a href="{{ route('login') }}"
                             class="text-sm font-semibold text-gray-800 hover:text-primary transition-colors">Login</a>
@@ -207,8 +236,19 @@
 
                 <div class="border-t border-gray-100 pt-4 pb-2 mt-2">
                     @auth
-                        <a href="{{ url('/dashboard') }}"
-                            class="block w-full text-center px-4 py-3 mb-2 rounded-xl text-base font-semibold text-white bg-primary-gradient">Dashboard</a>
+                        <a href="{{ route('home') }}"
+                            class="block w-full text-left px-4 py-3 mb-2 rounded-xl text-base font-medium text-gray-700 hover:bg-soft"><i
+                                class="fas fa-home w-5 mr-2 text-center text-primary"></i> Beranda</a>
+                        <a href="{{ route('reservasi') }}"
+                            class="block w-full text-left px-4 py-3 mb-2 rounded-xl text-base font-medium text-gray-700 hover:bg-soft"><i
+                                class="fas fa-calendar-check w-5 mr-2 text-center text-primary"></i> Reservasi Saya</a>
+                        <form method="POST" action="{{ route('logout') }}" x-data>
+                            @csrf
+                            <button type="submit"
+                                class="w-full text-left block px-4 py-3 rounded-xl text-base font-medium text-red-600 hover:bg-red-50">
+                                <i class="fas fa-sign-out-alt w-5 mr-2 text-center"></i> Logout
+                            </button>
+                        </form>
                     @else
                         <a href="{{ route('login') }}"
                             class="block w-full text-center px-4 py-3 mb-2 rounded-xl text-base font-semibold text-primary border-2 border-[#2FAE9B] hover:bg-soft">Login</a>
