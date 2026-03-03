@@ -111,10 +111,8 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center gap-2 group">
-                        <div
-                            class="w-10 h-10 rounded-xl bg-primary-gradient flex items-center justify-center text-white font-bold text-xl shadow-lg transition-transform group-hover:scale-105">
-                            G
-                        </div>
+                        <img src="{{ asset('storage/img/logogitacar.png') }}" alt="Gita Car Rental Logo"
+                            class="h-10 w-auto transition-transform group-hover:scale-105" />
                         <span class="font-bold text-xl tracking-tight text-[#2D2D2D]">
                             Gita<span class="text-primary">Car</span>
                         </span>
@@ -274,9 +272,8 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                 <div class="col-span-1 md:col-span-2">
                     <a href="{{ route('home') }}" class="flex items-center gap-2 mb-4">
-                        <div
-                            class="w-8 h-8 rounded-lg bg-primary-gradient flex items-center justify-center text-white font-bold text-lg">
-                            G</div>
+                        <img src="{{ asset('storage/img/logogitacar.png') }}" alt="Gita Car Rental Logo"
+                            class="h-8 w-auto" />
                         <span class="font-bold text-xl tracking-tight text-[#2D2D2D]">Gita<span
                                 class="text-primary">Car</span></span>
                     </a>
