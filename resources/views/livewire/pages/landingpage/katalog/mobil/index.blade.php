@@ -18,19 +18,42 @@ mount(function () {
 
 <div class="text-[#2D2D2D] bg-[#F5F6F7] min-h-screen pt-[var(--nav-h)]">
     <!-- Header Hero -->
-    <section class="relative bg-white border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 lg:py-32" data-aos="fade-up">
-            <h1
-                class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#2D2D2D] leading-tight mb-6 tracking-tight">
-                Pilihan Mobil <span class="text-[#2FAE9B]">Terbaik</span>
-            </h1>
-            <p class="text-lg md:text-xl text-[#6C757D] max-w-2xl font-light leading-relaxed">
-                Temukan mobil yang tepat untuk road trip keliling Bali, perjalanan bisnis, hingga liburan bersama
-                keluarga dengan armada bersih dan terawat.
-            </p>
+    <section class="relative bg-white border-b border-gray-100 overflow-hidden">
+        <!-- Background Decor (Right Block for Desktop) -->
+        <div
+            class="absolute top-0 right-0 h-full w-[38%] bg-gradient-to-br from-[#2FAE9B] to-[#1e9987] rounded-bl-[4rem] hidden lg:block z-0">
         </div>
-        <div class="absolute bottom-0 right-0 opacity-10 pointer-events-none hidden md:block">
-            <i class="fas fa-car-side text-[20rem]"></i>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 lg:py-32 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
+                <!-- Text Content -->
+                <div class="w-full lg:w-1/2 text-center lg:text-left lg:pr-12 order-2 lg:order-1" data-aos="fade-right">
+                    <span
+                        class="inline-block py-1.5 px-4 rounded-full bg-[#EAF8F6] text-[#2FAE9B] text-xs font-bold uppercase tracking-widest mb-6 border border-[#2FAE9B]/20">
+                        Gita Car Rental
+                    </span>
+                    <h1
+                        class="text-4xl md:text-5xl lg:text-[4rem] font-extrabold text-[#2D2D2D] leading-[1.1] mb-6 tracking-tight">
+                        Pilihan Mobil <br class="hidden lg:block"> <span
+                            class="text-[#2FAE9B] lg:text-[#2FAE9B]">Terbaik</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-[#6C757D] font-light leading-relaxed max-w-lg mx-auto lg:mx-0">
+                        Temukan mobil yang tepat untuk road trip keliling Bali, perjalanan bisnis, hingga liburan
+                        bersama keluarga dengan armada bersih dan terawat.
+                    </p>
+                </div>
+
+                <!-- Car Image -->
+                <div class="w-full lg:w-1/2 relative order-1 lg:order-2" data-aos="fade-left">
+                    <!-- Mobile Background Shape -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-[#2FAE9B] to-[#1e9987] rounded-3xl transform scale-y-75 translate-y-12 lg:hidden -z-10 shadow-xl opacity-90">
+                    </div>
+
+                    <img src="{{ asset('storage/img/hrvnew.png') }}" alt="Koleksi Sewa Mobil Hrv"
+                        class="w-full lg:w-[90%] max-w-none relative z-10 drop-shadow-[0_25px_25px_rgba(0,0,0,0.25)] transform lg:-translate-x-8 lg:-mt-8 mt-4">
+                </div>
+            </div>
         </div>
     </section>
 

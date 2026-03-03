@@ -13,7 +13,7 @@ state([
 
 mount(function () {
   $this->mobils = Kendaraan::where('jenis_kendaraan', 'mobil')
-    ->take(3)
+    ->take(4)
     ->get();
   $this->motors = Kendaraan::where('jenis_kendaraan', 'motor')
     ->take(4)
@@ -32,8 +32,8 @@ mount(function () {
   <section id="hero" class="relative min-h-[90svh] pt-[var(--nav-h)] overflow-hidden flex items-center bg-white">
     <!-- BG Image with Gradient Overlay -->
     <div class="absolute inset-0">
-      <img src="{{ asset('img/hero-canggu.jpg') }}" alt="Sewa Mobil dan Motor Canggu"
-        onerror="this.src='https://images.unsplash.com/photo-1549488344-9ece322bd54b?q=80&w=2070&auto=format&fit=crop'"
+      <img src="{{ asset('storage/img/hero_section_home.png') }}" alt="Sewa Mobil dan Motor Canggu"
+        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549488344-9ece322bd54b?q=80&w=2070&auto=format&fit=crop'"
         class="w-full h-full object-cover object-center" fetchpriority="high">
       <div class="absolute inset-0 bg-gradient-to-r from-[#2D2D2D]/90 via-[#2D2D2D]/70 to-transparent"></div>
     </div>
@@ -56,31 +56,34 @@ mount(function () {
 
         <div class="flex flex-col sm:flex-row gap-4 mb-12">
           <a href="#katalog"
-            class="inline-flex justify-center items-center py-3 px-8 text-base font-bold text-white bg-gradient-to-r from-[#2FAE9B] to-[#6ED3C2] hover:from-[#248f7f] hover:to-[#5bc0b0] rounded-full shadow-[0_10px_20px_-10px_rgba(46,174,155,0.6)] transition-all transform hover:-translate-y-1">
+            class="flex w-full sm:w-auto justify-center items-center py-3 px-8 text-base font-bold text-white bg-gradient-to-r from-[#2FAE9B] to-[#6ED3C2] hover:from-[#248f7f] hover:to-[#5bc0b0] rounded-full shadow-[0_10px_20px_-10px_rgba(46,174,155,0.6)] transition-all transform hover:-translate-y-1">
             Lihat Kendaraan
           </a>
           <a href="https://wa.me/628123929934" target="_blank"
-            class="inline-flex justify-center items-center py-3 px-8 text-base font-bold text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-full transition-all transform hover:-translate-y-1">
+            class="flex w-full sm:w-auto justify-center items-center py-3 px-8 text-sm sm:text-base font-bold text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-full transition-all transform hover:-translate-y-1">
             <i class="fab fa-whatsapp text-xl mr-2 text-[#25D366]"></i> Chat WhatsApp Sekarang
           </a>
         </div>
 
         <!-- Trust Points -->
-        <div class="grid grid-cols-3 gap-4 border-t border-white/20 pt-6 mt-4">
-          <div class="flex items-center gap-2">
-            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#6ED3C2]">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-white/20 pt-6 mt-4">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-full bg-white/10 flex flex-shrink-0 items-center justify-center text-[#6ED3C2]">
               <i class="fas fa-check-circle"></i>
             </div>
             <span class="text-white text-sm font-medium">Unit Terawat</span>
           </div>
-          <div class="flex items-center gap-2">
-            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#6ED3C2]">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-full bg-white/10 flex flex-shrink-0 items-center justify-center text-[#6ED3C2]">
               <i class="fas fa-bolt"></i>
             </div>
             <span class="text-white text-sm font-medium">Proses Cepat</span>
           </div>
-          <div class="flex items-center gap-2">
-            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#6ED3C2]">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-full bg-white/10 flex flex-shrink-0 items-center justify-center text-[#6ED3C2]">
               <i class="fas fa-map-marker-alt"></i>
             </div>
             <span class="text-white text-sm font-medium">Lokasi Strategis</span>
@@ -106,7 +109,7 @@ mount(function () {
           data-aos="fade-up" data-aos-delay="100">
           <div
             class="w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-sm mb-6 text-primary text-2xl group-hover:bg-[#2FAE9B] group-hover:text-white transition">
-            <i class="fas fa-sparkles"></i>
+            <i class="fas fa-star border-transparent"></i>
           </div>
           <h4 class="text-xl font-bold text-[#2D2D2D] mb-3">Unit Bersih & Terawat</h4>
           <p class="text-[#6C757D] text-sm leading-relaxed">Kebersihan dan kenyamanan adalah prioritas. Semua kendaraan
@@ -171,11 +174,11 @@ mount(function () {
           </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           @forelse($mobils as $mobil)
             <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
               data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-              <div class="relative h-56 overflow-hidden">
+              <div class="relative h-48 overflow-hidden">
                 @if($mobil->foto)
                   <img src="{{ Storage::url($mobil->foto) }}" alt="{{ $mobil->merk }}"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
@@ -184,29 +187,21 @@ mount(function () {
                     <i class="fas fa-car text-4xl"></i>
                   </div>
                 @endif
-                <div
-                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#2D2D2D] shadow-sm">
-                  {{ ucfirst($mobil->jenis_kendaraan) }}
-                </div>
               </div>
-              <div class="p-6">
-                <div class="flex justify-between items-start mb-2">
-                  <h4 class="text-xl font-bold text-[#2D2D2D]">{{ $mobil->nama_kendaraan }}</h4>
+              <div class="p-5">
+                <h4 class="text-lg font-bold text-[#2D2D2D] mb-1">{{ $mobil->nama_kendaraan }}</h4>
+                <div class="text-xs text-[#6C757D] mb-4 flex gap-3">
+                  <span>{{ ucfirst($mobil->jenis_kendaraan) }}</span>
                 </div>
-                <div class="flex items-center gap-4 text-sm text-[#6C757D] mb-6">
-                  <span class="flex items-center"><i class="fas fa-info-circle mr-1.5 text-primary"></i> Nyaman &
-                    Terawat</span>
-                </div>
-                <div class="flex justify-between items-center border-t border-gray-100 pt-4">
+                <div class="flex justify-between items-center mt-2">
                   <div>
-                    <span class="text-xs text-[#6C757D] block">Mulai dari</span>
                     <span class="text-lg font-bold text-[#2FAE9B]">Rp
-                      {{ number_format($mobil->harga_sewa_per_hari, 0, ',', '.') }}<span
-                        class="text-xs font-normal text-gray-500">/hari</span></span>
+                      {{ number_format($mobil->harga_sewa_per_hari, 0, ',', '.') }}</span>
+                    <span class="text-xs text-gray-500">/hr</span>
                   </div>
                   <a href="https://wa.me/628123929934?text=Halo%20Gita%20Car%20Rental,%20saya%20tertarik%20menyewa%20Mobil%20{{ urlencode($mobil->nama_kendaraan) }}"
                     target="_blank"
-                    class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white px-5 py-2 rounded-full font-medium text-sm transition flex items-center gap-2">
+                    class="bg-[#F5F6F7] hover:bg-[#2FAE9B] hover:text-white text-[#2D2D2D] px-4 py-2 rounded-lg font-semibold text-xs transition-colors flex items-center gap-1.5">
                     <i class="fab fa-whatsapp"></i> Sewa
                   </a>
                 </div>

@@ -48,12 +48,12 @@ title('About Us - Gita Car Rental Bali');
                         class="absolute -inset-4 bg-primary-gradient rounded-3xl transform rotate-3 scale-105 opacity-10">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <img src="{{ asset('img/galeri_landing/IMG-20250925-WA0019.jpg') }}"
-                            onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=2070'"
+                        <img src="{{ asset('storage/img/hrv_about us.jpg') }}"
+                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=2070'"
                             alt="Gita Car Rental Services"
                             class="rounded-2xl w-full h-64 object-cover shadow-lg transform translate-y-8">
-                        <img src="{{ asset('img/galeri_landing/IMG-20250925-WA0034.jpg') }}"
-                            onerror="this.src='https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=2070'"
+                        <img src="{{ asset('storage/img/aboutus_1.jpg') }}"
+                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=2070'"
                             alt="Happy Customers" class="rounded-2xl w-full h-64 object-cover shadow-lg z-10">
                     </div>
                 </div>
@@ -65,7 +65,7 @@ title('About Us - Gita Car Rental Bali');
     <section class="py-20 bg-[#F5F6F7]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
-                class="bg-white rounded-[2rem] p-8 md:p-14 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-12 items-center relative overflow-hidden">
+                class="bg-white rounded-[2rem] p-6 sm:p-8 md:p-14 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-8 md:gap-12 items-center relative overflow-hidden">
                 <!-- Decor -->
                 <div
                     class="absolute top-0 right-0 w-32 h-32 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5">
@@ -104,8 +104,8 @@ title('About Us - Gita Car Rental Bali');
                 <!-- Image block -->
                 <div class="flex-1 w-full" data-aos="fade-up" data-aos-delay="200">
                     <div class="relative rounded-2xl overflow-hidden aspect-[4/3] shadow-lg">
-                        <img src="{{ asset('img/galeri_landing/IMG-20250925-WA0032.jpg') }}"
-                            onerror="this.src='https://images.unsplash.com/photo-1549488344-9ece322bd54b?auto=format&fit=crop&q=80&w=2070'"
+                        <img src="{{ asset('storage/img/armadagitacar.jpg') }}"
+                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549488344-9ece322bd54b?auto=format&fit=crop&q=80&w=2070'"
                             alt="Armada Gita Car Rental" class="w-full h-full object-cover">
                     </div>
                 </div>
