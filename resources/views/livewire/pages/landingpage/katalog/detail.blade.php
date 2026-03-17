@@ -31,7 +31,8 @@ mount(function (Kendaraan $kendaraan) {
                 <div
                     class="rounded-3xl overflow-hidden shadow-sm border border-gray-100 bg-gray-50 aspect-[4/3] flex items-center justify-center relative">
                     @if($kendaraan->foto)
-                        <img src="{{ Storage::url($kendaraan->foto) }}" alt="{{ $kendaraan->nama_kendaraan }}"
+                        <img src="{{ $kendaraan->foto_url }}" alt="{{ $kendaraan->nama_kendaraan }}"
+                            onerror="this.onerror=null; this.src='{{ $kendaraan->placeholder_foto_url }}';"
                             class="w-full h-full object-cover">
                     @else
                         <i

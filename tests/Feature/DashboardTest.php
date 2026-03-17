@@ -22,6 +22,13 @@ class DashboardTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->get(route('dashboard'));
-        $response->assertOk();
+        $response
+            ->assertOk()
+            ->assertSeeText('Dashboard Operasional')
+            ->assertSeeText('Grafik Pendapatan')
+            ->assertDontSeeText('Total Unit Aktif')
+            ->assertDontSeeText('Sedang Disewa')
+            ->assertDontSeeText('Menunggu Verifikasi')
+            ->assertDontSeeText('Pendapatan (Bulan Ini)');
     }
 }

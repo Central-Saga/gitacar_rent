@@ -320,8 +320,9 @@ $save = function () {
                             class="mb-6 bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden flex flex-col sm:flex-row shadow-sm">
                             <div class="w-full sm:w-48 bg-gray-200 flex-shrink-0 relative">
                                 @if($selected_unit->kendaraan->foto)
-                                    <img src="{{ Storage::url($selected_unit->kendaraan->foto) }}"
+                                    <img src="{{ $selected_unit->kendaraan->foto_url }}"
                                         alt="{{ $selected_unit->kendaraan->nama_kendaraan }}"
+                                        onerror="this.onerror=null; this.src='{{ $selected_unit->kendaraan->placeholder_foto_url }}';"
                                         class="w-full h-full object-cover">
                                 @else
                                     <div class="absolute inset-0 flex items-center justify-center text-gray-400">

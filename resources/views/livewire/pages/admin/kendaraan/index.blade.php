@@ -146,8 +146,9 @@ $delete = function (Kendaraan $kendaraan) {
                                                 <div
                                                     class="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-xl overflow-hidden border border-gray-200 flex items-center justify-center">
                                                     @if($kendaraan->foto)
-                                                        <img src="{{ Storage::url($kendaraan->foto) }}"
+                                                        <img src="{{ $kendaraan->foto_url }}"
                                                             alt="{{ $kendaraan->nama_kendaraan }}"
+                                                            onerror="this.onerror=null; this.src='{{ $kendaraan->placeholder_foto_url }}';"
                                                             class="h-full w-full object-cover">
                                                     @else
                                                         <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor"

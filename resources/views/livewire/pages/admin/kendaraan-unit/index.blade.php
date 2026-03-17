@@ -154,8 +154,9 @@ $updateStatus = function (KendaraanUnit $unit, $status) {
                                             <div
                                                 class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
                                                 @if($unit->kendaraan->foto)
-                                                    <img src="{{ Storage::url($unit->kendaraan->foto) }}"
+                                                    <img src="{{ $unit->kendaraan->foto_url }}"
                                                         alt="{{ $unit->kendaraan->nama_kendaraan }}"
+                                                        onerror="this.onerror=null; this.src='{{ $unit->kendaraan->placeholder_foto_url }}';"
                                                         class="w-full h-full object-cover">
                                                 @else
                                                     <div class="w-full h-full flex items-center justify-center text-gray-400">

@@ -66,7 +66,8 @@ mount(function () {
                         data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                         <div class="relative h-56 overflow-hidden">
                             @if($motor->foto)
-                                <img src="{{ Storage::url($motor->foto) }}" alt="{{ $motor->nama_kendaraan }}"
+                                <img src="{{ $motor->foto_url }}" alt="{{ $motor->nama_kendaraan }}"
+                                    onerror="this.onerror=null; this.src='{{ $motor->placeholder_foto_url }}';"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             @else
                                 <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">

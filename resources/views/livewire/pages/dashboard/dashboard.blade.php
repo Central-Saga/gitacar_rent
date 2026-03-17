@@ -21,20 +21,6 @@ new
         $startOfMonth = $now->copy()->startOfMonth();
         $endOfMonth = $now->copy()->endOfMonth();
 
-        // 1. Total Unit Aktif
-        $totalUnitAktif = KendaraanUnit::where('status_unit', '!=', 'nonaktif')->count();
-
-        // 2. Unit Sedang Disewa
-        $unitSedangDisewa = KendaraanUnit::where('status_unit', 'disewa')->count();
-
-        // 3. Pemesanan Menunggu Konfirmasi
-        $menungguKonfirmasi = Pemesanan::where('status_pemesanan', 'menunggu_konfirmasi')->count();
-
-        // 4. Pendapatan Bulan Ini (Status Selesai pada bulan ini)
-        $pendapatanBulanIni = Pemesanan::whereIn('status_pemesanan', ['selesai'])
-            ->whereBetween('updated_at', [$startOfMonth, $endOfMonth])
-            ->sum(DB::raw('total_harga + denda'));
-
         // Data for Revenue Chart
         $revenueDates = [];
         $revenueData = [];
@@ -90,10 +76,6 @@ new
             ->get();
 
         return [
-            'totalUnitAktif' => $totalUnitAktif,
-            'unitSedangDisewa' => $unitSedangDisewa,
-            'menungguKonfirmasi' => $menungguKonfirmasi,
-            'pendapatanBulanIni' => $pendapatanBulanIni,
             'revenueDates' => json_encode($revenueDates),
             'revenueData' => json_encode($revenueData),
             'fleetStatusData' => json_encode(array_values($fleetStatusData)),
@@ -115,95 +97,6 @@ new
             <p class="text-sm text-textGray font-medium mt-1">Ringkasan hari ini,
                 {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
             </p>
-        </div>
-    </div>
-
-    <!-- 1. Baris Pertama (4 Card Utama) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Total Unit Aktif -->
-        <div
-            class="bg-white rounded-2xl border border-inputBorder p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <span class="text-textGray text-xs font-bold uppercase tracking-wider">Total Unit Aktif</span>
-                <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-                    </svg>
-                </div>
-            </div>
-            <div>
-                <span class="text-3xl font-black text-textDark">{{ $totalUnitAktif }}</span>
-                <p class="text-xs text-textGray mt-1">Kapasitas armada saat ini</p>
-            </div>
-        </div>
-
-        <!-- Unit Sedang Disewa -->
-        <div
-            class="bg-white rounded-2xl border border-inputBorder p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <span class="text-textGray text-xs font-bold uppercase tracking-wider">Sedang Disewa</span>
-                <div class="p-2 bg-accentYellow/20 text-accentYellow rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.438 4.438 0 0 0 2.946-2.946 4.493 4.493 0 0 0 4.306-1.758q-1.996 1.405-3.495 1.405t-3.496-1.405q1.405-1.995 1.405-3.495t-1.405-3.495m-4.509 4.51c-.021-.104-.041-.208-.06-.312m2.448 2.448a15.09 15.09 0 0 1-2.448-2.448m7.38-5.84a6 6 0 0 0-5.84-7.38v4.8" />
-                    </svg>
-                </div>
-            </div>
-            <div>
-                <span class="text-3xl font-black text-textDark">{{ $unitSedangDisewa }}</span>
-                <p class="text-xs text-textGray mt-1">Kendaraan berjalan</p>
-            </div>
-        </div>
-
-        <!-- Menunggu Konfirmasi -->
-        <div
-            class="bg-white rounded-2xl border border-inputBorder p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-            @if($menungguKonfirmasi > 0)
-                <div class="absolute top-0 right-0 w-16 h-16 pointer-events-none">
-                    <div
-                        class="absolute top-4 -right-6 bg-red-500 text-white text-[10px] font-bold py-1 px-8 rotate-45 transform origin-center shadow-sm">
-                        PERLU CEK
-                    </div>
-                </div>
-            @endif
-            <div class="flex items-center justify-between mb-4">
-                <span class="text-textGray text-xs font-bold uppercase tracking-wider">Menunggu Verifikasi</span>
-                <div class="p-2 bg-orange-50 text-orange-600 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
-                </div>
-            </div>
-            <div>
-                <span
-                    class="text-3xl font-black {{ $menungguKonfirmasi > 0 ? 'text-orange-600' : 'text-textDark' }}">{{ $menungguKonfirmasi }}</span>
-                <p class="text-xs text-textGray mt-1">Booking baru</p>
-            </div>
-        </div>
-
-        <!-- Pendapatan Bulan Ini -->
-        <div
-            class="bg-white rounded-2xl border border-inputBorder p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <span class="text-textGray text-xs font-bold uppercase tracking-wider">Pendapatan (Bulan Ini)</span>
-                <div class="p-2 bg-primary/20 text-primaryDark rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
-                </div>
-            </div>
-            <div>
-                <span class="text-3xl font-black text-textDark">Rp
-                    {{ number_format($pendapatanBulanIni, 0, ',', '.') }}</span>
-                <p class="text-xs text-primary mt-1 font-medium">Transaksi Selesai</p>
-            </div>
         </div>
     </div>
 

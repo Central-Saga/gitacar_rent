@@ -5,35 +5,24 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         $this->call([
             RolesAndPermissionsSeeder::class,
-            PemesananSeeder::class,
         ]);
 
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-        ])->assignRole('admin');
+        $admin = User::query()->updateOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'admin',
+                'password' => Hash::make('password'),
+            ],
+        );
 
-        User::factory()->create([
-            'name' => 'Pelanggan User',
-            'email' => 'pelanggan@example.com',
-        ])->assignRole('pelanggan');
-
-        User::factory()->create([
-            'name' => 'Manajemen User',
-            'email' => 'manajemen@example.com',
-        ])->assignRole('manajemen');
-
+        $admin->syncRoles(['admin']);
     }
 }

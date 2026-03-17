@@ -196,7 +196,7 @@ $save = function() {
                                             <img src="{{ $foto->temporaryUrl() }}" class="mx-auto h-48 w-auto rounded-lg object-cover mb-4">
                                             <p class="text-sm font-medium text-green-600 mb-2">Foto siap diupload.</p>
                                         @elseif ($existing_foto)
-                                            <img src="{{ Storage::url($existing_foto) }}" class="mx-auto h-48 w-auto rounded-lg object-cover mb-4 border border-gray-200 shadow-sm">
+                                            <img src="{{ $kendaraan->foto_url ?? $kendaraan->placeholder_foto_url }}" class="mx-auto h-48 w-auto rounded-lg object-cover mb-4 border border-gray-200 shadow-sm" onerror="this.onerror=null; this.src='{{ $kendaraan->placeholder_foto_url }}';">
                                             <p class="text-sm font-medium text-gray-500 mb-2">Foto saat ini.</p>
                                         @else
                                             <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">

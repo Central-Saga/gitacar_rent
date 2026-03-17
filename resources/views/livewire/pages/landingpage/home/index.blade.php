@@ -180,7 +180,8 @@ mount(function () {
               data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
               <div class="relative h-48 overflow-hidden">
                 @if($mobil->foto)
-                  <img src="{{ Storage::url($mobil->foto) }}" alt="{{ $mobil->merk }}"
+                  <img src="{{ $mobil->foto_url }}" alt="{{ $mobil->merk }}"
+                    onerror="this.onerror=null; this.src='{{ $mobil->placeholder_foto_url }}';"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 @else
                   <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
@@ -237,7 +238,8 @@ mount(function () {
               data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
               <div class="relative h-48 overflow-hidden">
                 @if($motor->foto)
-                  <img src="{{ Storage::url($motor->foto) }}" alt="{{ $motor->merk }}"
+                  <img src="{{ $motor->foto_url }}" alt="{{ $motor->merk }}"
+                    onerror="this.onerror=null; this.src='{{ $motor->placeholder_foto_url }}';"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 @else
                   <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
