@@ -5,20 +5,24 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('password'),
+        $this->call([
+            RolesAndPermissionsSeeder::class,
         ]);
 
-        User::factory()->count(10)->create();
+        $admin = User::query()->updateOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'admin',
+                'password' => Hash::make('password'),
+            ],
+        );
+
+        $admin->syncRoles(['admin']);
     }
 }

@@ -73,7 +73,7 @@ class TwoFactorAuthenticationTest extends TestCase
 
         $this->actingAs($user);
 
-        $component = Livewire::test('pages::settings.two-factor');
+        $component = Livewire::test('pages.settings.two-factor');
 
         $component->assertSet('twoFactorEnabled', false);
 

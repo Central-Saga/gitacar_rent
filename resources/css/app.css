@@ -23,6 +23,17 @@
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
+    --color-primary: #2FAE9B;
+    --color-primaryLight: #6ED3C2;
+    --color-primaryDark: #279E8C;
+    --color-backgroundSoft: #F5F6F7;
+    --color-inputBg: #E9ECEF;
+    --color-inputBorder: #DDE2E6;
+    --color-textDark: #2D2D2D;
+    --color-textGray: #6C757D;
+    --color-accentYellow: #F4C542;
+    --color-accentCoral: #E56B7A;
+
     --color-accent: var(--color-neutral-800);
     --color-accent-content: var(--color-neutral-800);
     --color-accent-foreground: var(--color-white);

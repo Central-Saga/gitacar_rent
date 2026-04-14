@@ -3,6 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
@@ -20,7 +21,29 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
+        $this->seed(RolesAndPermissionsSeeder::class);
+
         $user = User::factory()->create();
+        $user->assignRole('pelanggan');
+
+        $response = $this->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('home', absolute: false));
+
+        $this->assertAuthenticated();
+    }
+
+    public function test_admin_users_are_redirected_to_dashboard_after_login(): void
+    {
+        $this->seed(RolesAndPermissionsSeeder::class);
+
+        $user = User::factory()->create();
+        $user->assignRole('admin');
 
         $response = $this->post(route('login.store'), [
             'email' => $user->email,
