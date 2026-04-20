@@ -15,6 +15,8 @@ Volt::route('/katalog/{kendaraan}', 'landingpage.katalog.detail')->name('katalog
 // Booking User
 Volt::route('/booking/{kendaraanUnit?}', 'landingpage.booking.index')->middleware(['auth', 'verified'])->name('booking');
 
+Volt::route('/pembayaran/{id}', 'landingpage.pembayaran.index')->middleware(['auth', 'verified'])->name('pembayaran');
+
 Volt::route('/reservasi', 'landingpage.reservasi.index')->middleware(['auth', 'verified'])->name('reservasi');
 
 Volt::route('dashboard', 'dashboard.dashboard')

@@ -24,7 +24,6 @@ state([
     'waktu_selesai' => '',
     'status_pemesanan' => 'menunggu_konfirmasi',
     'catatan' => '',
-    'bukti_pembayaran' => null,
     'foto_ktp' => null,
 
     // Auto calculated
@@ -49,7 +48,6 @@ rules([
     'waktu_mulai' => 'required|date|after_or_equal:today',
     'waktu_selesai' => 'required|date|after:waktu_mulai',
     'catatan' => 'nullable|string',
-    'bukti_pembayaran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
     'foto_ktp' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
 ]);
 
@@ -242,8 +240,10 @@ $save = function () {
 
     $errorMessage = null;
 
+    $pemesananId = null;
+
     try {
-        DB::transaction(function () use ($validated, &$errorMessage) {
+        DB::transaction(function () use ($validated, &$errorMessage, &$pemesananId) {
             $unit = KendaraanUnit::where('id', $this->kendaraan_unit_id)
                 ->lockForUpdate()
                 ->first();
@@ -263,12 +263,7 @@ $save = function () {
             }
 
             $pemesanan = Pemesanan::create($validated);
-
-            if ($this->bukti_pembayaran) {
-                $pemesanan->addMedia($this->bukti_pembayaran->getRealPath())
-                    ->usingName($this->bukti_pembayaran->getClientOriginalName())
-                    ->toMediaCollection('bukti_pembayaran');
-            }
+            $pemesananId = $pemesanan->id;
 
             $unit->update(['status_unit' => 'dibooking']);
         });
@@ -282,8 +277,8 @@ $save = function () {
         return;
     }
 
-    session()->flash('success', 'Pemesanan berhasil dibuat! Anda dapat melihat status pesanan Anda di halaman ini.');
-    $this->redirectRoute('reservasi', navigate: true);
+    session()->flash('success', 'Pemesanan berhasil dibuat! Silakan lanjutkan ke pembayaran.');
+    $this->redirectRoute('pembayaran', ['id' => $pemesananId], navigate: true);
 };
 
 ?>
@@ -548,97 +543,7 @@ $save = function () {
                             </template>
                         </div>
 
-                        <!-- Bukti Pembayaran -->
-                        <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100"
-                            x-data="{ buktiModalOpen: false, buktiPreviewUrl: '' }">
-                            <h3 class="text-xl font-bold text-[#2D2D2D] mb-6 flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 rounded-xl bg-[#2FAE9B]/10 flex items-center justify-center border border-[#2FAE9B]/20 text-[#2FAE9B]">
-                                    <i class="fas fa-receipt"></i>
-                                </div>
-                                Bukti Pembayaran
-                            </h3>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Upload File <span
-                                        class="text-xs text-gray-400 font-normal">(Disarankan)</span></label>
 
-                                @if ($bukti_pembayaran)
-                                    {{-- Preview uploaded bukti --}}
-                                    <div class="mt-1 rounded-xl border border-gray-200 overflow-hidden bg-white">
-                                        <div @click="buktiPreviewUrl = '{{ $bukti_pembayaran->temporaryUrl() }}'; buktiModalOpen = true"
-                                            class="block hover:opacity-90 transition-opacity cursor-pointer">
-                                            <img src="{{ $bukti_pembayaran->temporaryUrl() }}"
-                                                alt="Preview Bukti Pembayaran" class="w-full object-cover max-h-48">
-                                        </div>
-                                        <div
-                                            class="flex items-center justify-between px-4 py-3 bg-gray-50 border-t border-gray-100">
-                                            <span
-                                                class="text-xs text-gray-500 font-medium truncate">{{ $bukti_pembayaran->getClientOriginalName() }}</span>
-                                            <label
-                                                class="cursor-pointer text-xs text-[#2FAE9B] hover:text-[#258e7f] font-semibold ml-3 whitespace-nowrap">
-                                                Ganti File
-                                                <input wire:model="bukti_pembayaran" type="file" class="sr-only"
-                                                    accept=".jpg,.jpeg,.png,.pdf">
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mt-1 flex items-center gap-1">
-                                        <i class="fas fa-info-circle"></i> Klik gambar untuk melihat ukuran penuh
-                                    </p>
-                                @else
-                                    <div
-                                        class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors relative">
-                                        <div class="space-y-1 text-center">
-                                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
-                                            <div class="flex text-sm justify-center">
-                                                <label
-                                                    class="relative cursor-pointer bg-white px-3 py-1.5 rounded-md font-medium text-[#2FAE9B] hover:text-[#258e7f] border border-[#2FAE9B]/30 focus-within:outline-none">
-                                                    <span>Klik untuk Upload</span>
-                                                    <input wire:model="bukti_pembayaran" type="file" class="sr-only"
-                                                        accept=".jpg,.jpeg,.png,.pdf">
-                                                </label>
-                                            </div>
-                                            <p class="text-xs text-gray-500 mt-2">JPG, PNG, PDF batas maksimal 2MB</p>
-                                        </div>
-                                    </div>
-                                @endif
-                                @error('bukti_pembayaran') <span
-                                class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
-                            </div>
-
-                            {{-- Bukti Pembayaran Preview Modal --}}
-                            <template x-teleport="body">
-                                <div x-show="buktiModalOpen" style="display: none;"
-                                    class="fixed inset-0 z-[999] flex items-center justify-center bg-black/90 backdrop-blur-sm"
-                                    x-transition:enter="transition ease-out duration-300"
-                                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                                    x-transition:leave="transition ease-in duration-200"
-                                    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                                    <div
-                                        class="relative w-full max-w-5xl h-full flex flex-col items-center justify-center p-4">
-                                        <button type="button" @click="buktiModalOpen = false"
-                                            class="absolute top-6 right-6 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full p-2 transition-all cursor-pointer z-[1000]">
-                                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                        <img :src="buktiPreviewUrl" @click.away="buktiModalOpen = false"
-                                            class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl mb-6 relative z-50">
-                                        <div class="flex gap-4 relative z-50">
-                                            <a :href="buktiPreviewUrl" download
-                                                class="px-6 py-3 bg-[#2FAE9B] text-white font-bold rounded-xl shadow-sm hover:bg-[#258e7f] transition-colors flex items-center gap-2">
-                                                <i class="fas fa-download"></i> Download
-                                            </a>
-                                            <button type="button" @click="buktiModalOpen = false"
-                                                class="px-6 py-3 bg-gray-700 text-white font-bold rounded-xl hover:bg-gray-800 border border-gray-600 transition-colors cursor-pointer">
-                                                Tutup
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
                     </div>
 
                     <!-- Right: Pricing & Promo Summary -->
