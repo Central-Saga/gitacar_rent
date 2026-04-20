@@ -238,47 +238,10 @@ $save = function () {
     $validated['promo_id'] = $this->promo_id;
     $validated['total_diskon'] = $this->total_diskon;
 
-    $errorMessage = null;
+    session(['pending_booking' => $validated]);
 
-    $pemesananId = null;
-
-    try {
-        DB::transaction(function () use ($validated, &$errorMessage, &$pemesananId) {
-            $unit = KendaraanUnit::where('id', $this->kendaraan_unit_id)
-                ->lockForUpdate()
-                ->first();
-
-            if (!$unit || $unit->status_unit !== 'tersedia') {
-                $errorMessage = 'Unit kendaraan sudah tidak tersedia. Silakan pilih unit lain.';
-                return;
-            }
-
-            if ($validated['promo_id']) {
-                $promo = Promo::where('id', $validated['promo_id'])->lockForUpdate()->first();
-                if (!$promo || !$promo->isValid()) {
-                    $errorMessage = 'Kode promo tidak valid atau kuota habis.';
-                    return;
-                }
-                $promo->increment('kuota_terpakai');
-            }
-
-            $pemesanan = Pemesanan::create($validated);
-            $pemesananId = $pemesanan->id;
-
-            $unit->update(['status_unit' => 'dibooking']);
-        });
-
-        if ($errorMessage) {
-            $this->addError('kendaraan_unit_id', $errorMessage);
-            return;
-        }
-    } catch (\Exception $e) {
-        $this->addError('kendaraan_unit_id', 'Terjadi kesalahan sistem: ' . $e->getMessage());
-        return;
-    }
-
-    session()->flash('success', 'Pemesanan berhasil dibuat! Silakan lanjutkan ke pembayaran.');
-    $this->redirectRoute('pembayaran', ['id' => $pemesananId], navigate: true);
+    session()->flash('success', 'Formulir booking tersimpan. Silakan pilih metode pembayaran.');
+    $this->redirectRoute('pembayaran', navigate: true);
 };
 
 ?>
