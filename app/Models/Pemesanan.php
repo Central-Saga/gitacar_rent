@@ -18,6 +18,8 @@ class Pemesanan extends Model implements HasMedia
         'waktu_mulai',
         'waktu_selesai',
         'waktu_kembali',
+        'tipe_harga',
+        'harga_sewa',
         'harga_per_hari',
         'total_diskon',
         'total_harga',

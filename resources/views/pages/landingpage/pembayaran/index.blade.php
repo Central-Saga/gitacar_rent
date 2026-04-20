@@ -240,12 +240,31 @@ $submit = function () {
 
                                 <div class="pt-4 border-t border-gray-100 space-y-3 pb-4">
                                     <div class="flex justify-between items-center text-sm">
-                                        <span class="text-gray-600">Durasi Sewa</span>
-                                        <span class="font-bold">{{ \Carbon\Carbon::parse($bookingData['waktu_mulai'])->diffInDays(\Carbon\Carbon::parse($bookingData['waktu_selesai'])) ?: 1 }} Hari</span>
+                                        <span class="text-gray-600">Berdasarkan Harga</span>
+                                        <span class="font-bold capitalize">{{ $bookingData['tipe_harga'] ?? 'harian' }}</span>
                                     </div>
                                     <div class="flex justify-between items-center text-sm">
-                                        <span class="text-gray-600">Harga per Hari</span>
-                                        <span class="font-bold">Rp {{ number_format($bookingData['harga_per_hari'], 0, ',', '.') }}</span>
+                                        <span class="text-gray-600">Durasi Sewa</span>
+                                        <div class="text-right">
+                                            <span class="font-bold">
+                                                @php
+                                                    $durasi = \Carbon\Carbon::parse($bookingData['waktu_mulai'])->diffInDays(\Carbon\Carbon::parse($bookingData['waktu_selesai'])) ?: 1;
+                                                    $tipe = $bookingData['tipe_harga'] ?? 'harian';
+                                                @endphp
+                                                @if($tipe === 'bulanan')
+                                                    {{ ceil($durasi / 30) }} Bulan
+                                                @elseif($tipe === 'mingguan')
+                                                    {{ ceil($durasi / 7) }} Minggu
+                                                @else
+                                                    {{ $durasi }} Hari
+                                                @endif
+                                            </span>
+                                            <p class="text-[10px] text-gray-400 font-medium">Total {{ $durasi }} Hari</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center text-sm">
+                                        <span class="text-gray-600">Harga Sewa</span>
+                                        <span class="font-bold">Rp {{ number_format($bookingData['harga_sewa'] ?? $bookingData['harga_per_hari'], 0, ',', '.') }}</span>
                                     </div>
                                     @if(isset($bookingData['total_diskon']) && $bookingData['total_diskon'] > 0)
                                     <div class="flex justify-between items-center text-sm">

@@ -17,6 +17,8 @@ return new class extends Migration {
             $table->dateTime('waktu_mulai');
             $table->dateTime('waktu_selesai');
             $table->dateTime('waktu_kembali')->nullable();
+            $table->enum('tipe_harga', ['harian', 'mingguan', 'bulanan'])->default('harian');
+            $table->integer('harga_sewa'); // This will store the price per unit (day/week/month)
             $table->integer('harga_per_hari');
             $table->integer('total_harga');
             $table->integer('denda_per_hari')->default(0);

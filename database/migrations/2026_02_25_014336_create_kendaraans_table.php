@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->string('nama_kendaraan');
             $table->enum('jenis_kendaraan', ['motor', 'mobil']);
             $table->integer('harga_sewa_per_hari');
+            $table->integer('harga_sewa_per_minggu')->nullable();
+            $table->integer('harga_sewa_per_bulan')->nullable();
             $table->text('deskripsi')->nullable();
             $table->string('foto')->nullable();
             $table->timestamps();

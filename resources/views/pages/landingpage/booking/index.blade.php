@@ -30,6 +30,9 @@ state([
     'harga_per_hari' => 0,
     'total_harga' => 0,
     'durasi' => 0,
+    'tipe_harga' => 'harian',
+    'harga_sewa' => 0,
+    'preset_durasi' => '',
 
     // Promo
     'input_kode_promo' => '',
@@ -115,10 +118,31 @@ with(function () {
     ];
 });
 
+$updatedPresetDurasi = function ($value) {
+    if (!$value) return;
+    $this->setDurasiInstan($value);
+};
+
+$setDurasiInstan = function ($type) {
+    if (!$this->waktu_mulai) {
+        $this->waktu_mulai = now()->addDay()->setHour(9)->setMinute(0)->format('Y-m-d\TH:i');
+    }
+    
+    $start = Carbon::parse($this->waktu_mulai);
+    if ($type === 'mingguan') {
+        $this->waktu_selesai = $start->copy()->addWeek()->format('Y-m-d\TH:i');
+    } elseif ($type === 'bulanan') {
+        $this->waktu_selesai = $start->copy()->addMonth()->format('Y-m-d\TH:i');
+    }
+    
+    $this->calculatePricing();
+};
+
 $calculatePricing = function () {
     if (!$this->kendaraan_unit_id || !$this->waktu_mulai || !$this->waktu_selesai) {
         $this->total_harga = 0;
         $this->durasi = 0;
+        $this->selected_unit = null;
         return;
     }
 
@@ -135,8 +159,27 @@ $calculatePricing = function () {
             $this->selected_unit = $unit;
             $diffHours = $start->diffInHours($end);
             $this->durasi = max(1, (int) ceil($diffHours / 24));
-            $this->harga_per_hari = $unit->kendaraan->harga_sewa_per_hari;
-            $totalHargaAwal = $this->harga_per_hari * $this->durasi;
+            
+            $kendaraan = $unit->kendaraan;
+            
+            // Logic for price tier
+            if ($this->durasi >= 30 && $kendaraan->harga_sewa_per_bulan) {
+                $this->tipe_harga = 'bulanan';
+                $this->harga_sewa = $kendaraan->harga_sewa_per_bulan;
+                $jumlahBulan = ceil($this->durasi / 30);
+                $totalHargaAwal = $this->harga_sewa * $jumlahBulan;
+            } elseif ($this->durasi >= 7 && $kendaraan->harga_sewa_per_minggu) {
+                $this->tipe_harga = 'mingguan';
+                $this->harga_sewa = $kendaraan->harga_sewa_per_minggu;
+                $jumlahMinggu = ceil($this->durasi / 7);
+                $totalHargaAwal = $this->harga_sewa * $jumlahMinggu;
+            } else {
+                $this->tipe_harga = 'harian';
+                $this->harga_sewa = $kendaraan->harga_sewa_per_hari;
+                $totalHargaAwal = $this->harga_sewa * $this->durasi;
+            }
+
+            $this->harga_per_hari = $this->harga_sewa;
 
             if ($this->promo_id) {
                 $promo = Promo::find($this->promo_id);
@@ -165,10 +208,12 @@ $updatedKendaraanUnitId = function () {
 };
 
 $updatedWaktuMulai = function () {
+    $this->preset_durasi = '';
     $this->calculatePricing();
 };
 
 $updatedWaktuSelesai = function () {
+    $this->preset_durasi = '';
     $this->calculatePricing();
 };
 
@@ -209,6 +254,11 @@ $removePromo = function () {
 };
 
 $save = function () {
+    if (!$this->foto_ktp && !$this->existing_ktp_url) {
+        $this->addError('foto_ktp', 'Foto KTP / Passport wajib diunggah untuk verifikasi.');
+        return;
+    }
+
     $validated = $this->validate();
 
     if (!$this->pelanggan_id) {
@@ -232,9 +282,11 @@ $save = function () {
     // Set auto values
     $validated['pelanggan_id'] = $this->pelanggan_id;
     $validated['status_pemesanan'] = 'menunggu_konfirmasi';
+    $validated['tipe_harga'] = $this->tipe_harga;
+    $validated['harga_sewa'] = $this->harga_sewa;
     $validated['harga_per_hari'] = $this->harga_per_hari;
     $validated['total_harga'] = $this->total_harga;
-    $validated['denda_per_hari'] = $this->harga_per_hari;
+    $validated['denda_per_hari'] = $this->selected_unit->kendaraan->harga_sewa_per_hari; // Denda always per hari
     $validated['promo_id'] = $this->promo_id;
     $validated['total_diskon'] = $this->total_diskon;
 
@@ -296,9 +348,23 @@ $save = function () {
                                         class="bg-gray-200 px-2.5 py-1 rounded-md font-medium text-[#2D2D2D]">{{ $selected_unit->nomor_plat }}</span>
                                     <span>Tahun {{ $selected_unit->tahun }}</span>
                                 </div>
-                                <div class="text-[#2FAE9B] font-bold">
-                                    Rp {{ number_format($selected_unit->kendaraan->harga_sewa_per_hari, 0, ',', '.') }}<span
-                                        class="text-xs text-gray-500 font-normal">/hari</span>
+                                <div class="flex flex-col gap-1">
+                                    <div class="text-[#2FAE9B] font-bold">
+                                        Rp {{ number_format($selected_unit->kendaraan->harga_sewa_per_hari, 0, ',', '.') }}<span
+                                            class="text-xs text-gray-500 font-normal">/hari</span>
+                                    </div>
+                                    @if($selected_unit->kendaraan->harga_sewa_per_minggu)
+                                        <div class="text-[#2FAE9B] font-bold text-sm">
+                                            Rp {{ number_format($selected_unit->kendaraan->harga_sewa_per_minggu, 0, ',', '.') }}<span
+                                                class="text-xs text-gray-500 font-normal">/minggu</span>
+                                        </div>
+                                    @endif
+                                    @if($selected_unit->kendaraan->harga_sewa_per_bulan)
+                                        <div class="text-[#2FAE9B] font-bold text-sm">
+                                            Rp {{ number_format($selected_unit->kendaraan->harga_sewa_per_bulan, 0, ',', '.') }}<span
+                                                class="text-xs text-gray-500 font-normal">/bulan</span>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="p-6 flex items-center justify-center bg-gray-50 border-l border-gray-200/50">
@@ -345,22 +411,41 @@ $save = function () {
                         Waktu Sewa
                     </h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-6">
+                        <!-- Instant Selection (Styled like Vehicle Selector) -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Waktu Pengambilan <span
-                                    class="text-red-500">*</span></label>
-                            <input wire:model.live="waktu_mulai" type="datetime-local"
-                                class="block w-full px-5 py-4 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:ring-2 focus:ring-[#2FAE9B]/50 border-transparent focus:bg-white outline-none transition-all">
-                            @error('waktu_mulai') <span
-                            class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Instruksi Cepat (Pilih Paket Durasi)</label>
+                            <div class="relative">
+                                <select wire:model.live="preset_durasi"
+                                    class="block w-full px-5 py-4 appearance-none rounded-xl bg-gray-50 border border-gray-200 text-sm focus:ring-2 focus:ring-[#2FAE9B]/50 border-transparent focus:bg-white outline-none transition-all cursor-pointer font-medium text-gray-600">
+                                    <option value="">-- Pilih Durasi Instan (Klik untuk memilih) --</option>
+                                    <option value="mingguan">Sewa 1 Minggu (Otomatis atur tanggal pengembalian)</option>
+                                    <option value="bulanan">Sewa 1 Bulan (Otomatis atur tanggal pengembalian)</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5 text-[#2FAE9B]">
+                                    <i class="fas fa-magic text-sm"></i>
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-2 ml-1 italic">* Memilih paket akan otomatis menyesuaikan waktu pengembalian dari waktu pengambilan.</p>
                         </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Waktu Pengembalian <span
-                                    class="text-red-500">*</span></label>
-                            <input wire:model.live="waktu_selesai" type="datetime-local"
-                                class="block w-full px-5 py-4 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:ring-2 focus:ring-[#2FAE9B]/50 border-transparent focus:bg-white outline-none transition-all">
-                            @error('waktu_selesai') <span
-                            class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Waktu Pengambilan <span
+                                        class="text-red-500">*</span></label>
+                                <input wire:model.live="waktu_mulai" type="datetime-local"
+                                    class="block w-full px-5 py-4 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:ring-2 focus:ring-[#2FAE9B]/50 border-transparent focus:bg-white outline-none transition-all">
+                                @error('waktu_mulai') <span
+                                class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Waktu Pengembalian <span
+                                        class="text-red-500">*</span></label>
+                                <input wire:model.live="waktu_selesai" type="datetime-local"
+                                    class="block w-full px-5 py-4 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:ring-2 focus:ring-[#2FAE9B]/50 border-transparent focus:bg-white outline-none transition-all">
+                                @error('waktu_selesai') <span
+                                class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -549,20 +634,36 @@ $save = function () {
                             <!-- Cost Breakdown -->
                             <div class="space-y-4 pt-2">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-gray-600 font-medium">Harga Per Hari</span>
+                                    <span class="text-gray-600 font-medium">Berdasarkan Harga</span>
+                                    <span class="font-bold text-[#2FAE9B] capitalize">{{ $tipe_harga }}</span>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600 font-medium">Harga Sewa</span>
                                     <span class="font-bold text-[#2D2D2D]">Rp
-                                        {{ number_format($harga_per_hari, 0, ',', '.') }}</span>
+                                        {{ number_format($harga_sewa, 0, ',', '.') }}</span>
                                 </div>
 
                                 <div class="flex items-center justify-between">
                                     <span class="text-gray-600 font-medium">Durasi Sewa</span>
-                                    <span class="font-bold text-[#2D2D2D]">{{ $durasi }} Hari</span>
+                                    <div class="text-right">
+                                        <p class="font-bold text-[#2D2D2D]">
+                                            @if($tipe_harga === 'bulanan')
+                                                {{ ceil($durasi / 30) }} Bulan
+                                            @elseif($tipe_harga === 'mingguan')
+                                                {{ ceil($durasi / 7) }} Minggu
+                                            @else
+                                                {{ $durasi }} Hari
+                                            @endif
+                                        </p>
+                                        <p class="text-[10px] text-gray-400 font-medium">Total {{ $durasi }} Hari</p>
+                                    </div>
                                 </div>
 
                                 <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                                     <span class="text-gray-600 font-medium">Subtotal</span>
                                     <span class="font-bold text-[#2D2D2D]">Rp
-                                        {{ number_format($harga_per_hari * $durasi, 0, ',', '.') }}</span>
+                                        {{ number_format($total_harga + $total_diskon, 0, ',', '.') }}</span>
                                 </div>
 
                                 @if($total_diskon > 0)
@@ -577,10 +678,11 @@ $save = function () {
 
                         <!-- Total Block -->
                         <div class="bg-[#2D2D2D] p-8 text-white">
-                            <div class="flex items-center justify-between mb-8">
-                                <span class="text-gray-300 font-medium">Total Pembayaran</span>
-                                <span class="text-3xl font-black text-[#2FAE9B]">Rp
-                                    {{ number_format($total_harga, 0, ',', '.') }}</span>
+                            <div class="flex flex-col gap-1 mb-8">
+                                <span class="text-gray-400 text-sm font-medium">Total Pembayaran</span>
+                                <span class="text-3xl md:text-4xl font-black text-[#2FAE9B] tracking-tight">
+                                    Rp {{ number_format($total_harga, 0, ',', '.') }}
+                                </span>
                             </div>
 
                             <button type="submit"

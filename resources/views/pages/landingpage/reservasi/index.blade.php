@@ -135,7 +135,7 @@ new #[Layout('components.layouts.landing')] class extends Component {
                     </div>
                     <div>
                         <h4 class="font-bold text-gray-900">Detail Pesanan Aktif</h4>
-                        <p class="text-sm text-gray-600 mt-1">Anda memesan <span class="font-semibold text-gray-800">{{ $activePemesanan->kendaraanUnit->kendaraan->nama }}</span> (Plat: {{ $activePemesanan->kendaraanUnit->plat_nomor }}). 
+                        <p class="text-sm text-gray-600 mt-1">Anda memesan <span class="font-semibold text-gray-800">{{ $activePemesanan->kendaraanUnit->kendaraan->nama_kendaraan }}</span> (Plat: {{ $activePemesanan->kendaraanUnit->nomor_plat }}). 
                         Waktu mulai: {{ $activePemesanan->waktu_mulai->format('d M Y, H:i') }}.</p>
                     </div>
                 </div>
@@ -177,7 +177,7 @@ new #[Layout('components.layouts.landing')] class extends Component {
                                     
                                     <div>
                                         <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-1">
-                                            <h3 class="font-bold text-gray-900">{{ $pesanan->kendaraanUnit->kendaraan->nama }}</h3>
+                                            <h3 class="font-bold text-gray-900">{{ $pesanan->kendaraanUnit->kendaraan->nama_kendaraan }}</h3>
                                             <span class="text-xs text-gray-500 hidden sm:block">•</span>
                                             <span class="text-xs text-gray-500">{{ $pesanan->created_at->format('d M Y, H:i') }}</span>
                                         </div>
@@ -212,11 +212,11 @@ new #[Layout('components.layouts.landing')] class extends Component {
                                             <ul class="space-y-2 text-sm">
                                                 <li class="flex justify-between">
                                                     <span class="text-gray-600">Kendaraan</span>
-                                                    <span class="font-medium text-gray-900">{{ $pesanan->kendaraanUnit->kendaraan->nama }}</span>
+                                                    <span class="font-medium text-gray-900">{{ $pesanan->kendaraanUnit->kendaraan->nama_kendaraan }}</span>
                                                 </li>
                                                 <li class="flex justify-between">
                                                     <span class="text-gray-600">Plat Nomor</span>
-                                                    <span class="font-medium text-gray-900">{{ $pesanan->kendaraanUnit->plat_nomor }}</span>
+                                                    <span class="font-medium text-gray-900">{{ $pesanan->kendaraanUnit->nomor_plat }}</span>
                                                 </li>
                                                 <li class="flex justify-between">
                                                     <span class="text-gray-600">Waktu Ambil</span>
@@ -240,8 +240,15 @@ new #[Layout('components.layouts.landing')] class extends Component {
                                             <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Rincian Biaya</h4>
                                             <ul class="space-y-2 text-sm">
                                                 <li class="flex justify-between">
-                                                    <span class="text-gray-600">Harga Sewa (x{{ \Carbon\Carbon::parse($pesanan->waktu_mulai)->diffInDays(\Carbon\Carbon::parse($pesanan->waktu_selesai)) }} Hari)</span>
-                                                    <span class="font-medium text-gray-900">Rp {{ number_format($pesanan->harga_per_hari, 0, ',', '.') }} / hari</span>
+                                                    @php
+                                                        $durasi = \Carbon\Carbon::parse($pesanan->waktu_mulai)->diffInDays(\Carbon\Carbon::parse($pesanan->waktu_selesai)) ?: 1;
+                                                        $tipe = $pesanan->tipe_harga ?? 'harian';
+                                                        $labelTipe = $tipe === 'bulanan' ? 'Bulan' : ($tipe === 'mingguan' ? 'Minggu' : 'Hari');
+                                                        $divider = $tipe === 'bulanan' ? 30 : ($tipe === 'mingguan' ? 7 : 1);
+                                                        $jumlahUnit = ceil($durasi / $divider);
+                                                    @endphp
+                                                    <span class="text-gray-600">Harga Sewa (x{{ $jumlahUnit }} {{ $labelTipe }})</span>
+                                                    <span class="font-medium text-gray-900">Rp {{ number_format($pesanan->harga_sewa ?? $pesanan->harga_per_hari, 0, ',', '.') }} / {{ strtolower($labelTipe) }}</span>
                                                 </li>
                                                 @if($pesanan->total_diskon > 0)
                                                 <li class="flex justify-between text-primary">

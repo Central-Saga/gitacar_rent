@@ -17,6 +17,8 @@ class Kendaraan extends Model
         'nama_kendaraan',
         'jenis_kendaraan',
         'harga_sewa_per_hari',
+        'harga_sewa_per_minggu',
+        'harga_sewa_per_bulan',
         'deskripsi',
         'foto',
     ];

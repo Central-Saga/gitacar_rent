@@ -16,6 +16,8 @@ state([
     'nama_kendaraan' => '',
     'jenis_kendaraan' => 'mobil',
     'harga_sewa_per_hari' => '',
+    'harga_sewa_per_minggu' => '',
+    'harga_sewa_per_bulan' => '',
     'deskripsi' => '',
     'foto' => null,
     'existing_foto' => null,
@@ -26,6 +28,8 @@ mount(function (Kendaraan $kendaraan) {
     $this->nama_kendaraan = $kendaraan->nama_kendaraan;
     $this->jenis_kendaraan = $kendaraan->jenis_kendaraan;
     $this->harga_sewa_per_hari = $kendaraan->harga_sewa_per_hari;
+    $this->harga_sewa_per_minggu = $kendaraan->harga_sewa_per_minggu;
+    $this->harga_sewa_per_bulan = $kendaraan->harga_sewa_per_bulan;
     $this->deskripsi = $kendaraan->deskripsi;
     $this->existing_foto = $kendaraan->foto;
 });
@@ -35,6 +39,8 @@ $save = function() {
         'nama_kendaraan' => 'required|string|max:255',
         'jenis_kendaraan' => 'required|in:motor,mobil',
         'harga_sewa_per_hari' => 'required|numeric|min:0',
+        'harga_sewa_per_minggu' => 'nullable|numeric|min:0',
+        'harga_sewa_per_bulan' => 'nullable|numeric|min:0',
         'deskripsi' => 'nullable|string',
         'foto' => 'nullable|image|max:2048',
     ], [
@@ -59,6 +65,8 @@ $save = function() {
         'nama_kendaraan' => $this->nama_kendaraan,
         'jenis_kendaraan' => $this->jenis_kendaraan,
         'harga_sewa_per_hari' => $this->harga_sewa_per_hari,
+        'harga_sewa_per_minggu' => $this->harga_sewa_per_minggu,
+        'harga_sewa_per_bulan' => $this->harga_sewa_per_bulan,
         'deskripsi' => $this->deskripsi,
         'foto' => $fotoPath,
     ]);
@@ -159,6 +167,38 @@ $save = function() {
                                     <input wire:model="harga_sewa_per_hari" type="number" id="harga_sewa_per_hari" min="0"
                                         class="block w-full px-4 py-3 border border-inputBorder rounded-xl bg-white text-textDark placeholder-textGray focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm @error('harga_sewa_per_hari') border-red-500 @endif">
                                     @error('harga_sewa_per_hari')
+                                        <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label for="harga_sewa_per_minggu" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Harga Sewa per Minggu (Rp) <span class="text-xs text-gray-400 font-normal">(Opsional)</span>
+                                    </label>
+                                    <input wire:model="harga_sewa_per_minggu" type="number" id="harga_sewa_per_minggu" min="0"
+                                        class="block w-full px-4 py-3 border border-inputBorder rounded-xl bg-white text-textDark placeholder-textGray focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm @error('harga_sewa_per_minggu') border-red-500 @endif">
+                                    @error('harga_sewa_per_minggu')
+                                        <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label for="harga_sewa_per_bulan" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Harga Sewa per Bulan (Rp) <span class="text-xs text-gray-400 font-normal">(Opsional)</span>
+                                    </label>
+                                    <input wire:model="harga_sewa_per_bulan" type="number" id="harga_sewa_per_bulan" min="0"
+                                        class="block w-full px-4 py-3 border border-inputBorder rounded-xl bg-white text-textDark placeholder-textGray focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm @error('harga_sewa_per_bulan') border-red-500 @endif">
+                                    @error('harga_sewa_per_bulan')
                                         <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
