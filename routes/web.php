@@ -60,6 +60,21 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     // Pemesanan routes
     Route::middleware('can:kelola_pemesanan')->group(function () {
+        Route::get('pemesanan/laporan', function() {
+            $bulan = request('bulan', date('m'));
+            $tahun = request('tahun', date('Y'));
+            
+            $pemesanans = \App\Models\Pemesanan::with(['pelanggan', 'kendaraanUnit.kendaraan', 'promo'])
+                ->whereMonth('created_at', $bulan)
+                ->whereYear('created_at', $tahun)
+                ->whereIn('status_pemesanan', ['selesai', 'disetujui']) 
+                ->get();
+                
+            $totalPendapatan = $pemesanans->sum('total_harga');
+            $totalDenda = $pemesanans->sum('denda');
+
+            return view('pages.admin.pemesanan.laporan', compact('pemesanans', 'bulan', 'tahun', 'totalPendapatan', 'totalDenda'));
+        })->name('pemesanan.laporan');
         Volt::route('pemesanan', 'admin.pemesanan.index')->name('pemesanan.index');
         Volt::route('pemesanan/create', 'admin.pemesanan.create')->name('pemesanan.create');
         Volt::route('pemesanan/{pemesanan}', 'admin.pemesanan.show')->name('pemesanan.show');

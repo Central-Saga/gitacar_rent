@@ -48,7 +48,7 @@ with(function () {
 });
 ?>
 
-<div>
+<div x-data="{ showPrintModal: false }">
             <!-- Header -->
             <div class="mb-10">
                 <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
@@ -56,14 +56,23 @@ with(function () {
                         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Kelola Pemesanan</h1>
                         <p class="mt-2 text-sm text-gray-600 dark:text-gray-300 font-medium">Manajemen data pemesanan atau reservasi unit kendaraan</p>
                     </div>
-                    <a href="{{ route('admin.pemesanan.create') }}"
-                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primaryDark text-white text-sm font-semibold rounded-xl transition-all duration-300"
-                        wire:navigate>
-                        <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        <span>Buat Pemesanan Baru</span>
-                    </a>
+                    <div class="flex items-center gap-3">
+                        <button @click="showPrintModal = true" type="button"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-600 hover:bg-gray-700 text-white text-sm font-semibold rounded-xl transition-all duration-300">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                            </svg>
+                            <span>Cetak Laporan</span>
+                        </button>
+                        <a href="{{ route('admin.pemesanan.create') }}"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primaryDark text-white text-sm font-semibold rounded-xl transition-all duration-300"
+                            wire:navigate>
+                            <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span>Buat Pemesanan Baru</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -192,5 +201,77 @@ with(function () {
                         {{ $pemesanans->links() }}
                     </div>
                 @endif
+            </div>
+
+            <!-- Modal Cetak Laporan -->
+            <div x-show="showPrintModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm" style="display: none;" x-cloak>
+                <div @click.away="showPrintModal = false" class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform transition-all duration-300 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Cetak Laporan Pemesanan</h3>
+                        <button @click="showPrintModal = false" class="text-gray-400 hover:text-gray-500 transition-colors">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <form action="{{ route('admin.pemesanan.laporan') }}" target="_blank" method="GET">
+                        @php
+                            $currentMonth = date('n');
+                            $currentYear = date('Y');
+                        @endphp
+                        <div class="mb-5">
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Bulan</label>
+                            <div class="relative">
+                                <select name="bulan" class="w-full h-[46px] pl-4 pr-10 appearance-none rounded-xl border border-inputBorder bg-white focus:ring-2 focus:ring-primary focus:outline-none text-sm font-medium cursor-pointer">
+                                    <option value="1" @selected($currentMonth == 1)>Januari</option>
+                                    <option value="2" @selected($currentMonth == 2)>Februari</option>
+                                    <option value="3" @selected($currentMonth == 3)>Maret</option>
+                                    <option value="4" @selected($currentMonth == 4)>April</option>
+                                    <option value="5" @selected($currentMonth == 5)>Mei</option>
+                                    <option value="6" @selected($currentMonth == 6)>Juni</option>
+                                    <option value="7" @selected($currentMonth == 7)>Juli</option>
+                                    <option value="8" @selected($currentMonth == 8)>Agustus</option>
+                                    <option value="9" @selected($currentMonth == 9)>September</option>
+                                    <option value="10" @selected($currentMonth == 10)>Oktober</option>
+                                    <option value="11" @selected($currentMonth == 11)>November</option>
+                                    <option value="12" @selected($currentMonth == 12)>Desember</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-textGray">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-8">
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Tahun</label>
+                            <div class="relative">
+                                <select name="tahun" class="w-full h-[46px] pl-4 pr-10 appearance-none rounded-xl border border-inputBorder bg-white focus:ring-2 focus:ring-primary focus:outline-none text-sm font-medium cursor-pointer">
+                                    @for($y = date('Y'); $y >= date('Y') - 5; $y--)
+                                        <option value="{{ $y }}" @selected($currentYear == $y)>{{ $y }}</option>
+                                    @endfor
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-textGray">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-3 justify-end">
+                            <button type="button" @click="showPrintModal = false" class="px-5 py-2.5 text-sm font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors">
+                                Batal
+                            </button>
+                            <button type="submit" @click="showPrintModal = false" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primaryDark text-white text-sm font-bold rounded-xl transition-colors">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                </svg>
+                                Cetak PDF
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
