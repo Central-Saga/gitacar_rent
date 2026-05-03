@@ -129,7 +129,7 @@
         <!-- Header Laporan -->
         <div class="border-b-[3px] border-gray-800 pb-4 mb-8 flex justify-between items-end avoid-break">
             <div class="flex items-center gap-4">
-                <img src="{{ asset('storage/img/logogitacar.png') }}" class="h-16 w-auto object-contain" alt="Logo">
+                <img src="{{ asset('img/logogitacar.png') }}" class="h-16 w-auto object-contain" alt="Logo">
                 <div>
                     <h1 class="text-3xl font-black text-[#1e293b] uppercase tracking-tight">GITA CAR RENTAL</h1>
                     <p class="text-gray-500 font-medium mt-1">Laporan Operasional & Keuangan Transaksi</p>

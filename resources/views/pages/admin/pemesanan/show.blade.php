@@ -335,18 +335,40 @@ $cancel = function () {
                             <h3 class="text-lg font-bold text-textDark">Rincian Biaya</h3>
                         </div>
                         <div class="p-6 space-y-4">
+                            @php
+                                $tipeHarga = $pemesanan->tipe_harga ?? 'harian';
+                                $hargaSewa = $pemesanan->harga_sewa ?? $pemesanan->harga_per_hari;
+                                $durasi = $durasiHari ?? 0;
+
+                                if ($tipeHarga === 'bulanan') {
+                                    $durasiTeks = ceil($durasi / 30) . ' Bulan';
+                                    $subtotal = $hargaSewa * ceil($durasi / 30);
+                                    $labelHarga = 'Harga per Bulan';
+                                } elseif ($tipeHarga === 'mingguan') {
+                                    $durasiTeks = ceil($durasi / 7) . ' Minggu';
+                                    $subtotal = $hargaSewa * ceil($durasi / 7);
+                                    $labelHarga = 'Harga per Minggu';
+                                } else {
+                                    $durasiTeks = $durasi . ' Hari';
+                                    $subtotal = $hargaSewa * $durasi;
+                                    $labelHarga = 'Harga per Hari';
+                                }
+                            @endphp
                             <div class="flex items-center justify-between gap-3 text-sm font-medium text-textGray">
-                                <span class="flex-1 min-w-0">Harga per Hari</span>
-                                <span class="whitespace-nowrap shrink-0">Rp {{ number_format($pemesanan->harga_per_hari, 0, ',', '.') }}</span>
+                                <span class="flex-1 min-w-0">{{ $labelHarga }}</span>
+                                <span class="whitespace-nowrap shrink-0">Rp {{ number_format($hargaSewa, 0, ',', '.') }}</span>
                             </div>
                             <div class="flex items-center justify-between gap-3 text-sm font-medium text-textGray">
                                 <span class="flex-1 min-w-0">Durasi</span>
-                                <span class="whitespace-nowrap shrink-0">{{ $durasiHari ?? 0 }} Hari</span>
+                                <div class="text-right shrink-0">
+                                    <span class="font-bold text-textDark">{{ $durasiTeks }}</span>
+                                    <p class="text-[10px] text-gray-400 font-medium">Total {{ $durasi }} Hari</p>
+                                </div>
                             </div>
                             <div class="pt-4 border-t border-dashed border-gray-200 mt-2 space-y-3">
                                 <div class="flex items-center justify-between gap-3 text-sm">
                                     <span class="font-medium text-textGray flex-1 min-w-0">Subtotal Harga</span>
-                                    <span class="font-bold text-textDark whitespace-nowrap shrink-0">Rp {{ number_format($pemesanan->harga_per_hari * ($durasiHari ?? 0), 0, ',', '.') }}</span>
+                                    <span class="font-bold text-textDark whitespace-nowrap shrink-0">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
                                 </div>
                                 
                                 {{-- Potongan Promo --}}

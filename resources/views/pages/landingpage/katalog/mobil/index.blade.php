@@ -50,7 +50,7 @@ mount(function () {
                         class="absolute inset-0 bg-gradient-to-br from-[#2FAE9B] to-[#1e9987] rounded-3xl transform scale-y-75 translate-y-12 lg:hidden -z-10 shadow-xl opacity-90">
                     </div>
 
-                    <img src="{{ asset('storage/img/hrvnew.png') }}" alt="Koleksi Sewa Mobil Hrv"
+                    <img src="{{ asset('img/hrvnew.png') }}" alt="Koleksi Sewa Mobil Hrv"
                         class="w-full lg:w-[90%] max-w-none relative z-10 drop-shadow-[0_25px_25px_rgba(0,0,0,0.25)] transform lg:-translate-x-8 lg:-mt-8 mt-4">
                 </div>
             </div>

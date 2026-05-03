@@ -39,7 +39,7 @@ class Kendaraan extends Model
 
     public function getPlaceholderFotoUrlAttribute(): string
     {
-        return Storage::disk('public')->url('img/hero_section_home.png');
+        return asset('img/hero_section_home.png');
     }
 
     protected function resolveFotoPath(string $path): string
@@ -51,6 +51,10 @@ class Kendaraan extends Model
         }
 
         if (Str::startsWith($normalizedPath, 'storage/')) {
+            return asset($normalizedPath);
+        }
+
+        if (Str::startsWith($normalizedPath, 'img/')) {
             return asset($normalizedPath);
         }
 

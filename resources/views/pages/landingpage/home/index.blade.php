@@ -32,7 +32,7 @@ mount(function () {
   <section id="hero" class="relative min-h-[90svh] pt-[var(--nav-h)] overflow-hidden flex items-center bg-white">
     <!-- BG Image with Gradient Overlay -->
     <div class="absolute inset-0">
-      <img src="{{ asset('storage/img/hero_section_home.png') }}" alt="Sewa Mobil dan Motor Canggu"
+      <img src="{{ asset('img/hero_section_home.png') }}" alt="Sewa Mobil dan Motor Canggu"
         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549488344-9ece322bd54b?q=80&w=2070&auto=format&fit=crop'"
         class="w-full h-full object-cover object-center" fetchpriority="high">
       <div class="absolute inset-0 bg-gradient-to-r from-[#2D2D2D]/90 via-[#2D2D2D]/70 to-transparent"></div>
@@ -288,7 +288,7 @@ mount(function () {
             <div
               class="absolute inset-0 bg-gradient-to-tr from-[#2FAE9B] to-[#6ED3C2] rounded-3xl transform rotate-3 scale-105 opacity-20">
             </div>
-            <img src="{{ asset('img/galeri_landing/IMG-20250925-WA0024.jpg') }}" alt="Proses Serah Terima"
+            <img src="{{ asset('img/WhatsApp Image 2026-05-03 at 17.05.08.jpeg') }}" alt="Proses Serah Terima"
               onerror="this.src='https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2070&auto=format&fit=crop'"
               class="w-full h-auto rounded-3xl shadow-xl relative z-10 object-cover object-center h-[500px]">
           </div>

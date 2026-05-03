@@ -111,7 +111,7 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center gap-2 group">
-                        <img src="{{ asset('storage/img/logogitacar.png') }}" alt="Gita Car Rental Logo"
+                        <img src="{{ asset('img/logogitacar.png') }}" alt="Gita Car Rental Logo"
                             class="h-10 w-auto transition-transform group-hover:scale-105" />
                         <span class="font-bold text-xl tracking-tight text-[#2D2D2D]">
                             Gita<span class="text-primary">Car</span>
@@ -272,7 +272,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                 <div class="col-span-1 md:col-span-2">
                     <a href="{{ route('home') }}" class="flex items-center gap-2 mb-4">
-                        <img src="{{ asset('storage/img/logogitacar.png') }}" alt="Gita Car Rental Logo"
+                        <img src="{{ asset('img/logogitacar.png') }}" alt="Gita Car Rental Logo"
                             class="h-8 w-auto" />
                         <span class="font-bold text-xl tracking-tight text-[#2D2D2D]">Gita<span
                                 class="text-primary">Car</span></span>
