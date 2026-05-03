@@ -49,11 +49,9 @@ title('About Us - Gita Car Rental Bali');
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <img src="{{ asset('img/WhatsApp Image 2026-05-03 at 17.04.33.jpeg') }}"
-                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549317761-bd32c8ce0db2?auto=format&fit=crop&q=80&w=2070'"
                             alt="Gita Car Rental Services"
                             class="rounded-2xl w-full h-64 object-cover shadow-lg transform translate-y-8">
                         <img src="{{ asset('img/WhatsApp Image 2026-05-03 at 17.04.34.jpeg') }}"
-                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=2070'"
                             alt="Happy Customers" class="rounded-2xl w-full h-64 object-cover shadow-lg z-10">
                     </div>
                 </div>
@@ -105,7 +103,6 @@ title('About Us - Gita Car Rental Bali');
                 <div class="flex-1 w-full" data-aos="fade-up" data-aos-delay="200">
                     <div class="relative rounded-2xl overflow-hidden aspect-[4/3] shadow-lg">
                         <img src="{{ asset('img/WhatsApp Image 2026-05-03 at 17.04.35.jpeg') }}"
-                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549488344-9ece322bd54b?auto=format&fit=crop&q=80&w=2070'"
                             alt="Armada Gita Car Rental" class="w-full h-full object-cover">
                     </div>
                 </div>

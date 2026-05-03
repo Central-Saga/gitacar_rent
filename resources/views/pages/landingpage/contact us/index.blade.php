@@ -188,7 +188,7 @@ title('Contact Us - Gita Car Rental');
 
   <!-- Floating WhatsApp Button -->
   <a href="https://wa.me/628123929934" target="_blank" rel="noopener noreferrer"
-    class="fixed bottom-6 right-6 z-50 w-16 h-16 bg-[#25D366] hover:bg-[#128C7E] rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 group ring-4 ring-white">
+    class="fixed bottom-24 md:bottom-6 right-6 z-50 w-16 h-16 bg-[#25D366] hover:bg-[#128C7E] rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 group ring-4 ring-white">
     <i class="fab fa-whatsapp text-white text-3xl"></i>
     <span
       class="absolute right-full mr-4 bg-white text-[#2D2D2D] font-semibold text-sm px-4 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none origin-right transform group-hover:-translate-x-2">

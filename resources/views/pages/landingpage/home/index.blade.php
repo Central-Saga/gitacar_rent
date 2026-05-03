@@ -27,13 +27,12 @@ mount(function () {
   }
 </style>
 
-<div class="text-[#2D2D2D] bg-[#F5F6F7]">
+<div class="text-[#2D2D2D] bg-[#F5F6F7] overflow-x-hidden w-full relative">
   <!-- ===== HERO ===== -->
   <section id="hero" class="relative min-h-[90svh] pt-[var(--nav-h)] overflow-hidden flex items-center bg-white">
     <!-- BG Image with Gradient Overlay -->
     <div class="absolute inset-0">
-      <img src="{{ asset('img/hero_section_home.png') }}" alt="Sewa Mobil dan Motor Canggu"
-        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549488344-9ece322bd54b?q=80&w=2070&auto=format&fit=crop'"
+      <img src="{{ asset('img/newhomeimage.png') }}" alt="Sewa Mobil dan Motor Canggu"
         class="w-full h-full object-cover object-center" fetchpriority="high">
       <div class="absolute inset-0 bg-gradient-to-r from-[#2D2D2D]/90 via-[#2D2D2D]/70 to-transparent"></div>
     </div>
@@ -66,25 +65,25 @@ mount(function () {
         </div>
 
         <!-- Trust Points -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-white/20 pt-6 mt-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 border-t border-white/20 pt-4 sm:pt-6 mt-2 sm:mt-4">
           <div class="flex items-center gap-3">
             <div
-              class="w-10 h-10 rounded-full bg-white/10 flex flex-shrink-0 items-center justify-center text-[#6ED3C2]">
-              <i class="fas fa-check-circle"></i>
+              class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 flex flex-shrink-0 items-center justify-center text-[#6ED3C2]">
+              <i class="fas fa-check-circle text-sm sm:text-base"></i>
             </div>
             <span class="text-white text-sm font-medium">Unit Terawat</span>
           </div>
           <div class="flex items-center gap-3">
             <div
-              class="w-10 h-10 rounded-full bg-white/10 flex flex-shrink-0 items-center justify-center text-[#6ED3C2]">
-              <i class="fas fa-bolt"></i>
+              class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 flex flex-shrink-0 items-center justify-center text-[#6ED3C2]">
+              <i class="fas fa-bolt text-sm sm:text-base"></i>
             </div>
             <span class="text-white text-sm font-medium">Proses Cepat</span>
           </div>
           <div class="flex items-center gap-3">
             <div
-              class="w-10 h-10 rounded-full bg-white/10 flex flex-shrink-0 items-center justify-center text-[#6ED3C2]">
-              <i class="fas fa-map-marker-alt"></i>
+              class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 flex flex-shrink-0 items-center justify-center text-[#6ED3C2]">
+              <i class="fas fa-map-marker-alt text-sm sm:text-base"></i>
             </div>
             <span class="text-white text-sm font-medium">Lokasi Strategis</span>
           </div>
@@ -103,52 +102,52 @@ mount(function () {
           layanan rental motor dan mobil yang gak pakai ribet.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="flex overflow-x-auto pb-8 -mx-4 px-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:mx-0 md:px-0 gap-4 snap-x snap-mandatory hide-scrollbar">
         <!-- Poin 1 -->
-        <div class="bg-[#F5F6F7] p-8 rounded-2xl transition hover:shadow-xl hover:-translate-y-2 group"
+        <div class="bg-[#F5F6F7] p-6 md:p-8 rounded-2xl transition hover:shadow-xl hover:-translate-y-2 group min-w-[72vw] sm:min-w-[280px] md:min-w-0 snap-center shrink-0"
           data-aos="fade-up" data-aos-delay="100">
           <div
-            class="w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-sm mb-6 text-primary text-2xl group-hover:bg-[#2FAE9B] group-hover:text-white transition">
+            class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4 md:mb-6 text-primary text-xl md:text-2xl group-hover:bg-[#2FAE9B] group-hover:text-white transition">
             <i class="fas fa-star border-transparent"></i>
           </div>
-          <h4 class="text-xl font-bold text-[#2D2D2D] mb-3">Unit Bersih & Terawat</h4>
-          <p class="text-[#6C757D] text-sm leading-relaxed">Kebersihan dan kenyamanan adalah prioritas. Semua kendaraan
+          <h4 class="text-lg md:text-xl font-bold text-[#2D2D2D] mb-2 md:mb-3">Unit Bersih & Terawat</h4>
+          <p class="text-[#6C757D] text-xs md:text-sm leading-relaxed">Kebersihan dan kenyamanan adalah prioritas. Semua kendaraan
             kami diservis rutin dan dicuci bersih sebelum serah terima.</p>
         </div>
 
         <!-- Poin 2 -->
-        <div class="bg-[#F5F6F7] p-8 rounded-2xl transition hover:shadow-xl hover:-translate-y-2 group"
+        <div class="bg-[#F5F6F7] p-6 md:p-8 rounded-2xl transition hover:shadow-xl hover:-translate-y-2 group min-w-[72vw] sm:min-w-[280px] md:min-w-0 snap-center shrink-0"
           data-aos="fade-up" data-aos-delay="200">
           <div
-            class="w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-sm mb-6 text-primary text-2xl group-hover:bg-[#2FAE9B] group-hover:text-white transition">
+            class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4 md:mb-6 text-primary text-xl md:text-2xl group-hover:bg-[#2FAE9B] group-hover:text-white transition">
             <i class="fas fa-stopwatch"></i>
           </div>
-          <h4 class="text-xl font-bold text-[#2D2D2D] mb-3">Proses Cepat & Mudah</h4>
-          <p class="text-[#6C757D] text-sm leading-relaxed">Liburan tidak membuang waktu. Pesan gampang, syarat mudah,
+          <h4 class="text-lg md:text-xl font-bold text-[#2D2D2D] mb-2 md:mb-3">Proses Cepat & Mudah</h4>
+          <p class="text-[#6C757D] text-xs md:text-sm leading-relaxed">Liburan tidak membuang waktu. Pesan gampang, syarat mudah,
             dan kendaraan langsung siap Anda gunakan.</p>
         </div>
 
         <!-- Poin 3 -->
-        <div class="bg-[#F5F6F7] p-8 rounded-2xl transition hover:shadow-xl hover:-translate-y-2 group"
+        <div class="bg-[#F5F6F7] p-6 md:p-8 rounded-2xl transition hover:shadow-xl hover:-translate-y-2 group min-w-[72vw] sm:min-w-[280px] md:min-w-0 snap-center shrink-0"
           data-aos="fade-up" data-aos-delay="300">
           <div
-            class="w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-sm mb-6 text-primary text-2xl group-hover:bg-[#2FAE9B] group-hover:text-white transition">
+            class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4 md:mb-6 text-primary text-xl md:text-2xl group-hover:bg-[#2FAE9B] group-hover:text-white transition">
             <i class="fas fa-map-marked-alt"></i>
           </div>
-          <h4 class="text-xl font-bold text-[#2D2D2D] mb-3">Lokasi Strategis</h4>
-          <p class="text-[#6C757D] text-sm leading-relaxed">Mudah dijangkau! Kami berada di jantung area Canggu yang
+          <h4 class="text-lg md:text-xl font-bold text-[#2D2D2D] mb-2 md:mb-3">Lokasi Strategis</h4>
+          <p class="text-[#6C757D] text-xs md:text-sm leading-relaxed">Mudah dijangkau! Kami berada di jantung area Canggu yang
             happening, titik awal sempurna untuk menjelajah.</p>
         </div>
 
         <!-- Poin 4 -->
-        <div class="bg-[#F5F6F7] p-8 rounded-2xl transition hover:shadow-xl hover:-translate-y-2 group"
+        <div class="bg-[#F5F6F7] p-6 md:p-8 rounded-2xl transition hover:shadow-xl hover:-translate-y-2 group min-w-[72vw] sm:min-w-[280px] md:min-w-0 snap-center shrink-0"
           data-aos="fade-up" data-aos-delay="400">
           <div
-            class="w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-sm mb-6 text-primary text-2xl group-hover:bg-[#2FAE9B] group-hover:text-white transition">
+            class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4 md:mb-6 text-primary text-xl md:text-2xl group-hover:bg-[#2FAE9B] group-hover:text-white transition">
             <i class="fas fa-headset"></i>
           </div>
-          <h4 class="text-xl font-bold text-[#2D2D2D] mb-3">Support Responsif</h4>
-          <p class="text-[#6C757D] text-sm leading-relaxed">Butuh bantuan di jalan? Tim support kami stand-by dan cepat
+          <h4 class="text-lg md:text-xl font-bold text-[#2D2D2D] mb-2 md:mb-3">Support Responsif</h4>
+          <p class="text-[#6C757D] text-xs md:text-sm leading-relaxed">Butuh bantuan di jalan? Tim support kami stand-by dan cepat
             merespon melalui WhatsApp 24 jam sehari.</p>
         </div>
       </div>
@@ -427,7 +426,7 @@ mount(function () {
 
   <!-- Floating WhatsApp Button (Fixed on all scroll) -->
   <a href="https://wa.me/628123929934" target="_blank" rel="noopener noreferrer"
-    class="fixed bottom-6 right-6 z-50 w-16 h-16 bg-[#25D366] hover:bg-[#128C7E] rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 group ring-4 ring-white">
+    class="hidden md:flex fixed bottom-6 right-6 z-50 w-16 h-16 bg-[#25D366] hover:bg-[#128C7E] rounded-full items-center justify-center shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 group ring-4 ring-white">
     <i class="fab fa-whatsapp text-white text-3xl"></i>
     <span
       class="absolute right-full mr-4 bg-white text-[#2D2D2D] font-semibold text-sm px-4 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none origin-right transform group-hover:-translate-x-2">

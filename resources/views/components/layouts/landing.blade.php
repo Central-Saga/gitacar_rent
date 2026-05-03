@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth overflow-x-hidden w-full">
 
 <head>
     <meta charset="utf-8">
@@ -99,10 +99,19 @@
             visibility: visible;
             transform: translateY(0);
         }
+
+        /* Hide scrollbar for horizontal scrolling */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 
-<body class="antialiased selection:bg-[#2FAE9B] selection:text-white">
+<body class="antialiased selection:bg-[#2FAE9B] selection:text-white pb-20 md:pb-0 overflow-x-hidden w-full relative">
 
     <!-- Navbar -->
     <nav id="main-navbar" class="fixed w-full z-50 glass-nav top-0">
@@ -199,67 +208,118 @@
                     @endauth
                 </div>
 
-                <!-- Mobile menu button -->
+                <!-- Mobile Auth Button (Top Right) -->
                 <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-800 hover:text-primary focus:outline-none p-2">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu (Hidden by default) -->
-        <div id="mobile-menu"
-            class="hidden md:hidden bg-white border-t border-gray-100 shadow-xl absolute w-full left-0">
-            <div class="px-4 pt-2 pb-6 space-y-1">
-                <a href="{{ route('home') }}"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-gray-900 hover:bg-soft hover:text-primary">Home</a>
-
-                <div class="border-t border-gray-100 my-1"></div>
-                <div class="px-3 py-2 text-xs font-semibold text-secondary uppercase tracking-wider">Katalog</div>
-                <a href="{{ route('katalog.mobil') }}"
-                    class="block px-3 py-2 pl-6 rounded-md text-base font-medium text-gray-700 hover:bg-soft hover:text-primary"><i
-                        class="fas fa-car mr-2 text-secondary"></i> Mobil</a>
-                <a href="{{ route('katalog.motor') }}"
-                    class="block px-3 py-2 pl-6 rounded-md text-base font-medium text-gray-700 hover:bg-soft hover:text-primary"><i
-                        class="fas fa-motorcycle mr-2 text-secondary"></i> Motor</a>
-                <div class="border-t border-gray-100 my-1"></div>
-
-                <a href="{{ route('about') }}"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-soft hover:text-primary">About
-                    Us</a>
-                <a href="{{ route('contact') }}"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-soft hover:text-primary">Contact
-                    Us</a>
-
-                <div class="border-t border-gray-100 pt-4 pb-2 mt-2">
                     @auth
-                        <a href="{{ route('home') }}"
-                            class="block w-full text-left px-4 py-3 mb-2 rounded-xl text-base font-medium text-gray-700 hover:bg-soft"><i
-                                class="fas fa-home w-5 mr-2 text-center text-primary"></i> Beranda</a>
-                        <a href="{{ route('reservasi') }}"
-                            class="block w-full text-left px-4 py-3 mb-2 rounded-xl text-base font-medium text-gray-700 hover:bg-soft"><i
-                                class="fas fa-calendar-check w-5 mr-2 text-center text-primary"></i> Reservasi Saya</a>
-                        <form method="POST" action="{{ route('logout') }}" x-data>
-                            @csrf
-                            <button type="submit"
-                                class="w-full text-left block px-4 py-3 rounded-xl text-base font-medium text-red-600 hover:bg-red-50">
-                                <i class="fas fa-sign-out-alt w-5 mr-2 text-center"></i> Logout
+                        <div class="relative group">
+                            <button
+                                class="flex items-center justify-center w-10 h-10 rounded-full bg-soft hover:bg-gray-200 text-gray-800 transition-colors focus:outline-none">
+                                <i class="fas fa-user-circle text-2xl text-primary"></i>
                             </button>
-                        </form>
+                            <div class="dropdown-menu absolute right-0 mt-2 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
+                                <div class="py-1">
+                                    <a href="{{ route('reservasi') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-soft hover:text-primary transition-colors">
+                                        <i class="fas fa-calendar-check w-5 mr-2 text-center text-primary"></i> Reservasi
+                                    </a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <form method="POST" action="{{ route('logout') }}" x-data>
+                                        @csrf
+                                        <button type="submit" class="w-full text-left block px-4 py-3 text-sm text-red-600 font-medium hover:bg-red-50 transition-colors">
+                                            <i class="fas fa-sign-out-alt w-5 mr-2 text-center"></i> Logout
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     @else
-                        <a href="{{ route('login') }}"
-                            class="block w-full text-center px-4 py-3 mb-2 rounded-xl text-base font-semibold text-primary border-2 border-[#2FAE9B] hover:bg-soft">Login</a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}"
-                                class="block w-full text-center px-4 py-3 rounded-xl text-base font-semibold text-white bg-primary-gradient shadow-md">Daftar
-                                Sekarang</a>
-                        @endif
+                        <a href="{{ route('login') }}" class="flex items-center justify-center w-10 h-10 rounded-full bg-soft hover:bg-gray-200 text-primary transition-colors">
+                            <i class="fas fa-user-circle text-2xl"></i>
+                        </a>
                     @endauth
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Bottom Navigation -->
+    <div x-data="{ showKatalog: false, isVisible: true, lastScrollY: 0 }"
+        @scroll.window="
+            if (window.scrollY > lastScrollY && window.scrollY > 100) { 
+                isVisible = false; 
+                showKatalog = false; 
+            } else if (window.scrollY < lastScrollY) { 
+                isVisible = true; 
+            }
+            lastScrollY = window.scrollY;
+        "
+        class="md:hidden">
+        <div :class="isVisible ? 'translate-y-0' : 'translate-y-[150%]'"
+            class="fixed bottom-4 inset-x-0 mx-auto z-50 w-[95%] max-w-sm transition-transform duration-300 ease-in-out">
+            <div class="bg-[#1a1a1a] rounded-full shadow-2xl px-2 py-2 flex items-center justify-between border border-gray-800 relative z-50">
+                <a href="{{ route('home') }}" class="flex-1 flex flex-col items-center justify-center py-1 rounded-full {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400 hover:text-white' }}">
+                    <i class="fas fa-home mb-1 text-lg"></i>
+                    <span class="text-[10px] font-medium">Home</span>
+                </a>
+                <button @click="showKatalog = !showKatalog" class="flex-1 flex flex-col items-center justify-center py-1 rounded-full {{ request()->routeIs('katalog.*') ? 'text-white' : 'text-gray-400 hover:text-white' }} focus:outline-none">
+                    <i class="fas fa-car mb-1 text-lg"></i>
+                    <span class="text-[10px] font-medium">Katalog</span>
+                </button>
+                <a href="{{ route('contact') }}" class="flex-1 flex flex-col items-center justify-center py-1 rounded-full {{ request()->routeIs('contact') ? 'text-white' : 'text-gray-400 hover:text-white' }}">
+                    <i class="fas fa-phone-alt mb-1 text-lg"></i>
+                    <span class="text-[10px] font-medium">Contact</span>
+                </a>
+                @auth
+                    <a href="{{ route('reservasi') }}" class="flex-1 flex flex-col items-center justify-center py-1 rounded-full {{ request()->routeIs('reservasi') ? 'text-white' : 'text-gray-400 hover:text-white' }}">
+                        <i class="fas fa-calendar-check mb-1 text-lg"></i>
+                        <span class="text-[10px] font-medium">Reservasi</span>
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="flex-1 flex flex-col items-center justify-center py-1 rounded-full {{ request()->routeIs('login') ? 'text-white' : 'text-gray-400 hover:text-white' }}">
+                        <i class="fas fa-user mb-1 text-lg"></i>
+                        <span class="text-[10px] font-medium">Sign In</span>
+                    </a>
+                @endauth
+            </div>
+            
+            <!-- Katalog Pop up (Bottom Sheet) -->
+            <div x-show="showKatalog" style="display: none;"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-full"
+                x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 translate-y-0"
+                x-transition:leave-end="opacity-0 translate-y-full"
+                @click.away="showKatalog = false"
+                class="absolute bottom-[110%] left-0 w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 p-2 z-50">
+                <div class="flex items-center justify-between px-3 py-2 border-b border-gray-100 mb-2">
+                    <span class="font-bold text-gray-800 text-sm">Pilih Katalog</span>
+                    <button @click="showKatalog = false" class="text-gray-400 hover:text-gray-600 focus:outline-none"><i class="fas fa-times"></i></button>
+                </div>
+                <a href="{{ route('katalog.mobil') }}" class="flex items-center p-3 rounded-xl hover:bg-soft transition-colors mb-1">
+                    <div class="w-10 h-10 bg-[#2FAE9B]/10 text-primary rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-car text-lg"></i>
+                    </div>
+                    <span class="font-semibold text-gray-700 text-sm">Sewa Mobil</span>
+                </a>
+                <a href="{{ route('katalog.motor') }}" class="flex items-center p-3 rounded-xl hover:bg-soft transition-colors">
+                    <div class="w-10 h-10 bg-[#2FAE9B]/10 text-primary rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-motorcycle text-lg"></i>
+                    </div>
+                    <span class="font-semibold text-gray-700 text-sm">Sewa Motor</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Backdrop -->
+        <div x-show="showKatalog" style="display: none;"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-black/40 z-40"></div>
+    </div>
 
     <!-- Page Content -->
     <main>
@@ -353,33 +413,7 @@
                 easing: 'ease-out-cubic',
             });
 
-            // Mobile menu toggle
-            const btn = document.getElementById('mobile-menu-btn');
-            const menu = document.getElementById('mobile-menu');
-            const icon = btn.querySelector('i');
 
-            if (btn && menu) {
-                btn.addEventListener('click', () => {
-                    menu.classList.toggle('hidden');
-                    if (menu.classList.contains('hidden')) {
-                        icon.classList.remove('fa-times');
-                        icon.classList.add('fa-bars');
-                    } else {
-                        icon.classList.remove('fa-bars');
-                        icon.classList.add('fa-times');
-                    }
-                });
-            }
-
-            // Close mobile menu when clicking a link
-            const mobileLinks = menu.querySelectorAll('a');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    menu.classList.add('hidden');
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                });
-            });
 
             // Navbar scroll effect
             const navbar = document.getElementById('main-navbar');
