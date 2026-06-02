@@ -292,7 +292,7 @@ new
             <div class="bg-white rounded-2xl border border-inputBorder shadow-sm p-6 flex flex-col"
                 style="max-height: 500px">
                 <div class="mb-4">
-                    <h3 class="text-lg font-bold text-red-600 flex items-center gap-2">
+                    <h3 class="text-lg font-bold text-amber-600 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
                                 d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
@@ -307,33 +307,33 @@ new
 
                     <!-- Kendaraan Terlambat -->
                     @if($kendaraanTerlambat->count() > 0)
-                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">
                             <div class="flex gap-3">
                                 <div class="shrink-0">
-                                    <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    <svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                         stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-red-800">{{ $kendaraanTerlambat->count() }} Kendaraan
+                                    <h4 class="text-sm font-bold text-amber-800">{{ $kendaraanTerlambat->count() }} Kendaraan
                                         Terlambat Mengembalikan</h4>
-                                    <p class="text-xs text-red-600 mt-1">Penyewa belum mengembalikan unit melewati batas
+                                    <p class="text-xs text-amber-600 mt-1">Penyewa belum mengembalikan unit melewati batas
                                         waktu.</p>
                                     <div class="mt-2 space-y-2">
                                         @foreach($kendaraanTerlambat->take(3) as $k)
                                             <a href="{{ route('admin.pemesanan.show', $k->id) }}"
-                                                class="block p-2 bg-white rounded shadow-sm text-xs hover:bg-red-100 transition">
+                                                class="block p-2 bg-white rounded shadow-sm text-xs hover:bg-amber-100 transition">
                                                 <span class="font-bold">{{ $k->kendaraanUnit->nomor_plat }}</span> -
                                                 {{ $k->pelanggan->user->name }}
                                                 <br>
-                                                <span class="text-red-500">Tenggat:
+                                                <span class="text-amber-600">Tenggat:
                                                     {{ $k->waktu_selesai->format('d M Y H:i') }}</span>
                                             </a>
                                         @endforeach
                                         @if($kendaraanTerlambat->count() > 3)
-                                            <p class="text-xs text-red-500 italic">+{{ $kendaraanTerlambat->count() - 3 }}
+                                            <p class="text-xs text-amber-600 italic">+{{ $kendaraanTerlambat->count() - 3 }}
                                                 kendaraan lainnya.</p>
                                         @endif
                                     </div>

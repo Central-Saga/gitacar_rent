@@ -72,6 +72,9 @@
                         :current="request()->routeIs('admin.pemesanan.*')"
                         class="text-zinc-600 hover:text-primary hover:bg-primary/5 data-[current]:bg-primary data-[current]:text-white transition-colors duration-200 rounded-lg mx-2"
                         wire:navigate>
+                        <x-slot:iconTrailing>
+                            <livewire:components.pemesanan-badge />
+                        </x-slot:iconTrailing>
                         {{ __('Pemesanan') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
