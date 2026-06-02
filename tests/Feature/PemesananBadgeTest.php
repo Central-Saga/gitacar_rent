@@ -90,6 +90,8 @@ class PemesananBadgeTest extends TestCase
             'kendaraan_unit_id' => $unit->id,
             'waktu_mulai' => Carbon::now(),
             'waktu_selesai' => Carbon::now()->addDay(),
+            'tipe_harga' => 'harian',
+            'harga_sewa' => 100000,
             'harga_per_hari' => 100000,
             'total_harga' => 100000,
             'status_pemesanan' => $status,

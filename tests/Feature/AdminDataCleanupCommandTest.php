@@ -48,6 +48,8 @@ it('cleans all booking data and removes non admin users', function () {
         'kendaraan_unit_id' => $unit->id,
         'waktu_mulai' => now(),
         'waktu_selesai' => now()->addDay(),
+        'tipe_harga' => 'harian',
+        'harga_sewa' => 350000,
         'harga_per_hari' => 350000,
         'total_harga' => 350000,
         'denda_per_hari' => 350000,

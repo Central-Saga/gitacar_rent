@@ -179,7 +179,7 @@ $calculatePricing = function () {
                 $totalHargaAwal = $this->harga_sewa * $this->durasi;
             }
 
-            $this->harga_per_hari = $this->harga_sewa;
+            $this->harga_per_hari = $kendaraan->harga_sewa_per_hari;
 
             if ($this->promo_id) {
                 $promo = Promo::find($this->promo_id);

@@ -27,6 +27,8 @@ state([
     'harga_per_hari' => 0,
     'total_harga' => 0,
     'durasi' => 0,
+    'tipe_harga' => 'harian',
+    'harga_sewa' => 0,
 
     // Promo
     'input_kode_promo' => '',
@@ -61,6 +63,8 @@ $calculatePricing = function () {
         $this->harga_per_hari = 0;
         $this->total_harga = 0;
         $this->durasi = 0;
+        $this->tipe_harga = 'harian';
+        $this->harga_sewa = 0;
         return;
     }
 
@@ -78,7 +82,22 @@ $calculatePricing = function () {
             $diffHours = $start->diffInHours($end);
             $this->durasi = max(1, (int) ceil($diffHours / 24));
             $this->harga_per_hari = $unit->kendaraan->harga_sewa_per_hari;
-            $totalHargaAwal = $this->harga_per_hari * $this->durasi;
+
+            // Tentukan tier harga (harian / mingguan / bulanan) berdasarkan durasi
+            $kendaraan = $unit->kendaraan;
+            if ($this->durasi >= 30 && $kendaraan->harga_sewa_per_bulan) {
+                $this->tipe_harga = 'bulanan';
+                $this->harga_sewa = $kendaraan->harga_sewa_per_bulan;
+                $totalHargaAwal = $this->harga_sewa * ceil($this->durasi / 30);
+            } elseif ($this->durasi >= 7 && $kendaraan->harga_sewa_per_minggu) {
+                $this->tipe_harga = 'mingguan';
+                $this->harga_sewa = $kendaraan->harga_sewa_per_minggu;
+                $totalHargaAwal = $this->harga_sewa * ceil($this->durasi / 7);
+            } else {
+                $this->tipe_harga = 'harian';
+                $this->harga_sewa = $kendaraan->harga_sewa_per_hari;
+                $totalHargaAwal = $this->harga_sewa * $this->durasi;
+            }
 
             // Terapkan diskon jika ada promo yang valid
             if ($this->promo_id) {
@@ -157,6 +176,8 @@ $save = function () {
 
     // Set prices explicitly from calculated values to prevent manipulation
     $validated['harga_per_hari'] = $this->harga_per_hari;
+    $validated['harga_sewa'] = $this->harga_sewa;
+    $validated['tipe_harga'] = $this->tipe_harga;
     $validated['total_harga'] = $this->total_harga;
     $validated['denda_per_hari'] = $this->harga_per_hari; // snapshot denda = harga per hari
     $validated['promo_id'] = $this->promo_id;
@@ -399,17 +420,30 @@ $save = function () {
                                 </div>
 
                                 @if($durasi > 0)
+                                    @php
+                                        $labelUnit = match($tipe_harga) {
+                                            'bulanan' => 'Bulan',
+                                            'mingguan' => 'Minggu',
+                                            default => 'Hari',
+                                        };
+                                        $divider = match($tipe_harga) {
+                                            'bulanan' => 30,
+                                            'mingguan' => 7,
+                                            default => 1,
+                                        };
+                                        $jumlahUnit = (int) ceil($durasi / $divider);
+                                    @endphp
                                     <div
                                         class="p-4 bg-primaryLight/10 rounded-xl border border-primaryLight/20 mt-4">
 
                                         <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
-                                            <p class="text-sm text-textGray">Harga per Hari</p>
-                                            <p class="text-sm font-bold text-textDark">Rp {{ number_format($harga_per_hari, 0, ',', '.') }}</p>
+                                            <p class="text-sm text-textGray">Harga per {{ $labelUnit }}</p>
+                                            <p class="text-sm font-bold text-textDark">Rp {{ number_format($harga_sewa, 0, ',', '.') }}</p>
                                         </div>
 
                                         <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
-                                            <p class="text-sm text-textGray">Subtotal ({{ $durasi }} Hari)</p>
-                                            <p class="text-sm font-bold text-textDark">Rp {{ number_format($harga_per_hari * $durasi, 0, ',', '.') }}</p>
+                                            <p class="text-sm text-textGray">Subtotal ({{ $jumlahUnit }} {{ $labelUnit }})</p>
+                                            <p class="text-sm font-bold text-textDark">Rp {{ number_format($harga_sewa * $jumlahUnit, 0, ',', '.') }}</p>
                                         </div>
 
                                         @if($total_diskon > 0)

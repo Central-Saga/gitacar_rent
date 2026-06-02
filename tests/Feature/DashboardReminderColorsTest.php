@@ -96,6 +96,8 @@ class DashboardReminderColorsTest extends TestCase
             'kendaraan_unit_id' => $unit->id,
             'waktu_mulai' => Carbon::now()->subDays(5),
             'waktu_selesai' => Carbon::now()->subDay(),
+            'tipe_harga' => 'harian',
+            'harga_sewa' => 100000,
             'harga_per_hari' => 100000,
             'total_harga' => 500000,
             'status_pemesanan' => 'disetujui',
