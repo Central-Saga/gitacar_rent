@@ -162,17 +162,17 @@ $calculatePricing = function () {
             
             $kendaraan = $unit->kendaraan;
             
-            // Logic for price tier
-            if ($this->durasi >= 30 && $kendaraan->harga_sewa_per_bulan) {
+            // Tentukan tier harga (harian / mingguan / bulanan) berdasarkan durasi sewa
+            if ($this->durasi >= 30) {
                 $this->tipe_harga = 'bulanan';
-                $this->harga_sewa = $kendaraan->harga_sewa_per_bulan;
-                $jumlahBulan = ceil($this->durasi / 30);
-                $totalHargaAwal = $this->harga_sewa * $jumlahBulan;
-            } elseif ($this->durasi >= 7 && $kendaraan->harga_sewa_per_minggu) {
+                $this->harga_sewa = $kendaraan->harga_sewa_per_bulan
+                    ?: (int) round(($kendaraan->harga_sewa_per_hari * $this->durasi) / ceil($this->durasi / 30));
+                $totalHargaAwal = $this->harga_sewa * ceil($this->durasi / 30);
+            } elseif ($this->durasi >= 7) {
                 $this->tipe_harga = 'mingguan';
-                $this->harga_sewa = $kendaraan->harga_sewa_per_minggu;
-                $jumlahMinggu = ceil($this->durasi / 7);
-                $totalHargaAwal = $this->harga_sewa * $jumlahMinggu;
+                $this->harga_sewa = $kendaraan->harga_sewa_per_minggu
+                    ?: $kendaraan->harga_sewa_per_hari;
+                $totalHargaAwal = $this->harga_sewa * ceil($this->durasi / 7);
             } else {
                 $this->tipe_harga = 'harian';
                 $this->harga_sewa = $kendaraan->harga_sewa_per_hari;

@@ -158,6 +158,46 @@ class PemesananTierPricingTest extends TestCase
         $this->assertStringNotContainsString('Harga per Hari', $html);
     }
 
+    public function test_30_day_booking_is_bulanan_even_when_kendaraan_has_no_harga_sewa_per_bulan(): void
+    {
+        $kendaraan = $this->createKendaraan([
+            'harga_sewa_per_hari' => 500000,
+            'harga_sewa_per_minggu' => null,
+            'harga_sewa_per_bulan' => null,
+        ]);
+        $unit = $this->createUnit($kendaraan);
+
+        $start = Carbon::now()->addDay()->setHour(9)->setMinute(0);
+        $end = $start->copy()->addDays(30);
+
+        $pemesanan = Pemesanan::create([
+            'pelanggan_id' => $this->createPelanggan()->id,
+            'kendaraan_unit_id' => $unit->id,
+            'waktu_mulai' => $start,
+            'waktu_selesai' => $end,
+            'tipe_harga' => 'bulanan',
+            'harga_sewa' => 14000000,
+            'harga_per_hari' => 500000,
+            'total_harga' => 14000000,
+            'denda_per_hari' => 500000,
+            'status_pemesanan' => 'menunggu_konfirmasi',
+        ]);
+
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+        $this->actingAs($admin);
+
+        $response = $this->get(route('admin.pemesanan.show', $pemesanan->id));
+        $response->assertOk();
+
+        $html = $response->getContent();
+
+        $this->assertStringContainsString('Harga per Bulan', $html);
+        $this->assertStringContainsString('14.000.000', $html);
+        $this->assertStringContainsString('1 Bulan', $html);
+        $this->assertStringNotContainsString('Harga per Hari', $html);
+    }
+
     private function createKendaraan(array $overrides = []): Kendaraan
     {
         return Kendaraan::create(array_merge([
