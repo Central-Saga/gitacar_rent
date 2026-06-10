@@ -80,6 +80,7 @@ RUN apk add --no-cache \
     && docker-php-ext-install \
         pdo_mysql \
         bcmath \
+        exif \
         gd \
         zip \
         pcntl \
