@@ -49,6 +49,7 @@ FROM node:22-alpine AS frontend
 
 WORKDIR /app
 
+COPY --from=vendor /app/vendor /app/vendor
 COPY package.json package-lock.json ./
 RUN npm ci
 
