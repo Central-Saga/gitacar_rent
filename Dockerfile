@@ -69,6 +69,10 @@ RUN apk add --no-cache \
         supervisor \
         curl \
         libzip-dev \
+        libpng-dev \
+        libjpeg-turbo-dev \
+        freetype-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         pdo_mysql \
         bcmath \
