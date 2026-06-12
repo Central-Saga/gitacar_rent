@@ -64,11 +64,5 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1.2.2
-        with:
-          host: 43.157.228.56
-          username: root
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script: |
-            docker service update --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --force ${{ env.SERVICE_NAME }}
+      - name: Trigger deploy
+        run: curl -s -X POST http://43.157.228.56:3000/api/deploy/8mH27a_jUXL_FzlZg1YMD
