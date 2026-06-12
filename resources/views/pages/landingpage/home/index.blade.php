@@ -60,7 +60,7 @@ mount(function () {
           </a>
           <a href="https://wa.me/6281395637337" target="_blank"
             class="flex w-full sm:w-auto justify-center items-center py-3 px-8 text-sm sm:text-base font-bold text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-full transition-all transform hover:-translate-y-1">
-            <i class="fab fa-whatsapp text-xl mr-2 text-[#25D366]"></i> Chat WhatsApp Sekarang
+            <i class="fab fa-whatsapp text-xl mr-2 text-[#25D366]"></i> Chat WhatsApp
           </a>
         </div>
 
