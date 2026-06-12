@@ -1,6 +1,6 @@
 # =============================================================================
 #  🚗  GitaCar Rent — Build & Deploy
-#  Build Docker image → push ke GHCR → deploy di server
+#  Build Docker image → push ke GHCR → deploy di Docker Swarm
 # =============================================================================
 
 name: Build & Deploy
@@ -20,9 +20,10 @@ concurrency:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  SERVICE_NAME: gitacar-rent-app-xkb9xk
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -62,3 +63,12 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: 43.157.228.56
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            docker service update --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --force ${{ env.SERVICE_NAME }}
