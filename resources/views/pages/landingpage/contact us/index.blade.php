@@ -100,7 +100,7 @@ title('Contact Us - Gita Car Rental');
               <h3 class="text-xl font-bold text-slate-900 mb-2">WhatsApp Kami</h3>
               <p class="text-slate-600 leading-relaxed mb-4">Fast response! Tim reservasi kami siap menjawab pertanyaan
                 Anda.</p>
-              <a href="https://wa.me/628123929934" target="_blank"
+              <a href="https://wa.me/6281395637337" target="_blank"
                 class="text-slate-900 text-lg font-bold hover:text-[#2FAE9B] transition-colors">
                 +62 812-3929-934
               </a>
@@ -187,7 +187,7 @@ title('Contact Us - Gita Car Rental');
   </section>
 
   <!-- Floating WhatsApp Button -->
-  <a href="https://wa.me/628123929934" target="_blank" rel="noopener noreferrer"
+  <a href="https://wa.me/6281395637337" target="_blank" rel="noopener noreferrer"
     class="fixed bottom-24 md:bottom-6 right-6 z-50 w-16 h-16 bg-[#25D366] hover:bg-[#128C7E] rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 group ring-4 ring-white">
     <i class="fab fa-whatsapp text-white text-3xl"></i>
     <span
@@ -219,7 +219,7 @@ title('Contact Us - Gita Car Rental');
     const encodedText = encodeURIComponent(text);
     
     // Nomor WA tujuan
-    const waNumber = '628123929934';
+    const waNumber = '6281395637337';
     
     // Buat URL WhatsApp
     const waUrl = `https://wa.me/${waNumber}?text=${encodedText}`;

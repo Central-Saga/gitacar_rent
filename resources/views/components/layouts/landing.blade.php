@@ -378,7 +378,7 @@
                         </li>
                         <li class="flex items-center">
                             <i class="fab fa-whatsapp text-primary mr-3"></i>
-                            <a href="https://wa.me/628123929934" target="_blank"
+                            <a href="https://wa.me/6281395637337" target="_blank"
                                 class="text-secondary hover:text-primary transition-colors">0812-3929-934</a>
                         </li>
                         <li class="flex items-center">

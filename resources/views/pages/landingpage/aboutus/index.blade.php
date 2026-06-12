@@ -162,7 +162,7 @@ title('About Us - Gita Car Rental Bali');
             <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto">Tentukan kendaraan impian Anda untuk jalan-jalan
                 keliling Bali, percayakan mobilitas Anda pada Gita Car Rental.</p>
             <div class="flex justify-center gap-4">
-                <a href="https://wa.me/628123929934" target="_blank"
+                <a href="https://wa.me/6281395637337" target="_blank"
                     class="bg-[#25D366] hover:bg-[#128C7E] text-white px-8 py-4 rounded-full font-bold text-lg transition flex items-center justify-center shadow-lg">
                     <i class="fab fa-whatsapp mr-2 text-xl"></i> Hubungi Kami
                 </a>

@@ -58,7 +58,7 @@ mount(function () {
             class="flex w-full sm:w-auto justify-center items-center py-3 px-8 text-base font-bold text-white bg-gradient-to-r from-[#2FAE9B] to-[#6ED3C2] hover:from-[#248f7f] hover:to-[#5bc0b0] rounded-full shadow-[0_10px_20px_-10px_rgba(46,174,155,0.6)] transition-all transform hover:-translate-y-1">
             Lihat Kendaraan
           </a>
-          <a href="https://wa.me/628123929934" target="_blank"
+          <a href="https://wa.me/6281395637337" target="_blank"
             class="flex w-full sm:w-auto justify-center items-center py-3 px-8 text-sm sm:text-base font-bold text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-full transition-all transform hover:-translate-y-1">
             <i class="fab fa-whatsapp text-xl mr-2 text-[#25D366]"></i> Chat WhatsApp Sekarang
           </a>
@@ -199,7 +199,7 @@ mount(function () {
                       {{ number_format($mobil->harga_sewa_per_hari, 0, ',', '.') }}</span>
                     <span class="text-xs text-gray-500">/hr</span>
                   </div>
-                  <a href="https://wa.me/628123929934?text=Halo%20Gita%20Car%20Rental,%20saya%20tertarik%20menyewa%20Mobil%20{{ urlencode($mobil->nama_kendaraan) }}"
+                  <a href="https://wa.me/6281395637337?text=Halo%20Gita%20Car%20Rental,%20saya%20tertarik%20menyewa%20Mobil%20{{ urlencode($mobil->nama_kendaraan) }}"
                     target="_blank"
                     class="bg-[#F5F6F7] hover:bg-[#2FAE9B] hover:text-white text-[#2D2D2D] px-4 py-2 rounded-lg font-semibold text-xs transition-colors flex items-center gap-1.5">
                     <i class="fab fa-whatsapp"></i> Sewa
@@ -257,7 +257,7 @@ mount(function () {
                       {{ number_format($motor->harga_sewa_per_hari, 0, ',', '.') }}</span>
                     <span class="text-xs text-gray-500">/hr</span>
                   </div>
-                  <a href="https://wa.me/628123929934?text=Halo%20Gita%20Car%20Rental,%20saya%20tertarik%20menyewa%20Motor%20{{ urlencode($motor->nama_kendaraan) }}"
+                  <a href="https://wa.me/6281395637337?text=Halo%20Gita%20Car%20Rental,%20saya%20tertarik%20menyewa%20Motor%20{{ urlencode($motor->nama_kendaraan) }}"
                     target="_blank"
                     class="bg-[#F5F6F7] hover:bg-[#2FAE9B] hover:text-white text-[#2D2D2D] px-4 py-2 rounded-lg font-semibold text-xs transition-colors flex items-center gap-1.5">
                     <i class="fab fa-whatsapp"></i> Sewa
@@ -381,7 +381,7 @@ mount(function () {
                 class="bg-[#F5F6F7] text-[#2D2D2D] hover:bg-gray-200 px-6 py-3 rounded-xl font-bold transition flex items-center">
                 <i class="fas fa-directions mr-2 text-primary"></i> Arahkan Saya
               </a>
-              <a href="https://wa.me/628123929934" target="_blank"
+              <a href="https://wa.me/6281395637337" target="_blank"
                 class="bg-[#25D366] hover:bg-[#128C7E] text-white px-6 py-3 rounded-xl font-bold transition flex items-center shadow-lg shadow-[#25D366]/30">
                 <i class="fab fa-whatsapp text-xl mr-2"></i> Tanya via WA
               </a>
@@ -416,7 +416,7 @@ mount(function () {
           class="w-full sm:w-auto bg-white text-[#2FAE9B] hover:bg-gray-50 px-8 py-4 rounded-full font-bold text-lg transition shadow-xl hover:-translate-y-1">
           Sewa Sekarang
         </a>
-        <a href="https://wa.me/628123929934" target="_blank"
+        <a href="https://wa.me/6281395637337" target="_blank"
           class="w-full sm:w-auto text-white border-2 border-white hover:bg-white/10 px-8 py-4 rounded-full font-bold text-lg transition flex items-center justify-center group">
           <i class="fab fa-whatsapp mr-2 group-hover:scale-110 transition-transform"></i> Tanya Ketersediaan
         </a>
@@ -425,7 +425,7 @@ mount(function () {
   </section>
 
   <!-- Floating WhatsApp Button (Fixed on all scroll) -->
-  <a href="https://wa.me/628123929934" target="_blank" rel="noopener noreferrer"
+  <a href="https://wa.me/6281395637337" target="_blank" rel="noopener noreferrer"
     class="hidden md:flex fixed bottom-6 right-6 z-50 w-16 h-16 bg-[#25D366] hover:bg-[#128C7E] rounded-full items-center justify-center shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 group ring-4 ring-white">
     <i class="fab fa-whatsapp text-white text-3xl"></i>
     <span
