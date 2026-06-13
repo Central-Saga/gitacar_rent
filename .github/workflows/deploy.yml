@@ -53,6 +53,21 @@ jobs:
             type=sha,prefix={{branch}}-,format=short
             type=raw,value={{branch}}
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, sqlite3, pdo_sqlite, pdo_mysql, mysql, gd, exif, zip, bcmath
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install NPM dependencies and build assets
+        run: |
+          npm ci
+          npm run build
+
       - name: Run dashboard tests
         run: |
           cp .env.example .env
