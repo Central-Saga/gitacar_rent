@@ -94,7 +94,10 @@ RUN mkdir -p /var/www/html/storage/framework/{cache,sessions,testing,views} \
     && mkdir -p /var/www/html/storage/app/public \
     && mkdir -p /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage \
-    && chmod -R 775 /var/www/html/bootstrap/cache
+    && chmod -R 775 /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+RUN sed -i 's/;clear_env = no/clear_env = no/' /usr/local/etc/php-fpm.d/www.conf
 
 RUN rm -f /etc/nginx/http.d/default.conf
 COPY docker/nginx.conf /etc/nginx/http.d/laravel.conf
