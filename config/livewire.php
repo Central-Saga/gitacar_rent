@@ -192,7 +192,7 @@ return [
     |
     */
 
-    'asset_url' => env('APP_URL') . '/vendor/livewire/livewire.min.js',
+    'asset_url' => env('LIVEWIRE_ASSET_URL'),
 
     'inject_assets' => true,
 

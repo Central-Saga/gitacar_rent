@@ -29,8 +29,31 @@ class AppServiceProvider extends ServiceProvider
         Blade::anonymousComponentPath(resource_path('views/livewire/pages'), 'pages');
         $this->configureDefaults();
 
-        \Illuminate\Support\Facades\URL::forceRootUrl(config('app.url'));
-        \Illuminate\Support\Facades\URL::forceScheme('https');
+        $this->configureHttps();
+    }
+
+    /**
+     * Ensure URLs are generated with the correct scheme and root URL
+     * when running behind a reverse proxy (Dokploy/Traefik/Nginx).
+     */
+    protected function configureHttps(): void
+    {
+        $request = request();
+
+        $isSecure = $request?->isSecure()
+            || $request?->header('X-Forwarded-Proto') === 'https'
+            || $request?->server('HTTPS') === 'on'
+            || app()->isProduction();
+
+        if ($isSecure) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
+        $appUrl = config('app.url');
+
+        if ($appUrl && $appUrl !== 'http://localhost' && ! app()->runningUnitTests()) {
+            \Illuminate\Support\Facades\URL::forceRootUrl($appUrl);
+        }
     }
 
     /**
