@@ -161,7 +161,7 @@ new
                             }
                         });
                     }
-                }" x-init="setTimeout(() => initChart(), 100)" @revenue-chart-updated.window="setTimeout(() => initChart(), 100)" @livewire:navigated.window="chart = null">
+                }" x-init="setTimeout(() => initChart(), 100)" x-on:revenue-chart-updated.window="setTimeout(() => initChart(), 100)" x-on:livewire:navigated.window="chart = null">
                 <canvas x-ref="canvas"></canvas>
             </div>
         </div>
@@ -207,7 +207,7 @@ new
                             }
                         });
                     }
-                 }" x-init="setTimeout(() => initPieChart(), 100)" @livewire:navigated.window="chart = null">
+                 }" x-init="setTimeout(() => initPieChart(), 100)" x-on:livewire:navigated.window="chart = null">
                 <canvas id="fleetChart"></canvas>
             </div>
         </div>
@@ -260,9 +260,9 @@ new
                         </div>
                         <div class="flex-1">
                             <p class="text-sm text-textDark font-semibold">
-                                {{ $activity->pelanggan->user->name ?? 'Pelanggan' }}
+                                {{ $activity->pelanggan?->user?->name ?? 'Pelanggan' }}
                                 <span class="font-normal text-textGray">telah membuat pemesanan</span>
-                                {{ $activity->kendaraanUnit->kendaraan->nama_kendaraan ?? 'Kendaraan' }}
+                                {{ $activity->kendaraanUnit?->kendaraan?->nama_kendaraan ?? 'Kendaraan' }}
                             </p>
                             <div class="flex items-center gap-2 mt-1">
                                 <span class="text-xs px-2 py-0.5 rounded-full font-medium 
@@ -334,10 +334,10 @@ new
                                             <a href="{{ route('admin.pemesanan.show', $k->id) }}"
                                                 class="block p-2 bg-white rounded shadow-sm text-xs hover:bg-amber-100 transition">
                                                 <span class="font-bold">{{ $k->kendaraanUnit->nomor_plat }}</span> -
-                                                {{ $k->pelanggan->user->name }}
+                                                {{ $k->pelanggan?->user?->name ?? '-' }}
                                                 <br>
                                                 <span class="text-amber-600">Tenggat:
-                                                    {{ $k->waktu_selesai->format('d M Y H:i') }}</span>
+                                                    {{ $k->waktu_selesai?->format('d M Y H:i') ?? '-' }}</span>
                                             </a>
                                         @endforeach
                                         @if($kendaraanTerlambat->count() > 3)
@@ -371,7 +371,7 @@ new
                                             <a href="{{ route('admin.pemesanan.show', $k->id) }}"
                                                 class="block p-2 bg-white rounded shadow-sm text-xs hover:bg-blue-100 transition">
                                                 <span class="font-bold">{{ $k->kendaraanUnit->nomor_plat }}</span> -
-                                                {{ $k->pelanggan->user->name }}
+                                                {{ $k->pelanggan?->user?->name ?? '-' }}
                                             </a>
                                         @endforeach
                                     </div>

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Pemesanan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -30,5 +31,19 @@ class DashboardTest extends TestCase
             ->assertDontSeeText('Sedang Disewa')
             ->assertDontSeeText('Menunggu Verifikasi')
             ->assertDontSeeText('Pendapatan (Bulan Ini)');
+    }
+
+    public function test_dashboard_renders_with_recent_activity_data(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Pemesanan::factory()->count(3)->create([
+            'status_pemesanan' => 'selesai',
+        ]);
+
+        $this->get(route('dashboard'))
+            ->assertOk()
+            ->assertSeeText('Aktivitas Terbaru');
     }
 }
