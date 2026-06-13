@@ -122,8 +122,12 @@ new
             <div wire:key="revenue-chart-{{ $chartDays }}" class="relative w-full flex-1 min-h-[16rem]" x-data="{
                     chart: null,
                     initChart() {
+                        if (this.chart) return;
+                        const canvas = this.$refs.canvas;
+                        if (!canvas) return;
+                        const ctx = canvas.getContext('2d');
+                        if (!ctx) return;
                         if (this.chart) this.chart.destroy();
-                        const ctx = this.$refs.canvas.getContext('2d');
                         this.chart = new Chart(ctx, {
                             type: 'line',
                             data: {
@@ -131,7 +135,7 @@ new
                                 datasets: [{
                                     label: 'Pendapatan (Rp)',
                                     data: {{ $revenueData }},
-                                    borderColor: '#10B981', // Tailwind Emerald 500 (Primary like)
+                                    borderColor: '#10B981',
                                     backgroundColor: 'rgba(16, 185, 129, 0.1)',
                                     borderWidth: 2,
                                     fill: true,
@@ -157,7 +161,7 @@ new
                             }
                         });
                     }
-                }" x-init="$nextTick(() => { initChart() })" @revenue-chart-updated.window="initChart()">
+                }" x-init="setTimeout(() => initChart(), 100)" @revenue-chart-updated.window="setTimeout(() => initChart(), 100)" @livewire:navigated.window="chart = null">
                 <canvas x-ref="canvas"></canvas>
             </div>
         </div>
@@ -171,8 +175,12 @@ new
             <div wire:ignore class="h-56 relative w-full flex items-center justify-center" x-data="{
                     chart: null,
                     initPieChart() {
+                        if (this.chart) return;
+                        const canvas = document.getElementById('fleetChart');
+                        if (!canvas) return;
+                        const ctx = canvas.getContext('2d');
+                        if (!ctx) return;
                         if (this.chart) this.chart.destroy();
-                        const ctx = document.getElementById('fleetChart').getContext('2d');
                         this.chart = new Chart(ctx, {
                             type: 'doughnut',
                             data: {
@@ -180,10 +188,10 @@ new
                                 datasets: [{
                                     data: {{ $fleetStatusData }},
                                     backgroundColor: [
-                                        '#10B981', // Tersedia (Emerald)
-                                        '#F59E0B', // Dibooking (Amber)
-                                        '#3B82F6', // Disewa (Blue)
-                                        '#EF4444'  // Maintenance (Red)
+                                        '#10B981',
+                                        '#F59E0B',
+                                        '#3B82F6',
+                                        '#EF4444'
                                     ],
                                     borderWidth: 0,
                                     hoverOffset: 4
@@ -199,7 +207,7 @@ new
                             }
                         });
                     }
-                 }" x-init="$nextTick(() => { initPieChart() })">
+                 }" x-init="setTimeout(() => initPieChart(), 100)" @livewire:navigated.window="chart = null">
                 <canvas id="fleetChart"></canvas>
             </div>
         </div>
