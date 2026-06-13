@@ -1,0 +1,92 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "Gita Car Rental Logo Gita Car Rental" [ref=e4] [cursor=pointer]:
+      - /url: http://gitacarrental.web.id/dashboard
+      - img "Gita Car Rental Logo" [ref=e6]
+      - generic [ref=e7]: Gita Car Rental
+    - navigation [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e11]: Platform
+        - link "Dashboard" [ref=e14] [cursor=pointer]:
+          - /url: http://gitacarrental.web.id/dashboard
+          - img [ref=e16]
+          - generic [ref=e18]: Dashboard
+      - generic [ref=e19]:
+        - generic [ref=e21]: User Management
+        - generic [ref=e22]:
+          - link "Users" [ref=e24] [cursor=pointer]:
+            - /url: http://gitacarrental.web.id/admin/users
+            - img [ref=e26]
+            - generic [ref=e28]: Users
+          - link "Roles" [ref=e30] [cursor=pointer]:
+            - /url: http://gitacarrental.web.id/admin/roles
+            - img [ref=e32]
+            - generic [ref=e34]: Roles
+      - generic [ref=e35]:
+        - generic [ref=e37]: Manajemen Pelanggan
+        - link "Pelanggan" [ref=e40] [cursor=pointer]:
+          - /url: http://gitacarrental.web.id/admin/pelanggan
+          - img [ref=e42]
+          - generic [ref=e44]: Pelanggan
+      - generic [ref=e45]:
+        - generic [ref=e47]: Manajemen Armada
+        - generic [ref=e48]:
+          - link "Kendaraan" [ref=e50] [cursor=pointer]:
+            - /url: http://gitacarrental.web.id/admin/kendaraan
+            - img [ref=e52]
+            - generic [ref=e54]: Kendaraan
+          - link "Unit Kendaraan" [ref=e56] [cursor=pointer]:
+            - /url: http://gitacarrental.web.id/admin/kendaraan-units
+            - img [ref=e58]
+            - generic [ref=e60]: Unit Kendaraan
+      - generic [ref=e61]:
+        - generic [ref=e63]: Manajemen Pemesanan
+        - link "Pemesanan 0" [ref=e66] [cursor=pointer]:
+          - /url: http://gitacarrental.web.id/admin/pemesanan
+          - img [ref=e68]
+          - generic [ref=e70]: Pemesanan
+          - generic [ref=e71]: "0"
+      - generic [ref=e72]:
+        - generic [ref=e74]: Manajemen Diskon
+        - link "Promo" [ref=e77] [cursor=pointer]:
+          - /url: http://gitacarrental.web.id/admin/promo
+          - img [ref=e79]
+          - generic [ref=e81]: Promo
+    - button "a admin" [ref=e84]:
+      - generic [ref=e87]: a
+      - generic [ref=e88]: admin
+      - img [ref=e90]
+  - generic [ref=e94]:
+    - generic [ref=e96]:
+      - heading "Dashboard Operasional" [level=1] [ref=e97]
+      - paragraph [ref=e98]: Ringkasan hari ini, 13 June 2026
+    - generic [ref=e99]:
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - heading "Grafik Pendapatan" [level=3] [ref=e103]
+          - paragraph [ref=e104]: Statistik pendapatan dari penyewaan yang terselesaikan.
+        - combobox [ref=e106] [cursor=pointer]:
+          - option "Hari Ini" [selected]
+          - option "7 Hari Terakhir"
+          - option "30 Hari Terakhir"
+      - generic [ref=e110]:
+        - heading "Status Armada" [level=3] [ref=e111]
+        - paragraph [ref=e112]: Distribusi kendaraan berdasarkan status.
+    - generic [ref=e115]:
+      - generic [ref=e116]:
+        - generic [ref=e117]:
+          - heading "Aktivitas Terbaru" [level=3] [ref=e118]
+          - paragraph [ref=e119]: Aktivitas pemesanan terakhir (Booking, Approval, Return).
+        - generic [ref=e121]:
+          - img [ref=e123]
+          - paragraph [ref=e125]: Belum ada aktivitas terbaru.
+      - generic [ref=e127]:
+        - generic [ref=e128]:
+          - heading "Reminder Penting" [level=3] [ref=e129]:
+            - img [ref=e130]
+            - text: Reminder Penting
+          - paragraph [ref=e132]: Hal-hal yang membutuhkan tindakan segera hari ini.
+        - generic [ref=e134]:
+          - img [ref=e136]
+          - heading "Semuanya Aman!" [level=4] [ref=e138]
+          - paragraph [ref=e139]: Tidak ada reminder mendesak saat ini.

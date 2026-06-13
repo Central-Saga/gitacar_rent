@@ -1,0 +1,21 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - heading "Login" [level=1] [ref=e6]
+    - generic [ref=e7]:
+      - generic [ref=e8]: Don't have an account?
+      - link "sign up" [ref=e9] [cursor=pointer]:
+        - /url: https://gitacarrental.web.id/register
+  - generic [ref=e10]:
+    - generic [ref=e11]:
+      - generic:
+        - img
+      - textbox "Email" [active] [ref=e12]
+    - generic [ref=e13]:
+      - generic:
+        - img
+      - textbox "Password" [ref=e14]
+      - link "FORGOT" [ref=e15] [cursor=pointer]:
+        - /url: https://gitacarrental.web.id/forgot-password
+    - button "Login" [ref=e17]:
+      - text: Login
+      - img [ref=e18]
