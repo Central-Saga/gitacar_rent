@@ -160,8 +160,10 @@ new
                                 }
                             }
                         });
+                        window.__dashboardCharts = window.__dashboardCharts || [];
+                        window.__dashboardCharts.push(this.chart);
                     }
-                }" x-init="setTimeout(() => initChart(), 100)" x-on:revenue-chart-updated.window="setTimeout(() => initChart(), 100)" x-on:livewire:navigated.window="chart = null">
+                }" x-init="setTimeout(() => initChart(), 100)" x-on:revenue-chart-updated.window="setTimeout(() => initChart(), 100)">
                 <canvas x-ref="canvas"></canvas>
             </div>
         </div>
@@ -207,7 +209,7 @@ new
                             }
                         });
                     }
-                 }" x-init="setTimeout(() => initPieChart(), 100)" x-on:livewire:navigated.window="chart = null">
+                 }" x-init="setTimeout(() => initPieChart(), 100)">
                 <canvas id="fleetChart"></canvas>
             </div>
         </div>
@@ -428,6 +430,13 @@ new
         document.addEventListener('livewire:navigated', () => {
             if (typeof window.Chart !== 'undefined') {
                 window.dispatchEvent(new Event('revenue-chart-updated'));
+            }
+        });
+
+        document.addEventListener('livewire:navigating', () => {
+            if (window.__dashboardCharts) {
+                window.__dashboardCharts.forEach(chart => chart.destroy());
+                window.__dashboardCharts = [];
             }
         });
     </script>
