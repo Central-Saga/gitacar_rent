@@ -97,6 +97,10 @@ RUN mkdir -p /var/www/html/storage/framework/{cache,sessions,testing,views} \
     && chmod -R 775 /var/www/html/bootstrap/cache \
     && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Publish Livewire and Flux assets to public directory
+RUN cp -r /var/www/html/vendor/livewire/livewire/dist /var/www/html/public/vendor/livewire \
+    && cp -r /var/www/html/vendor/livewire/flux/dist /var/www/html/public/flux
+
 RUN sed -i 's/;clear_env = no/clear_env = no/' /usr/local/etc/php-fpm.d/www.conf
 
 RUN rm -f /etc/nginx/http.d/default.conf

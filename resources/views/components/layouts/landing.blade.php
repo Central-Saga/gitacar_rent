@@ -134,14 +134,16 @@
                         class="text-gray-800 hover:text-primary font-medium transition-colors">Home</a>
 
                     <!-- Dropdown Katalog -->
-                    <div class="relative group py-6">
-                        <button
+                    <div x-data="{ open: false }" class="relative py-6">
+                        <button @click="open = !open" @click.away="open = false"
                             class="flex items-center text-gray-800 hover:text-primary font-medium transition-colors focus:outline-none">
                             Katalog <i
-                                class="fas fa-chevron-down ml-1.5 text-xs transition-transform group-hover:rotate-180"></i>
+                                class="fas fa-chevron-down ml-1.5 text-xs transition-transform"
+                                :class="{ 'rotate-180': open }"></i>
                         </button>
-                        <div
-                            class="dropdown-menu absolute left-0 mt-4 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
+                        <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+                            @click.away="open = false"
+                            class="absolute left-0 mt-4 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
                             <div class="py-1">
                                 <a href="{{ route('katalog.mobil') }}"
                                     class="block px-4 py-3 text-sm text-gray-700 hover:bg-soft hover:text-primary transition-colors">
@@ -165,16 +167,18 @@
                 <!-- Auth Buttons -->
                 <div class="hidden md:flex items-center space-x-4">
                     @auth
-                        <div class="relative group py-6">
-                            <button
+                        <div x-data="{ open: false }" class="relative py-6">
+                            <button @click="open = !open" @click.away="open = false"
                                 class="flex items-center gap-2 bg-soft hover:bg-gray-200 text-gray-800 px-3 py-1.5 rounded-full transition-colors focus:outline-none">
                                 <i class="fas fa-user-circle text-lg text-primary"></i>
                                 <span class="text-sm font-semibold">{{ Auth::user()->name ?? 'Pengunjung' }}</span>
                                 <i
-                                    class="fas fa-chevron-down text-[10px] ml-1 text-secondary transition-transform group-hover:rotate-180"></i>
+                                    class="fas fa-chevron-down text-[10px] ml-1 text-secondary transition-transform"
+                                    :class="{ 'rotate-180': open }"></i>
                             </button>
-                            <div
-                                class="dropdown-menu absolute right-0 mt-4 w-56 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
+                            <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+                                @click.away="open = false"
+                                class="absolute right-0 mt-4 w-56 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
                                 <div class="py-1">
                                     <a href="{{ route('home') }}"
                                         class="block px-4 py-3 text-sm text-gray-700 hover:bg-soft hover:text-primary transition-colors">
@@ -211,12 +215,14 @@
                 <!-- Mobile Auth Button (Top Right) -->
                 <div class="md:hidden flex items-center">
                     @auth
-                        <div class="relative group">
-                            <button
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open"
                                 class="flex items-center justify-center w-10 h-10 rounded-full bg-soft hover:bg-gray-200 text-gray-800 transition-colors focus:outline-none">
                                 <i class="fas fa-user-circle text-2xl text-primary"></i>
                             </button>
-                            <div class="dropdown-menu absolute right-0 mt-2 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
+                            <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+                                @click.away="open = false"
+                                class="absolute right-0 mt-2 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
                                 <div class="py-1">
                                     <a href="{{ route('reservasi') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-soft hover:text-primary transition-colors">
                                         <i class="fas fa-calendar-check w-5 mr-2 text-center text-primary"></i> Reservasi

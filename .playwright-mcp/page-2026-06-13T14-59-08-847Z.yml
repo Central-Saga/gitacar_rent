@@ -1,0 +1,208 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - link "Gita Car Rental Logo GitaCar" [ref=e6] [cursor=pointer]:
+        - /url: https://gitacarrental.web.id
+        - img "Gita Car Rental Logo" [ref=e7]
+        - generic [ref=e8]: GitaCar
+      - generic [ref=e9]:
+        - link "Home" [ref=e10] [cursor=pointer]:
+          - /url: https://gitacarrental.web.id
+        - button "Katalog " [ref=e12]:
+          - text: Katalog
+          - generic [ref=e13]: 
+        - link "About Us" [ref=e14] [cursor=pointer]:
+          - /url: https://gitacarrental.web.id/about-us
+        - link "Contact Us" [ref=e15] [cursor=pointer]:
+          - /url: https://gitacarrental.web.id/contact-us
+      - generic [ref=e16]:
+        - link "Login" [ref=e17] [cursor=pointer]:
+          - /url: https://gitacarrental.web.id/login
+        - link "Daftar" [ref=e18] [cursor=pointer]:
+          - /url: https://gitacarrental.web.id/register
+      - text: 
+  - text:       
+  - main [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - img "Sewa Mobil dan Motor Canggu" [ref=e23]
+        - generic [ref=e26]:
+          - generic [ref=e27]: 🚗 Menyediakan Mobil & Motor Terbaik
+          - heading "Menjelajah Bali Tanpa Ribet di Canggu." [level=1] [ref=e28]
+          - paragraph [ref=e29]: Temukan kemudahan, kecepatan, dan kenyamanan perjalanan Anda dengan unit bersih terawat dari Gita Car Rental. Pesan sekarang, jalan-jalan tenang!
+          - generic [ref=e30]:
+            - link "Lihat Kendaraan" [ref=e31] [cursor=pointer]:
+              - /url: "#katalog"
+            - link " Chat WhatsApp" [ref=e32] [cursor=pointer]:
+              - /url: https://wa.me/6281395637337
+              - generic [ref=e33]: 
+              - text: Chat WhatsApp
+          - generic [ref=e34]:
+            - generic [ref=e35]:
+              - generic [ref=e37]: 
+              - generic [ref=e38]: Unit Terawat
+            - generic [ref=e39]:
+              - generic [ref=e41]: 
+              - generic [ref=e42]: Proses Cepat
+            - generic [ref=e43]:
+              - generic [ref=e45]: 
+              - generic [ref=e46]: Lokasi Strategis
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - heading "Keunggulan Kami" [level=2] [ref=e50]
+          - heading "Kenapa Memilih Gita Car Rental?" [level=3] [ref=e51]
+          - paragraph [ref=e52]: Kami pastikan liburan Anda di Bali berjalan mulus, aman, dan berkesan dengan layanan rental motor dan mobil yang gak pakai ribet.
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e56]: 
+            - heading "Unit Bersih & Terawat" [level=4] [ref=e57]
+            - paragraph [ref=e58]: Kebersihan dan kenyamanan adalah prioritas. Semua kendaraan kami diservis rutin dan dicuci bersih sebelum serah terima.
+          - generic [ref=e59]:
+            - generic [ref=e61]: 
+            - heading "Proses Cepat & Mudah" [level=4] [ref=e62]
+            - paragraph [ref=e63]: Liburan tidak membuang waktu. Pesan gampang, syarat mudah, dan kendaraan langsung siap Anda gunakan.
+          - generic [ref=e64]:
+            - generic [ref=e66]: 
+            - heading "Lokasi Strategis" [level=4] [ref=e67]
+            - paragraph [ref=e68]: Mudah dijangkau! Kami berada di jantung area Canggu yang happening, titik awal sempurna untuk menjelajah.
+          - generic [ref=e69]:
+            - generic [ref=e71]: 
+            - heading "Support Responsif" [level=4] [ref=e72]
+            - paragraph [ref=e73]: Butuh bantuan di jalan? Tim support kami stand-by dan cepat merespon melalui WhatsApp 24 jam sehari.
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - heading "Gita Car Rental" [level=2] [ref=e79]
+              - heading "Koleksi Mobil" [level=3] [ref=e80]
+              - paragraph [ref=e81]: Pilihan mobil nyaman untuk road trip keliling Bali, dari area pantai hingga pegunungan bersama keluarga atau teman liburan.
+            - link "Lihat Semua Mobil " [ref=e82] [cursor=pointer]:
+              - /url: https://gitacarrental.web.id/katalog/mobil
+              - text: Lihat Semua Mobil
+              - generic [ref=e83]: 
+          - generic [ref=e85]:
+            - generic [ref=e86]: 
+            - paragraph [ref=e87]: Belum ada mobil yang tersedia saat ini.
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - generic [ref=e90]:
+              - heading "Gita Car Rental" [level=2] [ref=e91]
+              - heading "Koleksi Motor" [level=3] [ref=e92]
+              - paragraph [ref=e93]: Bergesekan dengan angin sore Canggu! Pilih motor yang lincah dan gesit untuk selap-selip anti macet atau menelusuri hidden beach.
+            - link "Lihat Semua Motor " [ref=e94] [cursor=pointer]:
+              - /url: https://gitacarrental.web.id/katalog/motor
+              - text: Lihat Semua Motor
+              - generic [ref=e95]: 
+          - generic [ref=e97]:
+            - generic [ref=e98]: 
+            - paragraph [ref=e99]: Belum ada motor yang tersedia saat ini.
+      - generic [ref=e102]:
+        - img "Proses Serah Terima" [ref=e106]
+        - generic [ref=e107]:
+          - heading "Simpel & Aman" [level=2] [ref=e108]
+          - heading "Cara Rental Gak Pakai Ribet!" [level=3] [ref=e109]
+          - paragraph [ref=e110]: Nikmati transparansi dan kejelasan dari awal hingga akhir. Kami memastikan proses penyewaan Anda membangun rasa aman.
+          - generic [ref=e111]:
+            - generic [ref=e112]:
+              - generic [ref=e114]: "1"
+              - generic [ref=e115]:
+                - heading "Pilih & Pesan Kendaraan" [level=4] [ref=e116]
+                - paragraph [ref=e117]: Cari mobil/motor di website, tentukan tanggal, dan lakukan pendaftaran akun/login.
+            - generic [ref=e118]:
+              - generic [ref=e120]: "2"
+              - generic [ref=e121]:
+                - heading "Upload & Bayar" [level=4] [ref=e122]
+                - paragraph [ref=e123]: Isi detail lengkap, kirim permohonan, lalu tunggu konfirmasi harga untuk upload bukti pembayaran.
+            - generic [ref=e124]:
+              - generic [ref=e126]:
+                - text: "3"
+                - generic: Ini Syarat Wajib Lho!
+              - generic [ref=e127]:
+                - heading "Serah Terima & Identitas" [level=4] [ref=e128]
+                - paragraph [ref=e129]: Saat mengambil kendaraan, serahkan KTP Asli / Passport. Kami juga akan melakukan foto serah terima bersama unit.
+      - generic [ref=e133]:
+        - generic [ref=e134]:
+          - heading "Mampir Ke Garasi Kami" [level=2] [ref=e135]
+          - paragraph [ref=e136]: Tim kami standby untuk menyiapkan kendaraan Anda. Jika ada pertanyaan, jangan ragu untuk datang langsung.
+          - generic [ref=e138]:
+            - generic [ref=e139]: 
+            - generic [ref=e140]:
+              - heading "Alamat" [level=5] [ref=e141]
+              - paragraph [ref=e142]:
+                - text: Jl. Tanah Barak No.47a, Canggu,
+                - text: Kec. Kuta Utara, Kab. Badung,
+                - text: Bali 80351
+          - generic [ref=e143]:
+            - link " Arahkan Saya" [ref=e144] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=Jl.+Tanah+Barak+No.47a+Canggu+Bali
+              - generic [ref=e145]: 
+              - text: Arahkan Saya
+            - link " Tanya via WA" [ref=e146] [cursor=pointer]:
+              - /url: https://wa.me/6281395637337
+              - generic [ref=e147]: 
+              - text: Tanya via WA
+        - iframe [ref=e149]:
+          
+      - generic [ref=e153]:
+        - heading "Siap Menjelajah Bali Tanpa Ribet?" [level=2] [ref=e154]
+        - paragraph [ref=e155]: Sewa cepat, unit dijamin top condition, harga transparan. Jangan biarkan rencana jalan-jalanmu mandek!
+        - generic [ref=e156]:
+          - link "Sewa Sekarang" [ref=e157] [cursor=pointer]:
+            - /url: "#katalog"
+          - link " Tanya Ketersediaan" [ref=e158] [cursor=pointer]:
+            - /url: https://wa.me/6281395637337
+            - generic [ref=e159]: 
+            - text: Tanya Ketersediaan
+      - link " Chat dengan Admin Gita Car Rental! 🚙" [ref=e160] [cursor=pointer]:
+        - /url: https://wa.me/6281395637337
+        - generic [ref=e161]: 
+        - generic: Chat dengan Admin Gita Car Rental! 🚙
+  - contentinfo [ref=e162]:
+    - generic [ref=e163]:
+      - generic [ref=e164]:
+        - generic [ref=e165]:
+          - link "Gita Car Rental Logo GitaCar" [ref=e166] [cursor=pointer]:
+            - /url: https://gitacarrental.web.id
+            - img "Gita Car Rental Logo" [ref=e167]
+            - generic [ref=e168]: GitaCar
+          - paragraph [ref=e169]: Solusi rental mobil dan motor terpercaya di Canggu, Bali. Nikmati perjalanan tanpa ribet dengan armada terawat dan pelayanan terbaik.
+          - generic [ref=e170]:
+            - link "" [ref=e171] [cursor=pointer]:
+              - /url: https://www.instagram.com/gitacarrental/
+              - generic [ref=e172]: 
+            - link "" [ref=e173] [cursor=pointer]:
+              - /url: https://www.facebook.com/gitacarrentalbali/
+              - generic [ref=e174]: 
+        - generic [ref=e175]:
+          - heading "Layanan Kami" [level=3] [ref=e176]
+          - list [ref=e177]:
+            - listitem [ref=e178]:
+              - link "Sewa Mobil" [ref=e179] [cursor=pointer]:
+                - /url: https://gitacarrental.web.id/katalog/mobil
+            - listitem [ref=e180]:
+              - link "Sewa Motor" [ref=e181] [cursor=pointer]:
+                - /url: https://gitacarrental.web.id/katalog/motor
+            - listitem [ref=e182]:
+              - link "Syarat & Ketentuan" [ref=e183] [cursor=pointer]:
+                - /url: "#syarat"
+        - generic [ref=e184]:
+          - heading "Hubungi Kami" [level=3] [ref=e185]
+          - list [ref=e186]:
+            - listitem [ref=e187]:
+              - generic [ref=e188]: 
+              - generic [ref=e189]: Jl. Tanah Barak No.47a, Canggu, Kec. Kuta Utara, Kab. Badung, Bali 80351
+            - listitem [ref=e190]:
+              - generic [ref=e191]: 
+              - link "0812-3929-934" [ref=e192] [cursor=pointer]:
+                - /url: https://wa.me/6281395637337
+            - listitem [ref=e193]:
+              - generic [ref=e194]: 
+              - link "info@gitacarrental.com" [ref=e195] [cursor=pointer]:
+                - /url: mailto:info@gitacarrental.com
+      - generic [ref=e196]:
+        - paragraph [ref=e197]: © 2026 Gita Car Rental. All rights reserved.
+        - generic [ref=e198]:
+          - link "Privacy Policy" [ref=e199] [cursor=pointer]:
+            - /url: "#"
+          - link "Terms of Service" [ref=e200] [cursor=pointer]:
+            - /url: "#"

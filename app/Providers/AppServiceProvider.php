@@ -28,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Blade::anonymousComponentPath(resource_path('views/livewire/pages'), 'pages');
         $this->configureDefaults();
+
+        \Illuminate\Support\Facades\URL::forceScheme('https');
     }
 
     /**

@@ -1,0 +1,1 @@
+[     284ms] [ERROR] Mixed Content: The page at 'https://gitacarrental.web.id/' was loaded over HTTPS, but requested an insecure script 'http://gitacarrental.web.id/livewire-314142d5/livewire.min.js?id=6b3709b1'. This request has been blocked; the content must be served over HTTPS. @ https://gitacarrental.web.id/:0
