@@ -14,7 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('user-password.edit');
     Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
 
-    Volt::route('settings/two-factor', 'settings.two-factor')
+    Route::get('settings/two-factor', App\Livewire\Settings\TwoFactor::class)
         ->middleware(
             when(
                 Features::canManageTwoFactorAuthentication()
