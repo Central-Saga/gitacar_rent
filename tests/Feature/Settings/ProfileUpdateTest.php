@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Settings;
 
+use App\Livewire\Settings\DeleteUserForm;
+use App\Livewire\Settings\Profile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -24,7 +26,7 @@ class ProfileUpdateTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = Livewire::test('pages.settings.profile')
+        $response = Livewire::test(Profile::class)
             ->set('name', 'Test User')
             ->set('email', 'test@example.com')
             ->call('updateProfileInformation');
@@ -44,7 +46,7 @@ class ProfileUpdateTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = Livewire::test('pages.settings.profile')
+        $response = Livewire::test(Profile::class)
             ->set('name', 'Test User')
             ->set('email', $user->email)
             ->call('updateProfileInformation');
@@ -60,7 +62,7 @@ class ProfileUpdateTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = Livewire::test('pages.settings.delete-user-form')
+        $response = Livewire::test(DeleteUserForm::class)
             ->set('password', 'password')
             ->call('deleteUser');
 
@@ -78,7 +80,7 @@ class ProfileUpdateTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = Livewire::test('pages.settings.delete-user-form')
+        $response = Livewire::test(DeleteUserForm::class)
             ->set('password', 'wrong-password')
             ->call('deleteUser');
 
