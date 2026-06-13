@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Pelanggan;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pelanggan>
+ * @extends Factory<Pelanggan>
  */
 class PelangganFactory extends Factory
 {
@@ -17,11 +19,13 @@ class PelangganFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => User::factory(),
             'nama' => fake('id_ID')->name(),
             'email' => fake('id_ID')->unique()->safeEmail(),
             'no_telp' => fake('id_ID')->phoneNumber(),
             'alamat' => fake('id_ID')->address(),
             'nik' => fake('id_ID')->nik(),
+            'foto_ktp' => null,
         ];
     }
 }
