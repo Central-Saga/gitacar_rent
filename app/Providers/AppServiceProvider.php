@@ -38,6 +38,10 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Ensure URLs are generated with the correct scheme and root URL
      * when running behind a reverse proxy (Dokploy/Traefik/Nginx).
+     *
+     * This is critical for Livewire file uploads, which use signed
+     * temporary URLs. If APP_URL is not explicitly set to the real
+     * domain, the signature will mismatch and return 401.
      */
     protected function configureHttps(): void
     {
@@ -54,7 +58,14 @@ class AppServiceProvider extends ServiceProvider
 
         $appUrl = config('app.url');
 
-        if ($appUrl && $appUrl !== 'http://localhost' && ! app()->runningUnitTests()) {
+        // In production, always derive the root URL from the actual request
+        // when APP_URL is still the default (http://localhost). This ensures
+        // signed URLs (e.g. Livewire file uploads) use the real domain.
+        if (app()->isProduction() && $appUrl === 'http://localhost') {
+            $scheme = $isSecure ? 'https' : 'http';
+            $host = $request?->getHost() ?? 'localhost';
+            URL::forceRootUrl("{$scheme}://{$host}");
+        } elseif ($appUrl && $appUrl !== 'http://localhost' && ! app()->runningUnitTests()) {
             URL::forceRootUrl($appUrl);
         }
     }
