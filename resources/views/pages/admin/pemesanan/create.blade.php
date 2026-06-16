@@ -539,7 +539,8 @@ $save = function () {
                                                     <span class="text-xs text-textGray font-medium truncate">{{ $bukti_pembayaran->getClientOriginalName() }}</span>
                                                     <label class="cursor-pointer text-xs text-primary hover:text-primaryDark font-semibold ml-3 whitespace-nowrap">
                                                         Ganti File
-                                                        <input wire:model="bukti_pembayaran" type="file" class="sr-only" accept=".jpg,.jpeg,.png,.pdf">
+
+<input wire:model.live.file="bukti_pembayaran" type="file" class="sr-only" accept=".jpg,.jpeg,.png,.pdf">
                                                     </label>
                                                 </div>
                                             </div>
@@ -594,8 +595,12 @@ $save = function () {
                                                     <label
                                                         class="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primaryDark focus-within:outline-none">
                                                         <span>Upload a file</span>
-                                                        <input wire:model="bukti_pembayaran" type="file" class="sr-only"
+
+
+                                                        <input wire:model.live.file="bukti_pembayaran" type="file" class="sr-only"
+
                                                             accept=".jpg,.jpeg,.png,.pdf">
+
                                                     </label>
                                                 </div>
                                                 <p class="text-xs text-gray-500">PNG, JPG, PDF up to 2MB</p>

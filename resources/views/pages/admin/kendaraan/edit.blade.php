@@ -246,7 +246,8 @@ $save = function() {
                                         <div class="flex text-sm text-gray-600 justify-center">
                                             <label for="foto" class="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primaryDark focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary">
                                                 <span>Pilih file foto baru</span>
-                                                <input id="foto" wire:model="foto" name="foto" type="file" class="sr-only" accept="image/*">
+
+<input id="foto" wire:model.live.file="foto" name="foto" type="file" class="sr-only" accept="image/*">
                                             </label>
                                             <p class="pl-1">atau drag and drop</p>
                                         </div>

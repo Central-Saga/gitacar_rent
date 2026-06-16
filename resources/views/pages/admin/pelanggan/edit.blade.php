@@ -155,7 +155,8 @@ $save = function() {
 
                                 <div class="md:col-span-2">
                                     <label for="foto_ktp" class="block text-sm font-medium text-gray-700 mb-2">Foto KTP Baru (Kosongkan bila tidak diubah - Maks 2MB)</label>
-                                    <input wire:model="foto_ktp" type="file" id="foto_ktp" accept="image/*" class="block w-full px-4 py-3 border border-inputBorder rounded-xl bg-white text-textDark placeholder-textGray focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm @error('foto_ktp') border-red-500 @endif">
+
+<input wire:model.live.file="foto_ktp" type="file" id="foto_ktp" accept="image/*" class="block w-full px-4 py-3 border border-inputBorder rounded-xl bg-white text-textDark placeholder-textGray focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm @error('foto_ktp') border-red-500 @endif">
                                     
                                     @if ($foto_ktp)
                                         <div class="mt-4">

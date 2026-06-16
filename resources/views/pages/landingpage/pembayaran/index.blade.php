@@ -162,7 +162,8 @@ $submit = function () {
                                         <span class="text-xs text-gray-500 font-medium truncate">{{ $bukti_pembayaran->getClientOriginalName() }}</span>
                                         <label class="cursor-pointer text-xs text-[#2FAE9B] hover:text-[#258e7f] font-semibold ml-3 whitespace-nowrap">
                                             Ganti File
-                                            <input wire:model="bukti_pembayaran" type="file" class="sr-only" accept=".jpg,.jpeg,.png,.pdf">
+
+<input wire:model.live.file="bukti_pembayaran" type="file" class="sr-only" accept=".jpg,.jpeg,.png,.pdf">
                                         </label>
                                     </div>
                                 </div>
@@ -173,7 +174,8 @@ $submit = function () {
                                         <div class="flex text-sm justify-center">
                                             <label class="relative cursor-pointer bg-white px-3 py-1.5 rounded-md font-medium text-[#2FAE9B] hover:text-[#258e7f] border border-[#2FAE9B]/30 focus-within:outline-none">
                                                 <span>Klik untuk Upload</span>
-                                                <input wire:model="bukti_pembayaran" type="file" class="sr-only" accept=".jpg,.jpeg,.png,.pdf">
+
+<input wire:model.live.file="bukti_pembayaran" type="file" class="sr-only" accept=".jpg,.jpeg,.png,.pdf">
                                             </label>
                                         </div>
                                         <p class="text-xs text-gray-500 mt-2">JPG, PNG, PDF batas maksimal 2MB</p>

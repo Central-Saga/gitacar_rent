@@ -504,8 +504,12 @@ $save = function () {
                                             <label
                                                 class="cursor-pointer text-xs text-[#2FAE9B] hover:text-[#258e7f] font-semibold ml-3 whitespace-nowrap">
                                                 Ganti File
-                                                <input wire:model="foto_ktp" type="file" class="sr-only"
+
+
+                                                <input wire:model.live.file="foto_ktp" type="file" class="sr-only"
+
                                                     accept=".jpg,.jpeg,.png">
+
                                             </label>
                                         </div>
                                     </div>
@@ -528,8 +532,12 @@ $save = function () {
                                             <label
                                                 class="cursor-pointer text-xs text-[#2FAE9B] hover:text-[#258e7f] font-semibold ml-3 whitespace-nowrap">
                                                 Upload Ulang
-                                                <input wire:model="foto_ktp" type="file" class="sr-only"
+
+
+                                                <input wire:model.live.file="foto_ktp" type="file" class="sr-only"
+
                                                     accept=".jpg,.jpeg,.png">
+
                                             </label>
                                         </div>
                                     </div>
@@ -545,8 +553,12 @@ $save = function () {
                                                 <label
                                                     class="relative cursor-pointer bg-white px-3 py-1.5 rounded-md font-medium text-[#2FAE9B] hover:text-[#258e7f] border border-[#2FAE9B]/30 focus-within:outline-none">
                                                     <span>Klik untuk Upload KTP</span>
-                                                    <input wire:model="foto_ktp" type="file" class="sr-only"
+
+
+                                                    <input wire:model.live.file="foto_ktp" type="file" class="sr-only"
+
                                                         accept=".jpg,.jpeg,.png">
+
                                                 </label>
                                             </div>
                                             <p class="text-xs text-gray-500 mt-2">JPG, PNG batas maksimal 2MB</p>

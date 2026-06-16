@@ -132,8 +132,12 @@ new class extends Component {
                 <div>
                     <label
                         class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Foto Profil (Opsional)') }}</label>
-                    <input type="file" wire:model="avatar"
+
+
+                    <input type="file" wire:model.live.file="avatar"
+
                         class="block w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-zinc-100 file:text-zinc-700 hover:file:bg-zinc-200 dark:file:bg-zinc-800 dark:file:text-zinc-300 dark:hover:file:bg-zinc-700"
+
                         accept="image/*">
                     <div wire:loading wire:target="avatar" class="text-sm mt-1 text-zinc-500">{{ __('Mengunggah...') }}
                     </div>
