@@ -102,7 +102,10 @@ RUN mkdir -p /var/www/html/public/vendor/livewire /var/www/html/public/flux \
     && cp -r /var/www/html/vendor/livewire/livewire/dist/. /var/www/html/public/vendor/livewire/ \
     && cp -r /var/www/html/vendor/livewire/flux/dist/. /var/www/html/public/flux/
 
-RUN sed -i 's/;clear_env = no/clear_env = no/' /usr/local/etc/php-fpm.d/www.conf
+RUN sed -i 's/;clear_env = no/clear_env = no/' /usr/local/etc/php-fpm.d/www.conf \
+    && echo "upload_max_filesize = 20M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "post_max_size = 20M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/uploads.ini
 
 RUN rm -f /etc/nginx/http.d/default.conf
 COPY docker/nginx.conf /etc/nginx/http.d/laravel.conf
