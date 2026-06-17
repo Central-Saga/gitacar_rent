@@ -2,15 +2,13 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\Pelanggan;
 use App\Models\Kendaraan;
 use App\Models\KendaraanUnit;
+use App\Models\Pelanggan;
 use App\Models\Pemesanan;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 
 class PemesananSeeder extends Seeder
 {
@@ -33,7 +31,7 @@ class PemesananSeeder extends Seeder
             'email' => 'budisantoso@example.com',
             'no_telp' => '081234567890',
             'alamat' => 'Jl. Merdeka No. 1, Jakarta',
-            'nik' => '1234567890123456'
+            'nik' => '1234567890123456',
         ]);
 
         $user2 = User::create([
@@ -49,7 +47,7 @@ class PemesananSeeder extends Seeder
             'email' => 'sitiaminah@example.com',
             'no_telp' => '089876543210',
             'alamat' => 'Jl. Sudirman No. 10, Bandung',
-            'nik' => '6543210987654321'
+            'nik' => '6543210987654321',
         ]);
 
         // 2. Buat Kendaraan Dummy
@@ -57,14 +55,14 @@ class PemesananSeeder extends Seeder
             'nama_kendaraan' => 'Toyota Avanza',
             'jenis_kendaraan' => 'mobil',
             'harga_sewa_per_hari' => 300000,
-            'deskripsi' => 'Mobil keluarga nyaman 7 penumpang.'
+            'deskripsi' => 'Mobil keluarga nyaman 7 penumpang.',
         ]);
 
         $kendaraanB = Kendaraan::create([
             'nama_kendaraan' => 'Honda Vario 160',
             'jenis_kendaraan' => 'motor',
             'harga_sewa_per_hari' => 100000,
-            'deskripsi' => 'Motor matic gesit dan irit.'
+            'deskripsi' => 'Motor matic gesit dan irit.',
         ]);
 
         // 3. Buat Unit Kendaraan
@@ -72,21 +70,21 @@ class PemesananSeeder extends Seeder
             'kendaraan_id' => $kendaraanA->id,
             'nomor_plat' => 'B 1234 ABC',
             'tahun' => '2022',
-            'status_unit' => 'tersedia'
+            'status_unit' => 'tersedia',
         ]);
 
         $unit2 = KendaraanUnit::create([
             'kendaraan_id' => $kendaraanB->id,
             'nomor_plat' => 'D 5678 DEF',
             'tahun' => '2023',
-            'status_unit' => 'tersedia'
+            'status_unit' => 'tersedia',
         ]);
 
         $unit3 = KendaraanUnit::create([
             'kendaraan_id' => $kendaraanA->id,
             'nomor_plat' => 'B 9999 XYZ',
             'tahun' => '2021',
-            'status_unit' => 'tersedia'
+            'status_unit' => 'tersedia',
         ]);
 
         // 4. Buat Pemesanan Skenario
@@ -108,7 +106,7 @@ class PemesananSeeder extends Seeder
             'hari_terlambat' => 0,
             'denda' => 0,
             'status_pemesanan' => 'selesai',
-            'catatan' => 'Dikembalikan tepat waktu, kondisi aman.'
+            'catatan' => 'Dikembalikan tepat waktu, kondisi aman.',
         ]);
         // Unit 1 tetap 'tersedia' karena sudah selesai
 
@@ -131,7 +129,7 @@ class PemesananSeeder extends Seeder
             'hari_terlambat' => 2, // Telat 27 jam -> hitung 2 hari
             'denda' => 200000, // 2 hari x 100.000
             'status_pemesanan' => 'selesai',
-            'catatan' => 'Terlambat lebih dari sehari.'
+            'catatan' => 'Terlambat lebih dari sehari.',
         ]);
         // Unit 2 tetap 'tersedia' karena sudah selesai
 
@@ -151,7 +149,7 @@ class PemesananSeeder extends Seeder
             'hari_terlambat' => 0,
             'denda' => 0,
             'status_pemesanan' => 'disetujui',
-            'catatan' => 'Sedang dipakai jalan-jalan.'
+            'catatan' => 'Sedang dipakai jalan-jalan.',
         ]);
 
         // Ubah status unit 3 jadi disewa

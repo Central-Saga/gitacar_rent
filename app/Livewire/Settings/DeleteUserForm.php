@@ -6,7 +6,6 @@ use App\Concerns\PasswordValidationRules;
 use App\Livewire\Actions\Logout;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class DeleteUserForm extends Component

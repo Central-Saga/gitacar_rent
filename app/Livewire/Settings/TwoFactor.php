@@ -4,7 +4,6 @@ namespace App\Livewire\Settings;
 
 use Exception;
 use Illuminate\Contracts\View\View;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Laravel\Fortify\Actions\ConfirmTwoFactorAuthentication;
 use Laravel\Fortify\Actions\DisableTwoFactorAuthentication;
 use Laravel\Fortify\Actions\EnableTwoFactorAuthentication;

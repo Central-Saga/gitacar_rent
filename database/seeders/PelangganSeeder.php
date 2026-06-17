@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Pelanggan;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class PelangganSeeder extends Seeder
@@ -13,7 +14,7 @@ class PelangganSeeder extends Seeder
     public function run(): void
     {
         // Check if user already exists
-        $user = \App\Models\User::firstOrCreate(
+        $user = User::firstOrCreate(
             ['email' => 'pelanggan@gita.com'],
             [
                 'name' => 'Demo Pelanggan',
@@ -22,7 +23,7 @@ class PelangganSeeder extends Seeder
         );
         $user->assignRole('pelanggan');
 
-        \App\Models\Pelanggan::firstOrCreate(
+        Pelanggan::firstOrCreate(
             ['user_id' => $user->id],
             [
                 'nama' => $user->name,

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Database\Factories\KendaraanUnitFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class KendaraanUnit extends Model
 {
-    /** @use HasFactory<\Database\Factories\KendaraanUnitFactory> */
+    /** @use HasFactory<KendaraanUnitFactory> */
     use HasFactory;
 
     protected $fillable = [

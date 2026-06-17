@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\KendaraanFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,7 +11,7 @@ use Illuminate\Support\Str;
 
 class Kendaraan extends Model
 {
-    /** @use HasFactory<\Database\Factories\KendaraanFactory> */
+    /** @use HasFactory<KendaraanFactory> */
     use HasFactory;
 
     protected $fillable = [

@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
@@ -14,7 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('user-password.edit');
     Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
 
-    Route::get('settings/two-factor', App\Livewire\Settings\TwoFactor::class)
+    Route::get('settings/two-factor', TwoFactor::class)
         ->middleware(
             when(
                 Features::canManageTwoFactorAuthentication()

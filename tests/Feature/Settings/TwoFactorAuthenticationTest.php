@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Settings;
 
+use App\Livewire\Settings\TwoFactor;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
@@ -73,7 +74,7 @@ class TwoFactorAuthenticationTest extends TestCase
 
         $this->actingAs($user);
 
-        $component = Livewire::test(\App\Livewire\Settings\TwoFactor::class);
+        $component = Livewire::test(TwoFactor::class);
 
         $component->assertSet('twoFactorEnabled', false);
 

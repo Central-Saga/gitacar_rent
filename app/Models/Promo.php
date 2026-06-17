@@ -34,7 +34,7 @@ class Promo extends Model
 
     public function isValid()
     {
-        if (!$this->is_active) {
+        if (! $this->is_active) {
             return false;
         }
 
