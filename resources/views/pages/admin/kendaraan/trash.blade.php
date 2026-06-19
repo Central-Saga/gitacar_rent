@@ -9,12 +9,14 @@ title('Arsip Kendaraan');
 
 state(['tab' => 'kendaraan']);
 
-$restoreKendaraan = function (Kendaraan $kendaraan) {
+$restoreKendaraan = function ($id) {
+    $kendaraan = Kendaraan::onlyTrashed()->findOrFail($id);
     $kendaraan->restore();
     session()->flash('message', 'Kendaraan berhasil dipulihkan!');
 };
 
-$restoreUnit = function (KendaraanUnit $unit) {
+$restoreUnit = function ($id) {
+    $unit = KendaraanUnit::onlyTrashed()->findOrFail($id);
     $unit->restore();
     session()->flash('message', 'Unit kendaraan berhasil dipulihkan!');
 };
