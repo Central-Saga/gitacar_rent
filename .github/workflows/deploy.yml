@@ -12,6 +12,8 @@ on:
       - '**.md'
       - '.gitignore'
       - '.editorconfig'
+  workflow_dispatch:  # manual re-run via gh CLI or Actions UI
+    inputs:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
