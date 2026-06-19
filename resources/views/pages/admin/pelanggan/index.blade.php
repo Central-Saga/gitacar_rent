@@ -7,7 +7,8 @@ use function Livewire\Volt\{
     mount,
     with,
     updated,
-    usesPagination
+    usesPagination,
+    on
 };
 use App\Models\Pelanggan;
 use App\Models\User;
