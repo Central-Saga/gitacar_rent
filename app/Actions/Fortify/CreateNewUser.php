@@ -7,6 +7,7 @@ use App\Concerns\ProfileValidationRules;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Spatie\Permission\Models\Role;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -30,7 +31,10 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $input['password'],
         ]);
 
-        $user->assignRole('pelanggan');
+        // Assign role pelanggan — safe if role not yet seeded
+        if (Role::where('name', 'pelanggan')->exists()) {
+            $user->assignRole('pelanggan');
+        }
 
         $user->pelanggan()->create([
             'nama' => $user->name,
