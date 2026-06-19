@@ -63,6 +63,15 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
+      - name: Install NPM dependencies and build assets for tests
+        # This build is for test fixtures only — the production asset build
+        # happens inside the Docker image (Alpine). The smoke test reads
+        # the manifest FROM the image, not from this build, because the
+        # two environments produce different CSS hashes (glibc vs musl).
+        run: |
+          npm ci
+          npm run build
+
       - name: Run dashboard tests
         run: |
           cp .env.example .env
