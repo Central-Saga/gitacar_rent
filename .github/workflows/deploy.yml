@@ -75,6 +75,14 @@ jobs:
           touch database/database.sqlite
           php artisan test --compact tests/Feature/DashboardTest.php
 
+      - name: Record expected asset hashes
+        id: manifest
+        run: |
+          echo "css_hash=$(jq -r '.["resources/css/app.css"].file' public/build/manifest.json)" >> $GITHUB_OUTPUT
+          echo "js_hash=$(jq -r '.["resources/js/app.js"].file' public/build/manifest.json)" >> $GITHUB_OUTPUT
+          echo "css_sha=$(sha256sum public/build/$(jq -r '.["resources/css/app.css"].file' public/build/manifest.json) | awk '{print $1}')" >> $GITHUB_OUTPUT
+          echo "Recorded expected asset hashes"
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
@@ -91,17 +99,46 @@ jobs:
         id: deploy
         run: curl -s -X POST http://43.157.228.56:3000/api/deploy/8mH27a_jUXL_FzlZg1YMD
 
-      - name: Smoke test production URL
+      - name: Smoke test — liveness
         run: |
           echo "Waiting for deploy to roll out..."
-          for i in {1..12}; do
+          for i in {1..24}; do
             CODE=$(curl -s -o /dev/null -w "%{http_code}" https://gitacarrental.web.id/up || true)
             if [ "$CODE" = "200" ]; then
-              echo "Smoke test passed: /up returned 200"
+              echo "✓ Liveness OK: /up returned 200"
               exit 0
             fi
             echo "Attempt $i: /up returned $CODE, retrying in 10s..."
             sleep 10
           done
-          echo "Smoke test failed: /up did not return 200 within 2 minutes"
+          echo "✗ Liveness FAILED: /up did not return 200 within 4 minutes"
+          exit 1
+
+      - name: Smoke test — fresh asset verification
+        env:
+          EXPECTED_CSS: ${{ steps.manifest.outputs.css_hash }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          echo "Expected CSS: $EXPECTED_CSS"
+          echo "Commit: $COMMIT_SHA"
+          for i in {1..24}; do
+            SERVED=$(curl -sL https://gitacarrental.web.id/login | grep -oE 'app-[A-Za-z0-9_-]+\.css' | head -1)
+            if [ "$SERVED" = "$EXPECTED_CSS" ]; then
+              echo "✓ Fresh CSS served: $SERVED"
+              echo "✓ Deploy verified end-to-end"
+              exit 0
+            fi
+            echo "Attempt $i: served='$SERVED' expected='$EXPECTED_CSS'"
+            sleep 10
+          done
+          echo "✗ Asset hash mismatch after 4 minutes — Dokploy likely did not pull new image"
+          echo "  expected: $EXPECTED_CSS"
+          echo "  commit:   $COMMIT_SHA"
+          # Notify via Telegram webhook if configured
+          if [ -n "${{ secrets.DEPLOY_WEBHOOK_URL }}" ]; then
+            curl -s -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}" \
+              -H 'Content-Type: application/json' \
+              -d "{\"text\":\"⚠️ Gitacar deploy smoke FAILED\\ncommit: $COMMIT_SHA\\nexpected CSS: $EXPECTED_CSS\\nDokploy did not serve new image within 4 min\"}" \
+              || echo "(webhook notification failed, continuing)"
+          fi
           exit 1
