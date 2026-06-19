@@ -102,7 +102,7 @@ title('Contact Us - Gita Car Rental');
                 Anda.</p>
               <a href="https://wa.me/6281395637337" target="_blank"
                 class="text-slate-900 text-lg font-bold hover:text-[#2FAE9B] transition-colors">
-                +62 812-3929-934
+                +62 813-9563-7337
               </a>
             </div>
           </div>

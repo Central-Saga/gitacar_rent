@@ -385,7 +385,7 @@
                         <li class="flex items-center">
                             <i class="fab fa-whatsapp text-primary mr-3"></i>
                             <a href="https://wa.me/6281395637337" target="_blank"
-                                class="text-secondary hover:text-primary transition-colors">0812-3929-934</a>
+                                class="text-secondary hover:text-primary transition-colors">+62 813-9563-7337</a>
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-envelope text-primary mr-3"></i>
