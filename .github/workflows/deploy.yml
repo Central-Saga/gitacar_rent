@@ -60,6 +60,12 @@ jobs:
           extensions: mbstring, sqlite3, pdo_sqlite, pdo_mysql, mysql, gd, exif, zip, bcmath
           coverage: none
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
