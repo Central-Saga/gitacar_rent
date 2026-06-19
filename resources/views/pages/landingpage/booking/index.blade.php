@@ -288,9 +288,12 @@ $save = function () {
     $validated['harga_sewa'] = $this->harga_sewa;
     $validated['harga_per_hari'] = $this->harga_per_hari;
     $validated['total_harga'] = $this->total_harga;
-    $validated['denda_per_hari'] = $this->selected_unit->kendaraan->harga_sewa_per_hari; // Denda always per hari
+    $validated['denda_per_hari'] = $this->harga_per_hari;
     $validated['promo_id'] = $this->promo_id;
     $validated['total_diskon'] = $this->total_diskon;
+
+    // Hapus field non-database dari array sebelum simpan ke session
+    unset($validated['foto_ktp']);
 
     session(['pending_booking' => $validated]);
 
