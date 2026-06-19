@@ -60,12 +60,18 @@ with(function () {
 });
 
 $delete = function (Kendaraan $kendaraan) {
+    $activeUnits = $kendaraan->units()->whereIn('status_unit', ['disewa', 'maintenance'])->count();
+
+    if ($activeUnits > 0) {
+        session()->flash('error', 'Kendaraan tidak bisa dihapus karena masih ada unit yang sedang disewa atau maintenance.');
+        return;
+    }
+
     $kendaraan->delete();
 
     session()->flash('message', 'Kendaraan berhasil dihapus!');
     $this->resetPage();
 };
-
 
 
 ?>

@@ -59,6 +59,10 @@ on([
     'delete-unit' => function ($id) {
         $unit = KendaraanUnit::find($id);
         if ($unit) {
+            if (in_array($unit->status_unit, ['disewa', 'maintenance'])) {
+                $this->dispatch('swal:toast', title: 'Unit tidak bisa dihapus karena sedang ' . ($unit->status_unit === 'disewa' ? 'disewa' : 'maintenance') . '.', icon: 'error');
+                return;
+            }
             $unit->delete();
             $this->dispatch('swal:toast', title: 'Unit Kendaraan berhasil dihapus!', icon: 'success');
             $this->resetPage();
