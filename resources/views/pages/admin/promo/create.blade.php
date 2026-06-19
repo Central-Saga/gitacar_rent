@@ -225,7 +225,7 @@ new class extends Component {
                         <div>
                             <label class="block text-sm font-semibold text-textDark mb-2">Sampai Tanggal <span
                                     class="text-red-500">*</span></label>
-                            <input type="date" wire:model="tanggal_selesai" min="{{ $tanggal_mulai }}"
+                            <input type="date" wire:model="tanggal_selesai" x-bind:min="$wire.tanggal_mulai"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
                             @error('tanggal_selesai') <span class="text-danger text-xs mt-1">{{ $message }}</span>
                             @enderror
