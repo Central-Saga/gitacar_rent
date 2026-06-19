@@ -92,23 +92,23 @@ jobs:
           cache-to: type=gha,mode=max
 
       # Extract expected asset hashes from the image we just built & pushed.
-      # Critical: CI's `npm run build` (Ubuntu glibc) ≠ Dockerfile's `npm run build`
-      # (Alpine musl). Tailwind v4 oxide binary produces different output, so the
-      # only reliable source of truth for what gets deployed is the image itself.
+      # Critical: CI's npm run build (Ubuntu glibc) differs from Dockerfile's
+      # npm run build (Alpine musl). Tailwind v4 oxide binary produces different
+      # output, so the only reliable source of truth for what gets deployed
+      # is the image itself.
       - name: Extract expected asset hashes from built image
         id: manifest
-        env:
-          IMAGE_LC: ${{ lower(env.IMAGE_NAME) }}
         run: |
+          IMAGE_LC=$(echo "${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
           docker pull ghcr.io/${IMAGE_LC}:latest
           docker create --name gha-extract ghcr.io/${IMAGE_LC}:latest
           docker cp gha-extract:/var/www/html/public/build/manifest.json /tmp/build-manifest.json
           docker rm gha-extract > /dev/null
           CSS_FILE=$(jq -r '.["resources/css/app.css"].file' /tmp/build-manifest.json)
           JS_FILE=$(jq -r '.["resources/js/app.js"].file' /tmp/build-manifest.json)
-          echo "css_hash=$(basename "$CSS_FILE")" >> $GITHUB_OUTPUT
-          echo "js_hash=$(basename "$JS_FILE")" >> $GITHUB_OUTPUT
-          echo "css_path=$CSS_FILE" >> $GITHUB_OUTPUT
+          echo "css_hash=$(basename "$CSS_FILE")" >> "$GITHUB_OUTPUT"
+          echo "js_hash=$(basename "$JS_FILE")" >> "$GITHUB_OUTPUT"
+          echo "css_path=$CSS_FILE" >> "$GITHUB_OUTPUT"
           echo "Extracted from image: css=$(basename "$CSS_FILE") js=$(basename "$JS_FILE")"
           cat /tmp/build-manifest.json
 
