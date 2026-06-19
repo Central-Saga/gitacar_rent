@@ -35,29 +35,27 @@
         <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6 w-full"
               x-data="{
                   password: '',
+                  get valid() { return this.password.length >= 8; },
                   get strength() {
-                      let s = 0;
-                      if (this.password.length >= 8) s++;
-                      if (this.password.length >= 12) s++;
-                      if (/[a-z]/.test(this.password) && /[A-Z]/.test(this.password)) s++;
-                      if (/\d/.test(this.password)) s++;
-                      if (/[^a-zA-Z0-9]/.test(this.password)) s++;
-                      return s;
+                      if (this.password.length === 0) return 0;
+                      if (this.password.length >= 8) return 2;
+                      if (this.password.length >= 4) return 1;
+                      return 0;
                   },
                   get strengthLabel() {
-                      const labels = ['', 'Lemah', 'Cukup', 'Sedang', 'Kuat', 'Sangat Kuat'];
+                      const labels = ['', 'Kurang', 'Cukup', 'Kuat'];
                       return labels[this.strength] || '';
                   },
                   get strengthColor() {
-                      const colors = ['', 'bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-lime-500', 'bg-green-500'];
+                      const colors = ['', 'bg-red-500', 'bg-green-500'];
                       return colors[this.strength] || '';
                   },
                   get strengthBg() {
-                      const bg = ['', 'bg-red-50', 'bg-orange-50', 'bg-yellow-50', 'bg-lime-50', 'bg-green-50'];
+                      const bg = ['', 'bg-red-50', 'bg-green-50'];
                       return bg[this.strength] || '';
                   },
                   get strengthText() {
-                      const txt = ['', 'text-red-600', 'text-orange-600', 'text-yellow-600', 'text-lime-600', 'text-green-600'];
+                      const txt = ['', 'text-red-600', 'text-green-600'];
                       return txt[this.strength] || '';
                   }
               }">
@@ -121,14 +119,13 @@
                 <div x-show="password.length > 0" x-cloak
                      class="mt-2" :class="strengthBg">
                     <div class="flex gap-1 h-1.5">
-                        <template x-for="i in 5" :key="i">
+                        <template x-for="i in 2" :key="i">
                             <div class="flex-1 rounded-full transition-colors duration-200"
                                  :class="i <= strength ? strengthColor : 'bg-gray-200'"></div>
                         </template>
                     </div>
                     <p class="text-xs mt-1 font-medium" :class="strengthText" x-text="strengthLabel"></p>
                 </div>
-
                 @error('password')
                     <p class="text-sm text-red-600 mt-1 px-1">{{ $message }}</p>
                 @enderror
