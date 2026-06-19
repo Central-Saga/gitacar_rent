@@ -24,6 +24,8 @@ state([
     'waktu_selesai' => '',
     'status_pemesanan' => 'menunggu_konfirmasi',
     'catatan' => '',
+    'lokasi_url' => '',
+    'lokasi_deskripsi' => '',
     'foto_ktp' => null,
 
     // Auto calculated
@@ -51,6 +53,8 @@ rules([
     'waktu_mulai' => 'required|date|after_or_equal:today',
     'waktu_selesai' => 'required|date|after:waktu_mulai',
     'catatan' => 'nullable|string',
+    'lokasi_url' => 'nullable|string|max:500',
+    'lokasi_deskripsi' => 'nullable|string|max:1000',
     'foto_ktp' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
 ]);
 
@@ -434,7 +438,15 @@ $save = function () {
                             <p class="text-[10px] text-gray-400 mt-2 ml-1 italic">* Memilih paket akan otomatis menyesuaikan waktu pengembalian dari waktu pengambilan.</p>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6"
+                             x-data="{
+                                 get minSelesai() {
+                                     if (!$wire.waktu_mulai) return '';
+                                     const d = new Date($wire.waktu_mulai);
+                                     d.setDate(d.getDate() + 1);
+                                     return d.toISOString().slice(0, 16);
+                                 }
+                             }">
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Waktu Pengambilan <span
                                         class="text-red-500">*</span></label>
@@ -446,7 +458,7 @@ $save = function () {
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Waktu Pengembalian <span
                                         class="text-red-500">*</span></label>
-                                <input wire:model.live="waktu_selesai" type="datetime-local" x-bind:min="$wire.waktu_mulai"
+                                <input wire:model.live="waktu_selesai" type="datetime-local" x-bind:min="minSelesai"
                                     class="block w-full px-5 py-4 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:ring-2 focus:ring-[#2FAE9B]/50 border-transparent focus:bg-white outline-none transition-all">
                                 @error('waktu_selesai') <span
                                 class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
@@ -476,6 +488,32 @@ $save = function () {
                                     class="block w-full px-5 py-4 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:ring-2 focus:ring-[#2FAE9B]/50 border-transparent focus:bg-white outline-none transition-all resize-none"></textarea>
                                 @error('catatan') <span
                                 class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Lokasi Antar/Jemput -->
+                        <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+                            <h3 class="text-xl font-bold text-[#2D2D2D] mb-6 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-[#2FAE9B]/10 flex items-center justify-center border border-[#2FAE9B]/20 text-[#2FAE9B]">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                Lokasi Antar/Jemput
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Link Google Maps <span class="text-xs text-gray-400 font-normal">(Opsional)</span></label>
+                                    <input wire:model="lokasi_url" type="url" placeholder="https://maps.app.goo.gl/..."
+                                        class="block w-full px-5 py-4 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:ring-2 focus:ring-[#2FAE9B]/50 border-transparent focus:bg-white outline-none transition-all">
+                                    @error('lokasi_url')
+                                    <span class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi Lokasi <span class="text-xs text-gray-400 font-normal">(Opsional)</span></label>
+                                    <textarea wire:model="lokasi_deskripsi" rows="3" placeholder="Contoh: Depan gerbang komplek, samping minimarket..."
+                                        class="block w-full px-5 py-4 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:ring-2 focus:ring-[#2FAE9B]/50 border-transparent focus:bg-white outline-none transition-all resize-none"></textarea>
+                                    @error('lokasi_deskripsi')
+                                    <span class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
+                                </div>
                             </div>
                         </div>
 

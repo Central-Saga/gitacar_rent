@@ -21,6 +21,8 @@ state([
     'waktu_selesai' => '',
     'status_pemesanan' => 'menunggu_konfirmasi',
     'catatan' => '',
+    'lokasi_url' => '',
+    'lokasi_deskripsi' => '',
     'bukti_pembayaran' => null,
 
     // Auto calculated
@@ -45,6 +47,8 @@ rules([
     'waktu_selesai' => 'required|date|after:waktu_mulai',
     'status_pemesanan' => 'required|in:menunggu_konfirmasi,disetujui,ditolak,selesai,dibatalkan',
     'catatan' => 'nullable|string',
+    'lokasi_url' => 'nullable|string|max:500',
+    'lokasi_deskripsi' => 'nullable|string|max:1000',
     'bukti_pembayaran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
 ]);
 
@@ -371,7 +375,15 @@ $save = function () {
                                     class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
                                 </div>
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4"
+                                     x-data="{
+                                         get minSelesai() {
+                                             if (!$wire.waktu_mulai) return '';
+                                             const d = new Date($wire.waktu_mulai);
+                                             d.setDate(d.getDate() + 1);
+                                             return d.toISOString().slice(0, 16);
+                                         }
+                                     }">
                                     <div>
                                         <label class="block text-sm font-semibold text-textDark mb-1">Waktu Mulai
                                             <span class="text-red-500">*</span></label>
@@ -384,7 +396,7 @@ $save = function () {
                                     <div>
                                         <label class="block text-sm font-semibold text-textDark mb-1">Waktu Selesai
                                             <span class="text-red-500">*</span></label>
-                                        <input wire:model.live="waktu_selesai" type="datetime-local" x-bind:min="$wire.waktu_mulai"
+                                        <input wire:model.live="waktu_selesai" type="datetime-local" x-bind:min="minSelesai"
                                             class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all">
                                         @error('waktu_selesai') <span
                                             class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span>
@@ -544,6 +556,20 @@ $save = function () {
                                         class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span>
                                     @enderror
                                 </div>
+
+                                <label class="block text-sm font-semibold text-textDark mt-4 mb-1">Link Google Maps
+                                    <span class="text-xs text-textGray font-normal">(Opsional)</span></label>
+                                <input wire:model="lokasi_url" type="url" placeholder="https://maps.app.goo.gl/..."
+                                    class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all">
+                                @error('lokasi_url')
+                                <span class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
+
+                                <label class="block text-sm font-semibold text-textDark mt-4 mb-1">Deskripsi Lokasi
+                                    <span class="text-xs text-textGray font-normal">(Opsional)</span></label>
+                                <textarea wire:model="lokasi_deskripsi" rows="2" placeholder="Contoh: Depan gerbang komplek, samping minimarket..."
+                                    class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all"></textarea>
+                                @error('lokasi_deskripsi')
+                                <span class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
 
                                 <div>
                                     <label class="block text-sm font-semibold text-textDark mb-1">Upload Bukti

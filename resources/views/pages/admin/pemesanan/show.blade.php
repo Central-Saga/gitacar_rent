@@ -261,6 +261,32 @@ $cancel = function () {
                                 </div>
                             @endif
                         </div>
+
+                    @if($pemesanan->lokasi_url || $pemesanan->lokasi_deskripsi)
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-inputBorder mt-6">
+                        <h3 class="text-lg font-bold text-textDark mb-4 flex items-center gap-2">
+                            <svg class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                            Lokasi Antar/Jemput
+                        </h3>
+                        <div class="space-y-3">
+                            @if($pemesanan->lokasi_url)
+                            <div>
+                                <p class="text-sm text-textGray font-medium">Link Maps</p>
+                                <a href="{{ $pemesanan->lokasi_url }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primaryDark text-sm font-semibold mt-1 inline-flex items-center gap-1">
+                                    {{ $pemesanan->lokasi_url }}
+                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                </a>
+                            </div>
+                            @endif
+                            @if($pemesanan->lokasi_deskripsi)
+                            <div>
+                                <p class="text-sm text-textGray font-medium">Deskripsi Lokasi</p>
+                                <p class="text-base text-textDark mt-1">{{ $pemesanan->lokasi_deskripsi }}</p>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
                     </div>
 
                     <!-- Payment Proof -->
