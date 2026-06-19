@@ -67,7 +67,6 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Volt::route('pemesanan', 'admin.pemesanan.index')->name('pemesanan.index');
         Volt::route('pemesanan/create', 'admin.pemesanan.create')->name('pemesanan.create');
         Volt::route('pemesanan/{pemesanan}', 'admin.pemesanan.show')->name('pemesanan.show');
-        Volt::route('pemesanan/trash', 'admin.pemesanan.trash')->name('pemesanan.trash');
     });
 
     // Promo & Diskon routes

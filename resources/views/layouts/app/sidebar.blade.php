@@ -89,12 +89,6 @@
                         </x-slot:iconTrailing>
                         {{ __('Pemesanan') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="archive-box" :href="route('admin.pemesanan.trash')"
-                        :current="request()->routeIs('admin.pemesanan.trash')"
-                        class="text-zinc-600 hover:text-primary hover:bg-primary/5 data-[current]:bg-primary data-[current]:text-white transition-colors duration-200 rounded-lg"
-                        wire:navigate>
-                        {{ __('Arsip') }}
-                    </flux:sidebar.item>
                 </flux:sidebar.group>
             @endcan
 
