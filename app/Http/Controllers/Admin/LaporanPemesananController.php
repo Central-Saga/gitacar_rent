@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pemesanan;
 use Illuminate\Http\Request;
 
 class LaporanPemesananController extends Controller
@@ -12,7 +13,7 @@ class LaporanPemesananController extends Controller
         $bulan = $request->input('bulan', date('m'));
         $tahun = $request->input('tahun', date('Y'));
 
-        $pemesanans = \App\Models\Pemesanan::with(['pelanggan', 'kendaraanUnit.kendaraan', 'promo'])
+        $pemesanans = Pemesanan::with(['pelanggan', 'kendaraanUnit.kendaraan', 'promo'])
             ->whereMonth('created_at', $bulan)
             ->whereYear('created_at', $tahun)
             ->whereIn('status_pemesanan', ['selesai', 'disetujui'])
