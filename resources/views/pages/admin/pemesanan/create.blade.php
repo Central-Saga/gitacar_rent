@@ -82,6 +82,7 @@ $calculatePricing = function () {
             $diffHours = $start->diffInHours($end);
             $this->durasi = max(1, (int) ceil($diffHours / 24));
             $this->harga_per_hari = $unit->kendaraan->harga_sewa_per_hari;
+            $kendaraan = $unit->kendaraan;
 
             // Composite pricing: full weeks/months at tier rate + remaining days at daily rate
             if ($this->durasi >= 30 && $kendaraan->harga_sewa_per_bulan) {
