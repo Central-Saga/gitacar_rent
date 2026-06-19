@@ -116,6 +116,32 @@ jobs:
         id: deploy
         run: curl -s -X POST http://43.157.228.56:3000/api/deploy/8mH27a_jUXL_FzlZg1YMD
 
+      # Dokploy's webhook only PULLS the new image; it does not restart the
+      # Swarm service. Force the service to pick up the new image so the
+      # running container actually serves the new code. This is idempotent
+      # — if the image is unchanged, the service just re-rolls the task.
+      - name: Force swarm service to use new image
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 60s
+          script: |
+            set -e
+            IMAGE_LC=$(echo "${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
+            NEW_DIGEST=$(docker inspect --format='{{.Id}}' "ghcr.io/${IMAGE_LC}:latest")
+            CURRENT_DIGEST=$(docker inspect --format='{{.Image}}' "$(docker ps -q --filter label=com.docker.swarm.service.name=${{ env.SERVICE_NAME }} | head -1)" 2>/dev/null || echo "")
+            echo "Image on host:    $NEW_DIGEST"
+            echo "Container image:  $CURRENT_DIGEST"
+            if [ "$NEW_DIGEST" = "$CURRENT_DIGEST" ]; then
+              echo "Image unchanged, skipping update (but rolling restart for safety)"
+            else
+              echo "Image changed, forcing service update"
+            fi
+            docker service update --image "ghcr.io/${IMAGE_LC}:latest" --force "${{ env.SERVICE_NAME }}"
+            echo "Service converged"
+
       - name: Smoke test — liveness
         run: |
           echo "Waiting for deploy to roll out..."
