@@ -76,9 +76,13 @@ select:focus[data-flux-control] {
     @apply size-4;
 } */
 
-/* Sidebar: full viewport height and non-scrollable while main content scrolls */
-[data-flux-sidebar] {
+/* Sidebar: full viewport height, sticky, and non-scrollable while main content scrolls */
+[data-flux-sidebar][sticky] {
+    position: sticky;
+    top: 0;
     min-height: 100dvh;
     height: 100dvh;
+    max-height: 100dvh;
     align-self: start;
+    overflow-y: visible;
 }
