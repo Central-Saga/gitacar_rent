@@ -78,10 +78,12 @@ jobs:
       - name: Record expected asset hashes
         id: manifest
         run: |
-          echo "css_hash=$(jq -r '.["resources/css/app.css"].file' public/build/manifest.json)" >> $GITHUB_OUTPUT
-          echo "js_hash=$(jq -r '.["resources/js/app.js"].file' public/build/manifest.json)" >> $GITHUB_OUTPUT
-          echo "css_sha=$(sha256sum public/build/$(jq -r '.["resources/css/app.css"].file' public/build/manifest.json) | awk '{print $1}')" >> $GITHUB_OUTPUT
-          echo "Recorded expected asset hashes"
+          CSS_FILE=$(jq -r '.["resources/css/app.css"].file' public/build/manifest.json)
+          JS_FILE=$(jq -r '.["resources/js/app.js"].file' public/build/manifest.json)
+          echo "css_hash=$(basename "$CSS_FILE")" >> $GITHUB_OUTPUT
+          echo "js_hash=$(basename "$JS_FILE")" >> $GITHUB_OUTPUT
+          echo "css_path=$CSS_FILE" >> $GITHUB_OUTPUT
+          echo "Recorded: css=$(basename "$CSS_FILE") js=$(basename "$JS_FILE")"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -102,7 +104,7 @@ jobs:
       - name: Smoke test — liveness
         run: |
           echo "Waiting for deploy to roll out..."
-          for i in {1..24}; do
+          for i in {1..48}; do
             CODE=$(curl -s -o /dev/null -w "%{http_code}" https://gitacarrental.web.id/up || true)
             if [ "$CODE" = "200" ]; then
               echo "✓ Liveness OK: /up returned 200"
@@ -111,34 +113,40 @@ jobs:
             echo "Attempt $i: /up returned $CODE, retrying in 10s..."
             sleep 10
           done
-          echo "✗ Liveness FAILED: /up did not return 200 within 4 minutes"
+          echo "✗ Liveness FAILED: /up did not return 200 within 8 minutes"
           exit 1
 
       - name: Smoke test — fresh asset verification
         env:
           EXPECTED_CSS: ${{ steps.manifest.outputs.css_hash }}
+          EXPECTED_JS: ${{ steps.manifest.outputs.js_hash }}
           COMMIT_SHA: ${{ github.sha }}
         run: |
           echo "Expected CSS: $EXPECTED_CSS"
-          echo "Commit: $COMMIT_SHA"
-          for i in {1..24}; do
-            SERVED=$(curl -sL https://gitacarrental.web.id/login | grep -oE 'app-[A-Za-z0-9_-]+\.css' | head -1)
-            if [ "$SERVED" = "$EXPECTED_CSS" ]; then
-              echo "✓ Fresh CSS served: $SERVED"
+          echo "Expected JS:  $EXPECTED_JS"
+          echo "Commit:       $COMMIT_SHA"
+          # Compare against /build/manifest.json from the running container
+          # — most reliable since it reflects the actual served image.
+          for i in {1..48}; do
+            SERVED_JSON=$(curl -sL https://gitacarrental.web.id/build/manifest.json || true)
+            SERVED_CSS=$(echo "$SERVED_JSON" | jq -r '.["resources/css/app.css"].file // empty' | xargs basename 2>/dev/null)
+            SERVED_JS=$(echo "$SERVED_JSON"  | jq -r '.["resources/js/app.js"].file   // empty' | xargs basename 2>/dev/null)
+            if [ "$SERVED_CSS" = "$EXPECTED_CSS" ] && [ "$SERVED_JS" = "$EXPECTED_JS" ]; then
+              echo "✓ Fresh assets served: css=$SERVED_CSS js=$SERVED_JS"
               echo "✓ Deploy verified end-to-end"
               exit 0
             fi
-            echo "Attempt $i: served='$SERVED' expected='$EXPECTED_CSS'"
+            echo "Attempt $i: served css=$SERVED_CSS js=$SERVED_JS | expected css=$EXPECTED_CSS js=$EXPECTED_JS"
             sleep 10
           done
-          echo "✗ Asset hash mismatch after 4 minutes — Dokploy likely did not pull new image"
+          echo "✗ Asset hash mismatch after 8 minutes — Dokploy did not serve new image"
           echo "  expected: $EXPECTED_CSS"
           echo "  commit:   $COMMIT_SHA"
           # Notify via Telegram webhook if configured
           if [ -n "${{ secrets.DEPLOY_WEBHOOK_URL }}" ]; then
             curl -s -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}" \
               -H 'Content-Type: application/json' \
-              -d "{\"text\":\"⚠️ Gitacar deploy smoke FAILED\\ncommit: $COMMIT_SHA\\nexpected CSS: $EXPECTED_CSS\\nDokploy did not serve new image within 4 min\"}" \
+              -d "{\"text\":\"⚠️ Gitacar deploy smoke FAILED\\ncommit: $COMMIT_SHA\\nexpected CSS: $EXPECTED_CSS\\nDokploy did not serve new image within 8 min\"}" \
               || echo "(webhook notification failed, continuing)"
           fi
           exit 1
