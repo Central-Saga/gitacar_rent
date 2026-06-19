@@ -425,29 +425,46 @@ $save = function () {
 
                                 @if($durasi > 0)
                                     @php
-                                        $labelUnit = match($tipe_harga) {
-                                            'bulanan' => 'Bulan',
-                                            'mingguan' => 'Minggu',
-                                            default => 'Hari',
-                                        };
-                                        $divider = match($tipe_harga) {
-                                            'bulanan' => 30,
-                                            'mingguan' => 7,
-                                            default => 1,
-                                        };
-                                        $jumlahUnit = (int) ceil($durasi / $divider);
+                                        $weeks = intdiv($durasi, 7);
+                                        $months = intdiv($durasi, 30);
+                                        $remainingDaysWeeks = $durasi % 7;
+                                        $remainingDaysMonths = $durasi % 30;
                                     @endphp
                                     <div
                                         class="p-4 bg-primaryLight/10 rounded-xl border border-primaryLight/20 mt-4">
 
-                                        <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
-                                            <p class="text-sm text-textGray">Harga per {{ $labelUnit }}</p>
-                                            <p class="text-sm font-bold text-textDark">Rp {{ number_format($harga_sewa, 0, ',', '.') }}</p>
-                                        </div>
+                                        @if($tipe_harga === 'bulanan')
+                                            <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
+                                                <p class="text-sm text-textGray">{{ $months }} Bulan x Rp {{ number_format($harga_sewa, 0, ',', '.') }}</p>
+                                                <p class="text-sm font-bold text-textDark">Rp {{ number_format($months * $harga_sewa, 0, ',', '.') }}</p>
+                                            </div>
+                                            @if($remainingDaysMonths > 0)
+                                                <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
+                                                    <p class="text-sm text-textGray">{{ $remainingDaysMonths }} Hari x Rp {{ number_format($harga_per_hari, 0, ',', '.') }}</p>
+                                                    <p class="text-sm font-bold text-textDark">Rp {{ number_format($remainingDaysMonths * $harga_per_hari, 0, ',', '.') }}</p>
+                                                </div>
+                                            @endif
+                                        @elseif($tipe_harga === 'mingguan')
+                                            <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
+                                                <p class="text-sm text-textGray">{{ $weeks }} Minggu x Rp {{ number_format($harga_sewa, 0, ',', '.') }}</p>
+                                                <p class="text-sm font-bold text-textDark">Rp {{ number_format($weeks * $harga_sewa, 0, ',', '.') }}</p>
+                                            </div>
+                                            @if($remainingDaysWeeks > 0)
+                                                <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
+                                                    <p class="text-sm text-textGray">{{ $remainingDaysWeeks }} Hari x Rp {{ number_format($harga_per_hari, 0, ',', '.') }}</p>
+                                                    <p class="text-sm font-bold text-textDark">Rp {{ number_format($remainingDaysWeeks * $harga_per_hari, 0, ',', '.') }}</p>
+                                                </div>
+                                            @endif
+                                        @else
+                                            <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
+                                                <p class="text-sm text-textGray">{{ $durasi }} Hari x Rp {{ number_format($harga_sewa, 0, ',', '.') }}</p>
+                                                <p class="text-sm font-bold text-textDark">Rp {{ number_format($durasi * $harga_sewa, 0, ',', '.') }}</p>
+                                            </div>
+                                        @endif
 
                                         <div class="flex items-center justify-between mb-2 pb-2 border-b border-primaryLight/20">
-                                            <p class="text-sm text-textGray">Subtotal ({{ $jumlahUnit }} {{ $labelUnit }})</p>
-                                            <p class="text-sm font-bold text-textDark">Rp {{ number_format($harga_sewa * $jumlahUnit, 0, ',', '.') }}</p>
+                                            <p class="text-sm text-textGray font-semibold">Subtotal</p>
+                                            <p class="text-sm font-bold text-textDark">Rp {{ number_format($total_harga + $total_diskon, 0, ',', '.') }}</p>
                                         </div>
 
                                         @if($total_diskon > 0)

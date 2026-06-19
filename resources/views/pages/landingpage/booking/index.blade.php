@@ -655,35 +655,42 @@ $save = function () {
                                     <span class="font-bold text-[#2FAE9B] capitalize">{{ $tipe_harga }}</span>
                                 </div>
 
-                                <div class="flex items-center justify-between">
-                                    <span class="text-gray-600 font-medium">Harga Sewa</span>
-                                    <span class="font-bold text-[#2D2D2D]">Rp
-                                        {{ number_format($harga_sewa, 0, ',', '.') }}</span>
-                                </div>
-
-                                <div class="flex items-center justify-between">
-                                    <span class="text-gray-600 font-medium">Durasi Sewa</span>
-                                    <div class="text-right">
-                                        <p class="font-bold text-[#2D2D2D]">
-                                            @if($tipe_harga === 'bulanan')
-                                                @php
-                                                    $months = intdiv($durasi, 30);
-                                                    $remainingDays = $durasi % 30;
-                                                @endphp
-                                                {{ $months }} Bulan@if($remainingDays > 0) + {{ $remainingDays }} Hari @endif
-                                            @elseif($tipe_harga === 'mingguan')
-                                                @php
-                                                    $weeks = intdiv($durasi, 7);
-                                                    $remainingDays = $durasi % 7;
-                                                @endphp
-                                                {{ $weeks }} Minggu@if($remainingDays > 0) + {{ $remainingDays }} Hari @endif
-                                            @else
-                                                {{ $durasi }} Hari
-                                            @endif
-                                        </p>
-                                        <p class="text-[10px] text-gray-400 font-medium">Total {{ $durasi }} Hari</p>
+                                @if($tipe_harga === 'bulanan')
+                                    @php
+                                        $months = intdiv($durasi, 30);
+                                        $remainingDays = $durasi % 30;
+                                    @endphp
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-600 font-medium">{{ $months }} Bulan x Rp {{ number_format($harga_sewa, 0, ',', '.') }}</span>
+                                        <span class="font-bold text-[#2D2D2D]">Rp {{ number_format($months * $harga_sewa, 0, ',', '.') }}</span>
                                     </div>
-                                </div>
+                                    @if($remainingDays > 0)
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-gray-600 font-medium">{{ $remainingDays }} Hari x Rp {{ number_format($harga_per_hari, 0, ',', '.') }}</span>
+                                            <span class="font-bold text-[#2D2D2D]">Rp {{ number_format($remainingDays * $harga_per_hari, 0, ',', '.') }}</span>
+                                        </div>
+                                    @endif
+                                @elseif($tipe_harga === 'mingguan')
+                                    @php
+                                        $weeks = intdiv($durasi, 7);
+                                        $remainingDays = $durasi % 7;
+                                    @endphp
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-600 font-medium">{{ $weeks }} Minggu x Rp {{ number_format($harga_sewa, 0, ',', '.') }}</span>
+                                        <span class="font-bold text-[#2D2D2D]">Rp {{ number_format($weeks * $harga_sewa, 0, ',', '.') }}</span>
+                                    </div>
+                                    @if($remainingDays > 0)
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-gray-600 font-medium">{{ $remainingDays }} Hari x Rp {{ number_format($harga_per_hari, 0, ',', '.') }}</span>
+                                            <span class="font-bold text-[#2D2D2D]">Rp {{ number_format($remainingDays * $harga_per_hari, 0, ',', '.') }}</span>
+                                        </div>
+                                    @endif
+                                @else
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-600 font-medium">{{ $durasi }} Hari x Rp {{ number_format($harga_sewa, 0, ',', '.') }}</span>
+                                        <span class="font-bold text-[#2D2D2D]">Rp {{ number_format($durasi * $harga_sewa, 0, ',', '.') }}</span>
+                                    </div>
+                                @endif
 
                                 <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                                     <span class="text-gray-600 font-medium">Subtotal</span>

@@ -245,40 +245,59 @@ $submit = function () {
                                         <span class="text-gray-600">Berdasarkan Harga</span>
                                         <span class="font-bold capitalize">{{ $bookingData['tipe_harga'] ?? 'harian' }}</span>
                                     </div>
-                                    <div class="flex justify-between items-center text-sm">
-                                        <span class="text-gray-600">Durasi Sewa</span>
-                                        <div class="text-right">
-                                            <span class="font-bold">
-                                                @php
-                                                    $durasi = \Carbon\Carbon::parse($bookingData['waktu_mulai'])->diffInDays(\Carbon\Carbon::parse($bookingData['waktu_selesai'])) ?: 1;
-                                                    $tipe = $bookingData['tipe_harga'] ?? 'harian';
-                                                @endphp
-                                                @if($tipe === 'bulanan')
-                                                    @php
-                                                        $months = intdiv($durasi, 30);
-                                                        $remainingDays = $durasi % 30;
-                                                    @endphp
-                                                    {{ $months }} Bulan@if($remainingDays > 0) + {{ $remainingDays }} Hari @endif
-                                                @elseif($tipe === 'mingguan')
-                                                    @php
-                                                        $weeks = intdiv($durasi, 7);
-                                                        $remainingDays = $durasi % 7;
-                                                    @endphp
-                                                    {{ $weeks }} Minggu@if($remainingDays > 0) + {{ $remainingDays }} Hari @endif
-                                                @else
-                                                    {{ $durasi }} Hari
-                                                @endif
-                                            </span>
-                                            <p class="text-[10px] text-gray-400 font-medium">Total {{ $durasi }} Hari</p>
+
+                                    @php
+                                        $durasi = \Carbon\Carbon::parse($bookingData['waktu_mulai'])->diffInDays(\Carbon\Carbon::parse($bookingData['waktu_selesai'])) ?: 1;
+                                        $tipe = $bookingData['tipe_harga'] ?? 'harian';
+                                        $hargaSewa = $bookingData['harga_sewa'] ?? $bookingData['harga_per_hari'];
+                                        $hargaPerHari = $bookingData['harga_per_hari'];
+                                    @endphp
+
+                                    @if($tipe === 'bulanan')
+                                        @php
+                                            $months = intdiv($durasi, 30);
+                                            $remainingDays = $durasi % 30;
+                                        @endphp
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-gray-600">{{ $months }} Bulan x Rp {{ number_format($hargaSewa, 0, ',', '.') }}</span>
+                                            <span class="font-bold">Rp {{ number_format($months * $hargaSewa, 0, ',', '.') }}</span>
                                         </div>
+                                        @if($remainingDays > 0)
+                                            <div class="flex justify-between items-center text-sm">
+                                                <span class="text-gray-600">{{ $remainingDays }} Hari x Rp {{ number_format($hargaPerHari, 0, ',', '.') }}</span>
+                                                <span class="font-bold">Rp {{ number_format($remainingDays * $hargaPerHari, 0, ',', '.') }}</span>
+                                            </div>
+                                        @endif
+                                    @elseif($tipe === 'mingguan')
+                                        @php
+                                            $weeks = intdiv($durasi, 7);
+                                            $remainingDays = $durasi % 7;
+                                        @endphp
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-gray-600">{{ $weeks }} Minggu x Rp {{ number_format($hargaSewa, 0, ',', '.') }}</span>
+                                            <span class="font-bold">Rp {{ number_format($weeks * $hargaSewa, 0, ',', '.') }}</span>
+                                        </div>
+                                        @if($remainingDays > 0)
+                                            <div class="flex justify-between items-center text-sm">
+                                                <span class="text-gray-600">{{ $remainingDays }} Hari x Rp {{ number_format($hargaPerHari, 0, ',', '.') }}</span>
+                                                <span class="font-bold">Rp {{ number_format($remainingDays * $hargaPerHari, 0, ',', '.') }}</span>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-gray-600">{{ $durasi }} Hari x Rp {{ number_format($hargaSewa, 0, ',', '.') }}</span>
+                                            <span class="font-bold">Rp {{ number_format($durasi * $hargaSewa, 0, ',', '.') }}</span>
+                                        </div>
+                                    @endif
+
+                                    <div class="flex justify-between items-center text-sm pt-2 border-t border-gray-100">
+                                        <span class="text-gray-600 font-semibold">Subtotal</span>
+                                        <span class="font-bold">Rp {{ number_format(($bookingData['total_harga'] ?? 0) + ($bookingData['total_diskon'] ?? 0), 0, ',', '.') }}</span>
                                     </div>
-                                    <div class="flex justify-between items-center text-sm">
-                                        <span class="text-gray-600">Harga Sewa</span>
-                                        <span class="font-bold">Rp {{ number_format($bookingData['harga_sewa'] ?? $bookingData['harga_per_hari'], 0, ',', '.') }}</span>
-                                    </div>
+
                                     @if(isset($bookingData['total_diskon']) && $bookingData['total_diskon'] > 0)
                                     <div class="flex justify-between items-center text-sm">
-                                        <span class="text-emerald-600">Diskon</span>
+                                        <span class="text-emerald-600">Diskon Promo</span>
                                         <span class="font-bold text-emerald-600">- Rp {{ number_format($bookingData['total_diskon'], 0, ',', '.') }}</span>
                                     </div>
                                     @endif
