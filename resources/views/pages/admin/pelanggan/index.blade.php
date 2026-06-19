@@ -45,11 +45,7 @@ with(function () {
 });
 
 $delete = function (Pelanggan $pelanggan) {
-    if ($pelanggan->user) {
-        $pelanggan->user->delete(); // This will cascade delete the pelanggan because of the foreign key constraint
-    } else {
-        $pelanggan->delete();
-    }
+    $pelanggan->delete();
     session()->flash('message', 'Pelanggan berhasil dihapus!');
 };
 

@@ -45,6 +45,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Volt::route('/pelanggan', 'admin.pelanggan.index')->name('pelanggans.index');
         Volt::route('/pelanggan/create', 'admin.pelanggan.create')->name('pelanggans.create');
         Volt::route('/pelanggan/{pelanggan}/edit', 'admin.pelanggan.edit')->name('pelanggans.edit');
+        Volt::route('/pelanggan/trash', 'admin.pelanggan.trash')->name('pelanggans.trash');
     });
 
     // Kendaraan Management
@@ -66,6 +67,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Volt::route('pemesanan', 'admin.pemesanan.index')->name('pemesanan.index');
         Volt::route('pemesanan/create', 'admin.pemesanan.create')->name('pemesanan.create');
         Volt::route('pemesanan/{pemesanan}', 'admin.pemesanan.show')->name('pemesanan.show');
+        Volt::route('pemesanan/trash', 'admin.pemesanan.trash')->name('pemesanan.trash');
     });
 
     // Promo & Diskon routes
