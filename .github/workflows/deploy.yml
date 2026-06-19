@@ -163,6 +163,31 @@ jobs:
               echo "gitacar_storage mount already present, skipping"
             fi
 
+      # Run pending database migrations. New code may depend on columns
+      # that don't exist yet — failing this step = 500 in production.
+      # Idempotent: artisan migrate is a noop when DB is up to date.
+      - name: Run database migrations
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 60s
+          script: |
+            set -e
+            # Wait until at least one container task is running.
+            for i in {1..30}; do
+              CONTAINER=$(docker ps -q --filter label=com.docker.swarm.service.name=${{ env.SERVICE_NAME }} | head -1)
+              if [ -n "$CONTAINER" ]; then break; fi
+              echo "Waiting for container... attempt $i"
+              sleep 2
+            done
+            if [ -z "$CONTAINER" ]; then
+              echo "No running container for ${{ env.SERVICE_NAME }} after 60s"
+              exit 1
+            fi
+            docker exec "$CONTAINER" php artisan migrate --force --no-interaction
+
       - name: Smoke test — liveness
         run: |
           echo "Waiting for deploy to roll out..."
