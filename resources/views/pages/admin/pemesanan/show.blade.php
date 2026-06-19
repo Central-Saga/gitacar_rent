@@ -341,12 +341,16 @@ $cancel = function () {
                                 $durasi = $durasiHari ?? 0;
 
                                 if ($tipeHarga === 'bulanan') {
-                                    $durasiTeks = ceil($durasi / 30) . ' Bulan';
-                                    $subtotal = $hargaSewa * ceil($durasi / 30);
+                                    $months = intdiv($durasi, 30);
+                                    $remainingDays = $durasi % 30;
+                                    $durasiTeks = $months . ' Bulan' . ($remainingDays > 0 ? ' + ' . $remainingDays . ' Hari' : '');
+                                    $subtotal = ($hargaSewa * $months) + ($pemesanan->harga_per_hari * $remainingDays);
                                     $labelHarga = 'Harga per Bulan';
                                 } elseif ($tipeHarga === 'mingguan') {
-                                    $durasiTeks = ceil($durasi / 7) . ' Minggu';
-                                    $subtotal = $hargaSewa * ceil($durasi / 7);
+                                    $weeks = intdiv($durasi, 7);
+                                    $remainingDays = $durasi % 7;
+                                    $durasiTeks = $weeks . ' Minggu' . ($remainingDays > 0 ? ' + ' . $remainingDays . ' Hari' : '');
+                                    $subtotal = ($hargaSewa * $weeks) + ($pemesanan->harga_per_hari * $remainingDays);
                                     $labelHarga = 'Harga per Minggu';
                                 } else {
                                     $durasiTeks = $durasi . ' Hari';

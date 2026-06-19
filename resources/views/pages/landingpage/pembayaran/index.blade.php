@@ -254,9 +254,17 @@ $submit = function () {
                                                     $tipe = $bookingData['tipe_harga'] ?? 'harian';
                                                 @endphp
                                                 @if($tipe === 'bulanan')
-                                                    {{ ceil($durasi / 30) }} Bulan
+                                                    @php
+                                                        $months = intdiv($durasi, 30);
+                                                        $remainingDays = $durasi % 30;
+                                                    @endphp
+                                                    {{ $months }} Bulan@if($remainingDays > 0) + {{ $remainingDays }} Hari @endif
                                                 @elseif($tipe === 'mingguan')
-                                                    {{ ceil($durasi / 7) }} Minggu
+                                                    @php
+                                                        $weeks = intdiv($durasi, 7);
+                                                        $remainingDays = $durasi % 7;
+                                                    @endphp
+                                                    {{ $weeks }} Minggu@if($remainingDays > 0) + {{ $remainingDays }} Hari @endif
                                                 @else
                                                     {{ $durasi }} Hari
                                                 @endif

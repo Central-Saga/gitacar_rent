@@ -104,35 +104,15 @@ class BackfillPemesananTierPricing extends Command
         $total = (int) $pemesanan->total_harga;
 
         $newTipe = 'harian';
-        $jumlahUnit = $durasi;
-        if ($durasi >= 30) {
-            $newTipe = 'bulanan';
-            $jumlahUnit = (int) ceil($durasi / 30);
-        } elseif ($durasi >= 7) {
-            $newTipe = 'mingguan';
-            $jumlahUnit = (int) ceil($durasi / 7);
-        }
+        $newHargaSewa = $actualDailyRate;
+        $newHargaPerHari = $actualDailyRate;
 
-        // Infer harga_sewa from total_harga / jumlahUnit (if makes sense)
-        $newHargaSewa = $oldHargaSewa;
-        if ($total > 0 && $jumlahUnit > 0 && $total % $jumlahUnit === 0) {
-            $candidate = (int) ($total / $jumlahUnit);
-            // Only accept if candidate matches one of the configured tier rates,
-            // or if old tipe was wrong (heuristic: candidate != oldHargaPerHari)
-            $validTierRates = array_filter([
-                $kendaraan->harga_sewa_per_hari,
-                $kendaraan->harga_sewa_per_minggu,
-                $kendaraan->harga_sewa_per_bulan,
-            ]);
-            if (in_array($candidate, $validTierRates, true) || $newTipe !== $oldTipe) {
-                $newHargaSewa = $candidate;
-            }
-        } elseif ($newTipe === 'harian') {
-            $newHargaSewa = $actualDailyRate;
-        } elseif ($newTipe === 'mingguan' && $kendaraan->harga_sewa_per_minggu) {
-            $newHargaSewa = (int) $kendaraan->harga_sewa_per_minggu;
-        } elseif ($newTipe === 'bulanan' && $kendaraan->harga_sewa_per_bulan) {
+        if ($durasi >= 30 && $kendaraan->harga_sewa_per_bulan) {
+            $newTipe = 'bulanan';
             $newHargaSewa = (int) $kendaraan->harga_sewa_per_bulan;
+        } elseif ($durasi >= 7 && $kendaraan->harga_sewa_per_minggu) {
+            $newTipe = 'mingguan';
+            $newHargaSewa = (int) $kendaraan->harga_sewa_per_minggu;
         }
 
         $newHargaPerHari = $actualDailyRate;

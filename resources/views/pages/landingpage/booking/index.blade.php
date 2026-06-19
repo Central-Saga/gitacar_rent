@@ -162,20 +162,22 @@ $calculatePricing = function () {
             
             $kendaraan = $unit->kendaraan;
             
-            // Tentukan tier harga (harian / mingguan / bulanan) berdasarkan durasi sewa
-            if ($this->durasi >= 30) {
+            // Composite pricing: full weeks/months at tier rate + remaining days at daily rate
+            if ($this->durasi >= 30 && $kendaraan->harga_sewa_per_bulan) {
                 $this->tipe_harga = 'bulanan';
-                $this->harga_sewa = $kendaraan->harga_sewa_per_bulan
-                    ?: (int) round(($kendaraan->harga_sewa_per_hari * $this->durasi) / ceil($this->durasi / 30));
-                $totalHargaAwal = $this->harga_sewa * ceil($this->durasi / 30);
-            } elseif ($this->durasi >= 7) {
+                $this->harga_sewa = (int) $kendaraan->harga_sewa_per_bulan;
+                $months = intdiv($this->durasi, 30);
+                $remainingDays = $this->durasi % 30;
+                $totalHargaAwal = ($months * $this->harga_sewa) + ($remainingDays * $this->harga_per_hari);
+            } elseif ($this->durasi >= 7 && $kendaraan->harga_sewa_per_minggu) {
                 $this->tipe_harga = 'mingguan';
-                $this->harga_sewa = $kendaraan->harga_sewa_per_minggu
-                    ?: $kendaraan->harga_sewa_per_hari;
-                $totalHargaAwal = $this->harga_sewa * ceil($this->durasi / 7);
+                $this->harga_sewa = (int) $kendaraan->harga_sewa_per_minggu;
+                $weeks = intdiv($this->durasi, 7);
+                $remainingDays = $this->durasi % 7;
+                $totalHargaAwal = ($weeks * $this->harga_sewa) + ($remainingDays * $this->harga_per_hari);
             } else {
                 $this->tipe_harga = 'harian';
-                $this->harga_sewa = $kendaraan->harga_sewa_per_hari;
+                $this->harga_sewa = $this->harga_per_hari;
                 $totalHargaAwal = $this->harga_sewa * $this->durasi;
             }
 
@@ -661,9 +663,17 @@ $save = function () {
                                     <div class="text-right">
                                         <p class="font-bold text-[#2D2D2D]">
                                             @if($tipe_harga === 'bulanan')
-                                                {{ ceil($durasi / 30) }} Bulan
+                                                @php
+                                                    $months = intdiv($durasi, 30);
+                                                    $remainingDays = $durasi % 30;
+                                                @endphp
+                                                {{ $months }} Bulan@if($remainingDays > 0) + {{ $remainingDays }} Hari @endif
                                             @elseif($tipe_harga === 'mingguan')
-                                                {{ ceil($durasi / 7) }} Minggu
+                                                @php
+                                                    $weeks = intdiv($durasi, 7);
+                                                    $remainingDays = $durasi % 7;
+                                                @endphp
+                                                {{ $weeks }} Minggu@if($remainingDays > 0) + {{ $remainingDays }} Hari @endif
                                             @else
                                                 {{ $durasi }} Hari
                                             @endif
