@@ -142,6 +142,25 @@ jobs:
             docker service update --image "ghcr.io/${IMAGE_LC}:latest" --force "${{ env.SERVICE_NAME }}"
             echo "Service converged"
 
+      # Ensure the persistent storage volume is mounted. Docker Swarm does not
+      # persist --mount-add across service spec resets (e.g. UI redeploy), so
+      # we re-apply it after every deploy. Idempotent: noop if already mounted.
+      - name: Ensure persistent storage volume is mounted
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 30s
+          script: |
+            set -e
+            if ! docker service inspect ${{ env.SERVICE_NAME }} --format '{{range .Spec.TaskTemplate.ContainerSpec.Mounts}}{{.Source}} {{.Target}} {{.Type}}{{"\n"}}{{end}}' | grep -q '^gitacar_storage /var/www/html/storage/app/public volume$'; then
+              echo "Adding gitacar_storage volume mount"
+              docker service update --mount-add type=volume,source=gitacar_storage,destination=/var/www/html/storage/app/public ${{ env.SERVICE_NAME }}
+            else
+              echo "gitacar_storage mount already present, skipping"
+            fi
+
       - name: Smoke test — liveness
         run: |
           echo "Waiting for deploy to roll out..."
