@@ -97,9 +97,11 @@ jobs:
       # only reliable source of truth for what gets deployed is the image itself.
       - name: Extract expected asset hashes from built image
         id: manifest
+        env:
+          IMAGE_LC: ${{ lower(env.IMAGE_NAME) }}
         run: |
-          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          docker create --name gha-extract ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker pull ghcr.io/${IMAGE_LC}:latest
+          docker create --name gha-extract ghcr.io/${IMAGE_LC}:latest
           docker cp gha-extract:/var/www/html/public/build/manifest.json /tmp/build-manifest.json
           docker rm gha-extract > /dev/null
           CSS_FILE=$(jq -r '.["resources/css/app.css"].file' /tmp/build-manifest.json)
