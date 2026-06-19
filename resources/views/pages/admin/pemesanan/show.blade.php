@@ -445,7 +445,7 @@ $cancel = function () {
                                 @if($pemesanan->status_pemesanan === 'disetujui')
                                     <div class="mb-4">
                                         <label class="block text-sm font-semibold text-textDark mb-1">Waktu Kembali <span class="text-red-500">*</span></label>
-                                        <input wire:model="waktuKembali" type="datetime-local"
+                                        <input wire:model="waktuKembali" type="datetime-local" min="{{ now()->format('Y-m-d\TH:i') }}"
                                             class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all">
                                         @error('waktuKembali') <span class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
                                         <p class="text-xs text-textGray mt-1">Isi waktu aktual kendaraan dikembalikan. Keterlambatan >1 jam dihitung sebagai denda.</p>

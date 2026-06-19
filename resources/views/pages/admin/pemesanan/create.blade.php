@@ -375,7 +375,7 @@ $save = function () {
                                     <div>
                                         <label class="block text-sm font-semibold text-textDark mb-1">Waktu Mulai
                                             <span class="text-red-500">*</span></label>
-                                        <input wire:model.live="waktu_mulai" type="datetime-local"
+                                        <input wire:model.live="waktu_mulai" type="datetime-local" min="{{ now()->format('Y-m-d\TH:i') }}"
                                             class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all">
                                         @error('waktu_mulai') <span
                                             class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span>
@@ -384,7 +384,7 @@ $save = function () {
                                     <div>
                                         <label class="block text-sm font-semibold text-textDark mb-1">Waktu Selesai
                                             <span class="text-red-500">*</span></label>
-                                        <input wire:model.live="waktu_selesai" type="datetime-local"
+                                        <input wire:model.live="waktu_selesai" type="datetime-local" min="{{ now()->format('Y-m-d\TH:i') }}"
                                             class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all">
                                         @error('waktu_selesai') <span
                                             class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span>
