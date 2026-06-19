@@ -57,12 +57,8 @@ with(function () {
 
 on([
     'delete-unit' => function ($id) {
-        $unit = KendaraanUnit::withCount('pemesanans')->find($id);
+        $unit = KendaraanUnit::find($id);
         if ($unit) {
-            if ($unit->pemesanans_count > 0) {
-                $this->dispatch('swal:toast', title: 'Unit tidak bisa dihapus karena sudah memiliki riwayat pemesanan.', icon: 'error');
-                return;
-            }
             $unit->delete();
             $this->dispatch('swal:toast', title: 'Unit Kendaraan berhasil dihapus!', icon: 'success');
             $this->resetPage();

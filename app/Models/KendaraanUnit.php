@@ -5,11 +5,11 @@ namespace App\Models;
 use Database\Factories\KendaraanUnitFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class KendaraanUnit extends Model
 {
     /** @use HasFactory<KendaraanUnitFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'kendaraan_id',

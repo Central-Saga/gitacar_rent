@@ -60,21 +60,13 @@ with(function () {
 });
 
 $delete = function (Kendaraan $kendaraan) {
-    $hasBookings = $kendaraan->units()->whereHas('pemesanans')->exists();
-
-    if ($hasBookings) {
-        session()->flash('error', 'Kendaraan tidak bisa dihapus karena sudah memiliki riwayat pemesanan.');
-        return;
-    }
-
-    if ($kendaraan->foto) {
-        \Illuminate\Support\Facades\Storage::disk('public')->delete($kendaraan->foto);
-    }
     $kendaraan->delete();
 
     session()->flash('message', 'Kendaraan berhasil dihapus!');
     $this->resetPage();
 };
+
+
 
 ?>
 
