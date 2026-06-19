@@ -60,19 +60,8 @@ jobs:
           extensions: mbstring, sqlite3, pdo_sqlite, pdo_mysql, mysql, gd, exif, zip, bcmath
           coverage: none
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
-
-      - name: Install NPM dependencies and build assets
-        run: |
-          npm ci
-          npm run build
 
       - name: Run dashboard tests
         run: |
@@ -80,16 +69,6 @@ jobs:
           php artisan key:generate
           touch database/database.sqlite
           php artisan test --compact tests/Feature/DashboardTest.php
-
-      - name: Record expected asset hashes
-        id: manifest
-        run: |
-          CSS_FILE=$(jq -r '.["resources/css/app.css"].file' public/build/manifest.json)
-          JS_FILE=$(jq -r '.["resources/js/app.js"].file' public/build/manifest.json)
-          echo "css_hash=$(basename "$CSS_FILE")" >> $GITHUB_OUTPUT
-          echo "js_hash=$(basename "$JS_FILE")" >> $GITHUB_OUTPUT
-          echo "css_path=$CSS_FILE" >> $GITHUB_OUTPUT
-          echo "Recorded: css=$(basename "$CSS_FILE") js=$(basename "$JS_FILE")"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -102,6 +81,25 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # Extract expected asset hashes from the image we just built & pushed.
+      # Critical: CI's `npm run build` (Ubuntu glibc) ≠ Dockerfile's `npm run build`
+      # (Alpine musl). Tailwind v4 oxide binary produces different output, so the
+      # only reliable source of truth for what gets deployed is the image itself.
+      - name: Extract expected asset hashes from built image
+        id: manifest
+        run: |
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker create --name gha-extract ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker cp gha-extract:/var/www/html/public/build/manifest.json /tmp/build-manifest.json
+          docker rm gha-extract > /dev/null
+          CSS_FILE=$(jq -r '.["resources/css/app.css"].file' /tmp/build-manifest.json)
+          JS_FILE=$(jq -r '.["resources/js/app.js"].file' /tmp/build-manifest.json)
+          echo "css_hash=$(basename "$CSS_FILE")" >> $GITHUB_OUTPUT
+          echo "js_hash=$(basename "$JS_FILE")" >> $GITHUB_OUTPUT
+          echo "css_path=$CSS_FILE" >> $GITHUB_OUTPUT
+          echo "Extracted from image: css=$(basename "$CSS_FILE") js=$(basename "$JS_FILE")"
+          cat /tmp/build-manifest.json
 
       - name: Trigger deploy
         id: deploy
