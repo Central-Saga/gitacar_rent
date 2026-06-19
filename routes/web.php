@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Volt::route('/kendaraan', 'admin.kendaraan.index')->name('kendaraan.index');
         Volt::route('/kendaraan/create', 'admin.kendaraan.create')->name('kendaraan.create');
         Volt::route('/kendaraan/{kendaraan}/edit', 'admin.kendaraan.edit')->name('kendaraan.edit');
+        Volt::route('/kendaraan/trash', 'admin.kendaraan.trash')->name('kendaraan.trash');
 
         // Kendaraan Unit routes
         Volt::route('kendaraan-units', 'admin.kendaraan-unit.index')->name('kendaraan-units.index');

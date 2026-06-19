@@ -63,6 +63,12 @@
                         wire:navigate>
                         {{ __('Unit Kendaraan') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="archive-box" :href="route('admin.kendaraan.trash')"
+                        :current="request()->routeIs('admin.kendaraan.trash')"
+                        class="text-zinc-600 hover:text-primary hover:bg-primary/5 data-[current]:bg-primary data-[current]:text-white transition-colors duration-200 rounded-lg"
+                        wire:navigate>
+                        {{ __('Arsip') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             @endcan
 
