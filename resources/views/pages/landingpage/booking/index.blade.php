@@ -446,7 +446,7 @@ $save = function () {
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Waktu Pengembalian <span
                                         class="text-red-500">*</span></label>
-                                <input wire:model.live="waktu_selesai" type="datetime-local" min="{{ now()->format('Y-m-d\TH:i') }}"
+                                <input wire:model.live="waktu_selesai" type="datetime-local" x-bind:min="$wire.waktu_mulai"
                                     class="block w-full px-5 py-4 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:ring-2 focus:ring-[#2FAE9B]/50 border-transparent focus:bg-white outline-none transition-all">
                                 @error('waktu_selesai') <span
                                 class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
