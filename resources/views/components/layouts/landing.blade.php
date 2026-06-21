@@ -250,11 +250,11 @@
     <!-- Mobile Bottom Navigation -->
     <div x-data="{ showKatalog: false, isVisible: true, lastScrollY: 0 }"
         @scroll.window="
-            if (window.scrollY > lastScrollY && window.scrollY > 100) { 
-                isVisible = false; 
-                showKatalog = false; 
-            } else if (window.scrollY < lastScrollY) { 
-                isVisible = true; 
+            if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                isVisible = false;
+                showKatalog = false;
+            } else if (window.scrollY < lastScrollY) {
+                isVisible = true;
             }
             lastScrollY = window.scrollY;
         "
@@ -286,7 +286,7 @@
                     </a>
                 @endauth
             </div>
-            
+
             <!-- Katalog Pop up (Bottom Sheet) -->
             <div x-show="showKatalog" style="display: none;"
                 x-transition:enter="transition ease-out duration-300"
@@ -315,7 +315,7 @@
                 </a>
             </div>
         </div>
-        
+
         <!-- Backdrop -->
         <div x-show="showKatalog" style="display: none;"
             x-transition:enter="transition ease-out duration-300"
@@ -390,7 +390,7 @@
                         <li class="flex items-center">
                             <i class="fas fa-envelope text-primary mr-3"></i>
                             <a href="mailto:info@gitacarrental.com"
-                                class="text-secondary hover:text-primary transition-colors">info@gitacarrental.com</a>
+                                class="text-secondary hover:text-primary transition-colors">maderyan008@gmail.com</a>
                         </li>
                     </ul>
                 </div>
