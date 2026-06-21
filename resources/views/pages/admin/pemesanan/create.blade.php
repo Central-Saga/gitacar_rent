@@ -555,7 +555,6 @@ $save = function () {
                                     @error('catatan') <span
                                         class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span>
                                     @enderror
-                                </div>
 
                                 <label class="block text-sm font-semibold text-textDark mt-4 mb-1">Link Google Maps
                                     <span class="text-xs text-textGray font-normal">(Opsional)</span></label>
@@ -570,6 +569,7 @@ $save = function () {
                                     class="block w-full px-4 py-3 rounded-xl bg-white border border-inputBorder text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all"></textarea>
                                 @error('lokasi_deskripsi')
                                 <span class="text-red-500 text-xs font-medium mt-1">{{ $message }}</span> @enderror
+                                </div>
 
                                 <div>
                                     <label class="block text-sm font-semibold text-textDark mb-1">Upload Bukti
