@@ -26,6 +26,7 @@ class Pemesanan extends Model implements HasMedia
         'denda_per_hari',
         'hari_terlambat',
         'denda',
+        'status_pemesanan',
         'catatan',
         'lokasi_url',
         'lokasi_deskripsi',
