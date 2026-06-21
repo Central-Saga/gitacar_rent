@@ -120,7 +120,7 @@ title('Contact Us - Gita Car Rental');
                 melalui email.</p>
               <a href="mailto:info@gitacarrental.com"
                 class="text-slate-900 text-lg font-bold hover:text-[#2FAE9B] transition-colors break-all">
-                info@gitacarrental.com
+                maderyam008@gmail.com
               </a>
             </div>
           </div>
@@ -201,29 +201,29 @@ title('Contact Us - Gita Car Rental');
 <script>
   function sendToWhatsApp(e) {
     e.preventDefault();
-    
+
     // Ambil nilai dari input
     const nama = document.getElementById('wa-nama').value;
     const nomor = document.getElementById('wa-nomor').value;
     const subjek = document.getElementById('wa-subjek').value;
     const pesan = document.getElementById('wa-pesan').value;
-    
+
     if(!nama || !nomor || !pesan) {
         return;
     }
 
     // Format pesan
     const text = `Halo Gita Car Rental,\n\nSaya menghubungi Anda terkait *${subjek}*.\n\n*Nama Lengkap:* ${nama}\n*Nomor WA:* ${nomor}\n\n*Pesan:*\n${pesan}`;
-    
+
     // Encode URL
     const encodedText = encodeURIComponent(text);
-    
+
     // Nomor WA tujuan
     const waNumber = '6281395637337';
-    
+
     // Buat URL WhatsApp
     const waUrl = `https://wa.me/${waNumber}?text=${encodedText}`;
-    
+
     // Buka di tab baru
     window.open(waUrl, '_blank');
   }
