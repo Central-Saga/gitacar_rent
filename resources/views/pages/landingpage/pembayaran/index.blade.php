@@ -240,6 +240,24 @@ $submit = function () {
                                     </div>
                                 </div>
 
+                                @if($bookingData['lokasi_url'] ?? $bookingData['lokasi_deskripsi'] ?? null)
+                                <div class="p-3 bg-blue-50 text-blue-800 rounded-lg border border-blue-100 mt-2">
+                                    <p class="text-xs font-semibold mb-1 flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                                        Lokasi Antar/Jemput
+                                    </p>
+                                    @if($bookingData['lokasi_url'])
+                                    <a href="{{ $bookingData['lokasi_url'] }}" target="_blank" rel="noopener noreferrer" class="text-xs text-blue-700 hover:text-blue-900 font-medium inline-flex items-center gap-0.5">
+                                        {{ $bookingData['lokasi_url'] }}
+                                        <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                    </a>
+                                    @endif
+                                    @if($bookingData['lokasi_deskripsi'])
+                                    <p class="text-xs mt-0.5">{{ $bookingData['lokasi_deskripsi'] }}</p>
+                                    @endif
+                                </div>
+                                @endif
+
                                 <div class="pt-4 border-t border-gray-100 space-y-3 pb-4">
                                     <div class="flex justify-between items-center text-sm">
                                         <span class="text-gray-600">Berdasarkan Harga</span>
