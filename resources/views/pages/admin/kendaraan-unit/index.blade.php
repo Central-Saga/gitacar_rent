@@ -12,7 +12,7 @@ use function Livewire\Volt\{
 use App\Models\KendaraanUnit;
 
 layout('layouts.app');
-title('Kelola Unit Kendaraan');
+title('Kelola Jumlah Kendaraan');
 
 usesPagination();
 

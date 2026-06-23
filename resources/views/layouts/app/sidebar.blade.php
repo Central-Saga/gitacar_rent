@@ -67,7 +67,7 @@
                         :current="request()->routeIs('admin.kendaraan-units.*')"
                         class="text-zinc-600 hover:text-primary hover:bg-primary/5 data-[current]:bg-primary data-[current]:text-white transition-colors duration-200 rounded-lg"
                         wire:navigate>
-                        {{ __('Unit Kendaraan') }}
+                        {{ __('Jumlah Kendaraan') }}
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="archive-box" :href="route('admin.kendaraan.trash')"
                         :current="request()->routeIs('admin.kendaraan.trash')"
