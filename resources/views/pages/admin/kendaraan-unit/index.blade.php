@@ -60,7 +60,7 @@ on([
         $unit = KendaraanUnit::find($id);
         if ($unit) {
             if (in_array($unit->status_unit, ['disewa', 'maintenance'])) {
-                $this->dispatch('swal:toast', title: 'Unit tidak bisa dihapus karena sedang ' . ($unit->status_unit === 'disewa' ? 'disewa' : 'maintenance') . '.', icon: 'error');
+                $this->dispatch('swal:toast', title: 'Jumlah Kendaraan tidak bisa dihapus karena sedang ' . ($unit->status_unit === 'disewa' ? 'disewa' : 'maintenance') . '.', icon: 'error');
                 return;
             }
             $unit->delete();
@@ -84,9 +84,9 @@ $updateStatus = function (KendaraanUnit $unit, $status) {
             <div class="mb-10">
                 <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Kelola Unit Kendaraan</h1>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Kelola Jumlah Kendaraan</h1>
                         <p class="mt-2 text-sm text-gray-600 dark:text-gray-300 font-medium">Manajemen inventaris plat
-                            nomor dan status unit</p>
+                            nomor dan status Jumlah Kendaraan</p>
                     </div>
                     <a href="{{ route('admin.kendaraan-units.create') }}"
                         class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primaryDark text-white text-sm font-semibold rounded-xl transition-all duration-300"
@@ -94,14 +94,14 @@ $updateStatus = function (KendaraanUnit $unit, $status) {
                         <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
-                        <span>Tambah Unit Kendaraan</span>
+                        <span>Tambah Jumlah Kendaraan</span>
                     </a>
                 </div>
             </div>
 
             <!-- Search -->
             <div class="mb-8">
-                <input wire:model.live="search" type="text" placeholder="Cari unit (Plat / Nama Kendaraan)..."
+                <input wire:model.live="search" type="text" placeholder="Cari kendaraan (Plat / Nama Kendaraan)..."
                     class="block w-full px-4 py-3 rounded-2xl bg-white text-textDark placeholder-textGray border border-inputBorder focus:ring-2 focus:ring-primary focus:outline-none text-sm font-medium">
             </div>
 
@@ -128,7 +128,7 @@ $updateStatus = function (KendaraanUnit $unit, $status) {
                                 <tr>
                                     <th
                                         class="px-8 py-6 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
-                                        Unit (Plat Nomor)</th>
+                                        Jumlah (Plat Nomor)</th>
                                     <th
                                         class="px-8 py-6 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
                                         Kendaraan</th>
@@ -229,8 +229,8 @@ $updateStatus = function (KendaraanUnit $unit, $status) {
                                                     </svg>
                                                 </a>
                                                 <button wire:click="$dispatch('swal:confirm', {
-                                                                title: 'Hapus Unit Kendaraan?',
-                                                                text: 'Yakin ingin menghapus unit kendaraan {{ $unit->nomor_plat }}?',
+                                                                title: 'Hapus Jumlah Kendaraan?',
+                                                                text: 'Yakin ingin menghapus Jumlah kendaraan {{ $unit->nomor_plat }}?',
                                                                 icon: 'warning',
                                                                 method: 'delete-unit',
                                                                 id: {{ $unit->id }}
@@ -257,9 +257,9 @@ $updateStatus = function (KendaraanUnit $unit, $status) {
                                                         d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                                                 </svg>
                                             </div>
-                                            <h3 class="text-lg font-bold text-textDark mb-2">Tidak ada data unit kendaraan
+                                            <h3 class="text-lg font-bold text-textDark mb-2">Tidak ada data Jumlah kendaraan
                                             </h3>
-                                            <p class="text-sm text-textGray mb-6">Mulai dengan mendaftarkan plat nomor unit
+                                            <p class="text-sm text-textGray mb-6">Mulai dengan mendaftarkan plat nomor Jumlah
                                                 kendaraan baru.</p>
                                             <a href="{{ route('admin.kendaraan-units.create') }}"
                                                 class="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primaryDark text-white font-semibold rounded-xl transition-colors"
@@ -268,7 +268,7 @@ $updateStatus = function (KendaraanUnit $unit, $status) {
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M12 4v16m8-8H4" />
                                                 </svg>
-                                                <span>Tambah Unit Pertama</span>
+                                                <span>Tambah Jumlah Kendaraan Pertama</span>
                                             </a>
                                         </td>
                                     </tr>
