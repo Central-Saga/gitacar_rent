@@ -7,7 +7,7 @@ use App\Models\Kendaraan;
 use App\Models\KendaraanUnit;
 
 layout('layouts.app');
-title('Tambah Unit Kendaraan');
+title('Tambah Jumlah Kendaraan');
 
 state([
     'kendaraanList' => [],
@@ -42,7 +42,7 @@ $save = function() {
         'status_unit' => $this->status_unit,
     ]);
 
-    session()->flash('message', 'Unit kendaraan berhasil ditambahkan!');
+    session()->flash('message', 'Jumlah kendaraan berhasil ditambahkan!');
     return $this->redirect(route('admin.kendaraan-units.index'));
 };
 
@@ -53,7 +53,7 @@ $save = function() {
             <div class="mb-10">
                 <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Tambah Unit Kendaraan</h1>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Tambah Jumlah Kendaraan</h1>
                         <p class="mt-2 text-sm text-gray-600 dark:text-gray-300 font-medium">
                             Daftarkan plat nomor baru untuk kendaraan yang tersedia
                         </p>
@@ -84,9 +84,9 @@ $save = function() {
                             </h3>
                             <svg class="w-5 h-5 text-gray-400 transform transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        
+
                         <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="mt-6">
-                            
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="md:col-span-2">
                                     <label for="kendaraan_id" class="block text-sm font-medium text-gray-700 mb-2">
@@ -190,7 +190,7 @@ $save = function() {
                         </a>
                         <button type="submit"
                             class="px-8 py-3 bg-primary hover:bg-primaryDark text-white font-semibold rounded-xl transition-colors disabled:opacity-50">
-                            Simpan Unit
+                            Simpan Jumlah Kendaraan
                         </button>
                     </div>
                 </form>
