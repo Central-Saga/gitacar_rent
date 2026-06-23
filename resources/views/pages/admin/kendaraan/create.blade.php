@@ -120,7 +120,7 @@ $save = function() {
 
                                 <div>
                                     <label for="jenis_kendaraan" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Jenis Kendaraan Bermotor<span class="text-red-500">*</span>
+                                        Jenis Kendaraan Bermotor <span class="text-red-500">*</span>
                                     </label>
                                     <div class="relative">
                                         <select wire:model="jenis_kendaraan" id="jenis_kendaraan"
