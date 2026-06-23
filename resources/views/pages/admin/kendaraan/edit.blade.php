@@ -53,7 +53,7 @@ $save = function() {
     ]);
 
     $fotoPath = $this->kendaraan->foto;
-    
+
     if ($this->foto) {
         if ($this->kendaraan->foto && Storage::disk('public')->exists($this->kendaraan->foto)) {
             Storage::disk('public')->delete($this->kendaraan->foto);
@@ -114,9 +114,9 @@ $save = function() {
                             </h3>
                             <svg class="w-5 h-5 text-gray-400 transform transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        
+
                         <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="mt-6">
-                            
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="nama_kendaraan" class="block text-sm font-medium text-gray-700 mb-2">
@@ -136,7 +136,7 @@ $save = function() {
 
                                 <div>
                                     <label for="jenis_kendaraan" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Jenis Kendaraan <span class="text-red-500">*</span>
+                                        Jenis Kendaraan Bermotor <span class="text-red-500">*</span>
                                     </label>
                                     <div class="relative">
                                         <select wire:model="jenis_kendaraan" id="jenis_kendaraan"
@@ -208,7 +208,7 @@ $save = function() {
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="mt-6">
                                 <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-2">
                                     Deskripsi (Opsional)
@@ -229,7 +229,7 @@ $save = function() {
                                 <label class="block text-sm font-medium text-gray-700 mb-2">
                                     Upload Foto Baru (Opsional, timpa foto lama)
                                 </label>
-                                
+
                                 <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl relative overflow-hidden bg-white">
                                     <div class="space-y-1 text-center">
                                         @if ($foto)
