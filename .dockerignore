@@ -12,8 +12,8 @@
 # Node
 /node_modules
 
-# Build artifacts
-/public/build
+# Build artifacts (public/build MUST be in Docker context — built by CI)
+# /public/build  ← intentionally NOT ignored
 
 # IDE
 .idea

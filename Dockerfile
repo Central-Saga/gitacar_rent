@@ -1,6 +1,6 @@
 # =============================================================================
 #  🚗  GitaCar Rent — Production Dockerfile
-#  Multi-stage build: vendor → frontend → production
+# Multi-stage build: vendor → production (frontend assets built in CI)
 # =============================================================================
 
 # ───────────────────────────────────────────
@@ -47,25 +47,14 @@ RUN composer install \
     --optimize-autoloader
 
 # ───────────────────────────────────────────
-# Stage 2: Frontend — Vite Assets
+# Stage 2: Production — Nginx + PHP-FPM
 # ───────────────────────────────────────────
-FROM node:22-alpine AS frontend
+# NOTE: Vite assets (public/build/) are built in CI and included in the
+# Docker context.  The frontend build stage was removed to guarantee that
+# the CSS/JS hashes match between the CI manifest check and the served
+# container — Tailwind v4 + Vite produce non-deterministic hashes across
+# different OS / build environments.
 
-WORKDIR /app
-
-COPY --from=vendor /app/vendor /app/vendor
-COPY package.json package-lock.json ./
-RUN npm ci
-
-COPY vite.config.js package.json ./
-COPY resources/ resources/
-COPY public/ public/
-
-RUN npm run build
-
-# ───────────────────────────────────────────
-# Stage 3: Production — Nginx + PHP-FPM
-# ───────────────────────────────────────────
 FROM php:8.3-fpm-alpine AS production
 
 RUN apk add --no-cache \
@@ -88,7 +77,7 @@ RUN apk add --no-cache \
 
 COPY --from=vendor /app /var/www/html
 
-COPY --from=frontend /app/public/build /var/www/html/public/build
+COPY public/build /var/www/html/public/build
 
 RUN mkdir -p /var/www/html/storage/framework/{cache,sessions,testing,views} \
     && mkdir -p /var/www/html/storage/app/public \
